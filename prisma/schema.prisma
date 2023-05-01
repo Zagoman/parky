@@ -6,18 +6,57 @@ generator client {
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
     relationMode = "prisma"
 }
 
+enum Role {
+    DRIVER @map("driver")
+    OWNER  @map("owner")
+    HYBRID @map("hybrid")
+
+    @@map("_Role")
+}
+
+enum CarSize {
+    XSMALL
+    SMALL
+    MEDIUM
+    LARGE
+}
+
+model driver {
+
+    carSize CarSize
+}
+
 model Users {
+    id          String   @id @default(cuid())
+    user_id     String   @unique
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    username    String   @unique
+    firstName   String   @db.VarChar(255)
+    lastName    String   @db.VarChar(255)
+    phoneNumber String   @db.VarChar(255)
+    role        Role     @default(DRIVER)
+}
+
+model Parking_spot {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
-model Parking_spot {
 
-            }
-model Orders {}
-model Bookings {}
+model Orders {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Bookings {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
