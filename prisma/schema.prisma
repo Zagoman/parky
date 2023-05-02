@@ -14,24 +14,11 @@ datasource db {
 enum Role {
     DRIVER @map("driver")
     OWNER  @map("owner")
-    HYBRID @map("hybrid")
 
     @@map("_Role")
 }
 
-enum CarSize {
-    XSMALL
-    SMALL
-    MEDIUM
-    LARGE
-}
-
-model driver {
-
-    carSize CarSize
-}
-
-model Users {
+model User {
     id          String   @id @default(cuid())
     user_id     String   @unique
     createdAt   DateTime @default(now())
@@ -41,6 +28,24 @@ model Users {
     lastName    String   @db.VarChar(255)
     phoneNumber String   @db.VarChar(255)
     role        Role     @default(DRIVER)
+    driver      driver[]
+    owner       owner[]
+}
+
+model owner {
+    id        String   @id @default(cuid())
+    user_id   User    @relation(fields: [usersId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    userId   String
+}
+
+model driver {
+    id        String   @id @default(cuid())
+    user_id   User    @relation(fields: [usersId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    userId   String
 }
 
 model Parking_spot {
