@@ -5,10 +5,21 @@ import Head from "next/head";
 import Link from "next/link";
 
 import { api } from "~/utils/api";
+import { useState } from "react";
 
 const Home: NextPage = () => {
-    const hello = api.example.hello.useQuery({ text: "from tRPC" });
+    const { mutate } = api.profile.create.useMutation()
+    const profiles = api.profile.getAll.useQuery()
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [role, setRole] = useState("")
     const user = useUser()
+    const handleSubmit = () => {
+        mutate({
+            firstName, lastName,
+            role: role ? role as "DRIVER" | "OWNER" : "DRIVER",
+        })
+    }
     return (
         <>
             <Head>
@@ -20,15 +31,26 @@ const Home: NextPage = () => {
                 {!user.isSignedIn &&
                     <SignInButton></SignInButton>
                 }
-                {!!user.isSignedIn &&
-                <SignOutButton></SignOutButton>
+                {!!user.isSignedIn && <>
+                    <SignOutButton></SignOutButton>
 
+                    <div>
+                        <input type="text" name="firstName" value={firstName} onChange={e => setFirstName(e.target.value)}></input>
+                        <input type="text" name="lastName" value={lastName} onChange={e => setLastName(e.target.value)}></input>
+                        <select name="role" id="role" onChange={e => setRole(e.target.value)}>
+                            <option value="DRIVER">Driver </option>
+                            <option value="OWNER">Owner</option>
+                        </select>
+                        <button onClick={handleSubmit}>Submit form</button>
+                    </div>
+                    <div>{JSON.stringify(profiles.data)}</div>
+                </>
                 }
 
 
                 <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
 
-            </main>
+            </main >
         </>
     );
 };
