@@ -11,54 +11,113 @@ datasource db {
     relationMode = "prisma"
 }
 
-enum Role {
-    DRIVER @map("driver")
-    OWNER  @map("owner")
-
-    @@map("_Role")
+enum Sizes {
+    XSMALL @map("xsmall")
+    SMALL  @map("small")
+    MEDIUM @map("medium")
+    LARGE  @map("large")
+    XLARGE @map("xlarge")
 }
 
 model Profile {
-    id          String   @id @default(cuid())
-    userId      String   @unique
-    createdAt   DateTime @default(now())
-    firstName   String   @db.VarChar(255)
-    lastName    String   @db.VarChar(255)
-    phoneNumber String?  @db.VarChar(255)
-    role        Role?    @default(DRIVER)
+    id            String          @id @default(cuid())
+    userId        String          @unique
+    firstName     String          @db.VarChar(255)
+    lastName      String          @db.VarChar(255)
+    username      String          @db.VarChar(255)
+    phoneNumber   String?         @db.VarChar(255)
+    isDriver      Boolean?
+    isOwner       Boolean?
+    balance       Int
+    licensePlate  String?         @db.VarChar(255)
+    vehicleModel  String?         @db.VarChar(255)
+    vehicleSize   Sizes
+    rating        Float
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @default(now())
+    ProfileReview ProfileReview[]
+    ParkingReview ParkingReview[]
+    CoinOrder     CoinOrder[]
+    Booking       Booking[]
+    ParkingSpot   ParkingSpot[]
 }
 
-model owner {
-    id           String         @id @default(cuid())
-    createdAt    DateTime       @default(now())
-    updatedAt    DateTime       @updatedAt
-    Parking_spot Parking_spot[]
-}
-
-model driver {
-    id           String   @id @default(cuid())
-    licensePlate String   @db.VarChar(255)
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt
-}
-
-model Parking_spot {
+model ProfileReview {
     id        String   @id @default(cuid())
-    owner     owner    @relation(fields: [ownerId], references: [id])
+    profile   Profile  @relation(fields: [profileId], references: [id])
+    profileId String
+    rating    Float
+    content   String   @db.VarChar(255)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    ownerId   String
+
+    @@index(fields: [profileId])
 }
 
-model Orders {
+model ParkingReview {
+    id        String      @id @default(cuid())
+    profile   Profile     @relation(fields: [profileId], references: [id])
+    profileId String
+    parking   ParkingSpot @relation(fields: [parkingId], references: [id])
+    parkingId String
+    rating    Float
+    content   String      @db.VarChar(255)
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+
+    @@index(fields: [profileId, parkingId])
+}
+
+model CoinOrder {
     id        String   @id @default(cuid())
+    profile   Profile  @relation(fields: [profileId], references: [id])
+    profileId String
+    amount    Int
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+
+    @@index([profileId])
 }
 
-model Bookings {
-    id            String   @id @default(cuid())
-    bookingNumber String
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
+model ParkingSpot {
+    id             String          @id @default(cuid())
+    profile        Profile         @relation(fields: [profileId], references: [id])
+    profileId      String
+    address        String          @db.VarChar(255)
+    imageURL       String
+    price          Int
+    rating         Float
+    availableStart DateTime
+    availableEnd   DateTime
+    features       Json?
+    geolocation    Json?
+    description    String
+    dimensions     Sizes
+    createdAt      DateTime        @default(now())
+    updatedAt      DateTime        @updatedAt
+    ParkingReview  ParkingReview[]
+    Booking        Booking[]
+
+    @@index([profileId])
+}
+
+enum bookingTypes {
+    HOURLY  @map("hourly")
+    MONTHLY @map("monthly")
+}
+
+model Booking {
+    id            String       @id @default(cuid())
+    bookingNumber String       @unique
+    profile       Profile      @relation(fields: [profileId], references: [id])
+    profileId     String
+    parking       ParkingSpot  @relation(fields: [parkingId], references: [id])
+    parkingId     String
+    start         DateTime
+    end           DateTime
+    price         Int
+    type          bookingTypes
+    createdAt     DateTime     @default(now())
+    updatedAt     DateTime     @updatedAt
+
+    @@index([parkingId, profileId])
 }
