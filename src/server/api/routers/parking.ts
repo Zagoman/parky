@@ -6,6 +6,27 @@ export const parkingRouter = createTRPCRouter({
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.parkingSpot.findMany();
     }),
+
+    getShort: publicProcedure.query(({ ctx }) => {
+        return ctx.prisma.parkingSpot.findMany({
+            select: {
+                _count: {
+                    select: { Booking: true }
+                },
+                availableEnd: true,
+                availableStart: true,
+                price: true,
+                imageURL: true,
+                id: true,
+                address: true,
+                rating: true,
+                features: true,
+                dimensions: true,
+                geolocation: true,
+            },
+        })
+    }),
+
     create: privateProcedure.input(z.object({
         address: z.string().min(3).max(255),
         imageURL: z.optional(z.string()),
@@ -31,6 +52,7 @@ export const parkingRouter = createTRPCRouter({
         return parking
     }
     ),
+
     update: privateProcedure.input(z.object({
         id: z.string(),
         address: z.string().min(3).max(255),
@@ -71,9 +93,10 @@ export const parkingRouter = createTRPCRouter({
                 }
             }
         })
-        if (!profile) throw new TRPCError({code: "NOT_FOUND"})
+        if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
         return profile.ParkingSpot[0]
     }),
+
     delete: privateProcedure.input(z.object({
         id: z.string()
     })).mutation(async ({ ctx, input }) => {
