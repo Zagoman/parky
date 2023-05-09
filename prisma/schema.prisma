@@ -28,11 +28,11 @@ model Profile {
     phoneNumber   String?         @db.VarChar(255)
     isDriver      Boolean?
     isOwner       Boolean?
-    balance       Int
+    balance       Int?            @default(0)
     licensePlate  String?         @db.VarChar(255)
     vehicleModel  String?         @db.VarChar(255)
-    vehicleSize   Sizes
-    rating        Float
+    vehicleSize   Sizes?
+    rating        Float?          @default(5)
     createdAt     DateTime        @default(now())
     updatedAt     DateTime        @default(now())
     ProfileReview ProfileReview[]
@@ -83,9 +83,9 @@ model ParkingSpot {
     profile        Profile         @relation(fields: [profileId], references: [id])
     profileId      String
     address        String          @db.VarChar(255)
-    imageURL       String
+    imageURL       String?
     price          Int
-    rating         Float
+    rating         Decimal? 
     availableStart DateTime
     availableEnd   DateTime
     features       Json?

@@ -2,8 +2,6 @@ import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import styles from "./index.module.css";
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-
 import { api } from "~/utils/api";
 import { useState } from "react";
 
@@ -18,6 +16,7 @@ const Home: NextPage = () => {
         mutate({
             firstName, lastName,
             role: role ? role as "DRIVER" | "OWNER" : "DRIVER",
+
         })
     }
     return (
