@@ -16,7 +16,6 @@ const Home: NextPage = () => {
         mutate({
             firstName, lastName,
             role: role ? role as "DRIVER" | "OWNER" : "DRIVER",
-
         })
     }
     return (

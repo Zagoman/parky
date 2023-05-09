@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
@@ -70,6 +71,18 @@ export const parkingRouter = createTRPCRouter({
                 }
             }
         })
+        if (!profile) throw new TRPCError({code: "NOT_FOUND"})
         return profile.ParkingSpot[0]
+    }),
+    delete: privateProcedure.input(z.object({
+        id: z.string()
+    })).mutation(async ({ ctx, input }) => {
+        const parking = await ctx.prisma.parkingSpot.delete({ where: { id: input.id } })
+        if (!parking) {
+            throw new TRPCError({ code: "NOT_FOUND" })
+        }
+        return parking
+
     })
+
 });

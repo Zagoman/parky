@@ -20,8 +20,7 @@ enum Sizes {
 }
 
 model Profile {
-    id            String          @id @default(cuid())
-    userId        String          @unique
+    id            String          @id @unique
     firstName     String          @db.VarChar(255)
     lastName      String          @db.VarChar(255)
     username      String          @db.VarChar(255)
@@ -32,7 +31,7 @@ model Profile {
     licensePlate  String?         @db.VarChar(255)
     vehicleModel  String?         @db.VarChar(255)
     vehicleSize   Sizes?
-    rating        Float?          @default(5)
+    rating        Decimal?        @default(5.0)
     createdAt     DateTime        @default(now())
     updatedAt     DateTime        @default(now())
     ProfileReview ProfileReview[]
@@ -40,6 +39,8 @@ model Profile {
     CoinOrder     CoinOrder[]
     Booking       Booking[]
     ParkingSpot   ParkingSpot[]
+
+    @@index([id])
 }
 
 model ProfileReview {
@@ -51,7 +52,7 @@ model ProfileReview {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    @@index(fields: [profileId])
+    @@index(fields: [id, profileId])
 }
 
 model ParkingReview {
@@ -65,7 +66,7 @@ model ParkingReview {
     createdAt DateTime    @default(now())
     updatedAt DateTime    @updatedAt
 
-    @@index(fields: [profileId, parkingId])
+    @@index(fields: [id, profileId, parkingId])
 }
 
 model CoinOrder {
@@ -75,7 +76,7 @@ model CoinOrder {
     amount    Int
     createdAt DateTime @default(now())
 
-    @@index([profileId])
+    @@index([profileId, id])
 }
 
 model ParkingSpot {
@@ -85,7 +86,7 @@ model ParkingSpot {
     address        String          @db.VarChar(255)
     imageURL       String?
     price          Int
-    rating         Decimal? 
+    rating         Decimal?
     availableStart DateTime
     availableEnd   DateTime
     features       Json?
@@ -97,7 +98,7 @@ model ParkingSpot {
     ParkingReview  ParkingReview[]
     Booking        Booking[]
 
-    @@index([profileId])
+    @@index([profileId, id])
 }
 
 enum bookingTypes {
