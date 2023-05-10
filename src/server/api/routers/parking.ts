@@ -26,6 +26,10 @@ export const parkingRouter = createTRPCRouter({
             },
         })
     }),
+    getParkingById: publicProcedure.input(z.object({ id: z.string() }))
+        .query(({ ctx, input }) => {
+            return ctx.prisma.parkingSpot.findFirst({ where: { id: input.id } })
+        }),
 
     create: privateProcedure.input(z.object({
         address: z.string().min(3).max(255),
