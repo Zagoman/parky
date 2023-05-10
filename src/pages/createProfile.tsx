@@ -1,8 +1,11 @@
 import styles from "./index.module.css";
 import { type NextPage } from "next";
 import Head from "next/head";
+import { useState } from "react";
+import { InputField } from "~/components/InputField/InputField";
 
 const CreateProfile: NextPage = () => {
+    const [username, setUsername] = useState("")
     return (
         <>
             <Head>
@@ -11,6 +14,9 @@ const CreateProfile: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={styles.main}>
+                <div>
+                <InputField inputType="text" name="username" label="Username" placeholder="Username" value={username} onChange={setUsername} />
+                </div>
             </main>
         </>
     );
