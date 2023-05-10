@@ -8,14 +8,7 @@ import { useState } from "react";
 const Home: NextPage = () => {
     const { mutate } = api.profile.create.useMutation()
     const profiles = api.profile.getAll.useQuery()
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
     const user = useUser()
-    const handleSubmit = () => {
-        mutate({
-            firstName, lastName, 
-        })
-    }
     return (
         <>
             <Head>
@@ -29,13 +22,6 @@ const Home: NextPage = () => {
                 }
                 {!!user.isSignedIn && <>
                     <SignOutButton></SignOutButton>
-
-                    <div>
-                        <input type="text" name="firstName" value={firstName} onChange={e => setFirstName(e.target.value)}></input>
-                        <input type="text" name="lastName" value={lastName} onChange={e => setLastName(e.target.value)}></input>
-                        <button onClick={handleSubmit}>Submit form</button>
-                    </div>
-                    <div>{JSON.stringify(profiles.data)}</div>
                 </>
                 }
                 <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />

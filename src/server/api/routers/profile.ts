@@ -47,7 +47,6 @@ export const profileRouter = createTRPCRouter({
                 username: input.username,
                 vehicleSize: input.vehicleSize
             }
-
         })
         if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
         return profile
