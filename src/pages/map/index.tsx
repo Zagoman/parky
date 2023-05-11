@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { PageHeader } from "../../components/page-header/pageHeader";
+import { PageHeader } from "../../components/pageHeader/pageHeader";
 
 const Map: NextPage = () => {
   return <PageHeader />;
