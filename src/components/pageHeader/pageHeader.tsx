@@ -6,7 +6,7 @@ import menuImage from "../../../public/icon/menu.svg";
 import pageInfoImage from "../../../public/icon/page-info.svg";
 import closeImage from "../../../public/icon/close.svg";
 
-export const PageHeader: () => JSX.Element = () => {
+export const PageHeader = () => {
   const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
   const logo = logoImage as string;
   const menuIcon = menuImage as string;

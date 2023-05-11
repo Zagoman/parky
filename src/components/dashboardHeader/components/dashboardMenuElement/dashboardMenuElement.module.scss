@@ -1,0 +1,59 @@
+@import "../../../../styles/tokens.scss";
+
+.active:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: $yellow-200;
+  display: flex;
+  content: "";
+  height: 100%;
+  width: $spacer-200;
+}
+.active {
+  position: relative;
+  background-color: $neutral-200;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: $spacer-300;
+  font-size: $font-size-body-large;
+  padding: $spacer-300 $spacer-400;
+  font-family: $font-display;
+  font-weight: $font-weight-semibold;
+
+  img {
+    height: $spacer-400;
+    width: $spacer-400;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .wrapper {
+    font-size: $font-size-body-large;
+    padding: $spacer-300 $spacer-300;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .wrapper {
+    font-size: $font-size-header-4;
+    padding: $spacer-300 $spacer-400;
+
+    img {
+      height: $spacer-500;
+      width: $spacer-500;
+    }
+  }
+}
+
+@media only screen and (min-width: 1366px) {
+  .wrapper {
+    font-size: $font-size-header-4;
+  }
+}
