@@ -35,14 +35,14 @@
 
 @media only screen and (min-width: 768px) {
   .wrapper {
-    font-size: $font-size-body-large;
+    font-size: $font-size-body;
     padding: $spacer-300 $spacer-300;
   }
 }
 
 @media only screen and (min-width: 1024px) {
   .wrapper {
-    font-size: $font-size-header-4;
+    font-size: $font-size-body-large;
     padding: $spacer-300 $spacer-400;
 
     img {
@@ -54,6 +54,6 @@
 
 @media only screen and (min-width: 1366px) {
   .wrapper {
-    font-size: $font-size-header-4;
+    font-size: $font-size-body-large;
   }
 }
