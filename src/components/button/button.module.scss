@@ -1,0 +1,59 @@
+@import "../../styles/tokens.scss";
+
+.primary {
+  width: 100%;
+  background-color: $blue-200;
+  border: none;
+  cursor: pointer;
+  color: $neutral-100;
+  font-family: $font-display;
+  font-size: $font-size-body-large;
+  font-weight: $font-weight-semibold;
+  padding: $spacer-300 $spacer-500;
+  border-radius: $border-roundness-100;
+  transition: 0.2s ease-in-out;
+  box-sizing: border-box;
+  border: solid $border-width-200 $blue-200;
+}
+
+.primary:hover {
+  background-color: $blue-100;
+  border: solid $border-width-200 $blue-100;
+}
+
+.primary:active {
+  background-color: $blue-300;
+  border: solid $border-width-200 $blue-300;
+}
+
+.secondary {
+  width: 100%;
+  background-color: $neutral-100;
+  cursor: pointer;
+  color: $blue-200;
+  font-family: $font-display;
+  font-size: $font-size-body-large;
+  font-weight: $font-weight-semibold;
+  padding: $spacer-300 $spacer-500;
+  border-radius: $border-roundness-100;
+  transition: 0.2s ease-in-out;
+  border: solid $border-width-200 $blue-200;
+  box-sizing: border-box;
+}
+
+.secondary:hover {
+  border: solid $border-width-200 $blue-100;
+  color: $blue-100;
+}
+
+.secondary:active {
+  border: solid $border-width-200 $blue-300;
+  color: $blue-300;
+}
+
+@media only screen and (min-width: 768px) {
+  .primary,
+  .secondary {
+    width: fit-content;
+  }
+}
