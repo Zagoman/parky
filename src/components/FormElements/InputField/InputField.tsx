@@ -1,14 +1,17 @@
+import type { InputInfo } from "~/components/CreateProfile/CreateProfile"
 import styles from "./InputField.module.scss"
+import type { SetStateAction } from "react"
 interface InputFieldProps {
   inputType: string
   value: string
   label: string
   name: string
   placeholder: string
-  onChange: (value: string) => void
+  error?: string
+  onChange: (value: SetStateAction<InputInfo<string>>) => void
 }
 export const InputField: React.FC<InputFieldProps> = (props) => {
-  const { inputType, value, label, name, placeholder, onChange } = props
+  const { inputType, value, label, name, error, placeholder, onChange } = props
   return (
     <div className={styles.inputWrapper}>
       <label htmlFor={name} className={styles.label}>
@@ -20,10 +23,11 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
           name={name}
           placeholder={placeholder}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onChange(e.target.value)
+            onChange((old) => ({ ...old, value: e.target.value }))
           }
         />
       </label>
+      {error && <p className={styles.error}>{error}</p>}
     </div>
   )
 }

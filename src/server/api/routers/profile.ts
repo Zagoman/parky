@@ -1,16 +1,24 @@
-import { TRPCError } from '@trpc/server'
-import { z } from 'zod'
+import { TRPCError } from "@trpc/server"
+import { z } from "zod"
 
 import {
   createTRPCRouter,
   privateProcedure,
   publicProcedure,
-} from '~/server/api/trpc'
+} from "~/server/api/trpc"
 
 export const profileRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.profile.findMany()
   }),
+  getProfileById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { id: input.id },
+      })
+      return profile
+    }),
   create: privateProcedure
     .input(
       z.object({
@@ -39,7 +47,7 @@ export const profileRouter = createTRPCRouter({
         lastName: z.string().min(3).max(255),
         username: z.string().min(3).max(255),
         phoneNumber: z.optional(z.string().min(8).max(16)),
-        vehicleSize: z.enum(['XSMALL', 'SMALL', 'MEDIUM', 'LARGE', 'XLARGE']),
+        vehicleSize: z.enum(["XSMALL", "SMALL", "MEDIUM", "LARGE", "XLARGE"]),
         vehicleModel: z.string(),
         licensePlate: z.string(),
       })
@@ -57,7 +65,7 @@ export const profileRouter = createTRPCRouter({
           vehicleSize: input.vehicleSize,
         },
       })
-      if (!profile) throw new TRPCError({ code: 'NOT_FOUND' })
+      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
       return profile
     }),
   updateOwner: privateProcedure
@@ -82,7 +90,7 @@ export const profileRouter = createTRPCRouter({
           phoneNumber: input.phoneNumber,
         },
       })
-      if (!profile) throw new TRPCError({ code: 'NOT_FOUND' })
+      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
       return profile
     }),
   delete: privateProcedure
@@ -91,7 +99,7 @@ export const profileRouter = createTRPCRouter({
       const profile = await ctx.prisma.profile.delete({
         where: { id: input.id },
       })
-      if (!profile) throw new TRPCError({ code: 'NOT_FOUND' })
+      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
       return profile
     }),
 })

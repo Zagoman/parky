@@ -4,21 +4,27 @@ import { InputField } from "../FormElements/InputField/InputField"
 import { Checkbox } from "../FormElements/CheckBox/Checkbox"
 import { api } from "~/utils/api"
 import { toast } from "react-hot-toast"
+export type InputInfo<T> = {
+  value: T
+  error?: string
+}
 const CreateProfile: React.FC = () => {
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [username, setUsername] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
-  const [isDriver, setIsDriver] = useState<boolean>(false)
-  const [isOwner, setIsOwner] = useState<boolean>(false)
+  const [firstName, setFirstName] = useState<InputInfo<string>>({ value: "" })
+  const [lastName, setLastName] = useState<InputInfo<string>>({ value: "" })
+  const [username, setUsername] = useState<InputInfo<string>>({ value: "" })
+  const [phoneNumber, setPhoneNumber] = useState<InputInfo<string>>({
+    value: "",
+  })
+  const [isDriver, setIsDriver] = useState<InputInfo<boolean>>({ value: false })
+  const [isOwner, setIsOwner] = useState<InputInfo<boolean>>({ value: false })
   const { mutate, isLoading: isPosting } = api.profile.create.useMutation({
     onSuccess: () => {
-      setFirstName("")
-      setLastName("")
-      setIsOwner(false)
-      setIsDriver(false)
-      setPhoneNumber("")
-      setUsername("")
+      setFirstName({ value: "" })
+      setLastName({ value: "" })
+      setIsOwner({ value: false })
+      setIsDriver({ value: false })
+      setPhoneNumber({ value: "" })
+      setUsername({ value: "" })
     },
     onError: (e) => {
       const errorMessages = e.data?.zodError?.fieldErrors
@@ -33,17 +39,15 @@ const CreateProfile: React.FC = () => {
       toast.error("Invalid submission, please try again")
     },
   })
-
   const submitForm = () => {
     const profile = mutate({
-      firstName,
-      lastName,
-      isOwner,
-      isDriver,
-      phoneNumber,
-      username,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      isOwner: isOwner.value,
+      isDriver: isDriver.value,
+      phoneNumber: phoneNumber.value,
+      username: username.value,
     })
-    console.log(profile)
   }
 
   return (
@@ -56,49 +60,54 @@ const CreateProfile: React.FC = () => {
             name="firstname"
             label="First name"
             inputType="text"
-            value={firstName}
+            value={firstName.value}
             onChange={setFirstName}
             placeholder="First Name"
+            error={firstName.error}
           />
           <InputField
             name="lastName"
             label="Last name"
             inputType="text"
-            value={lastName}
+            value={lastName.value}
             onChange={setLastName}
             placeholder="Last Name"
+            error={lastName.error}
           />
           <InputField
             name="username"
             label="Username"
             inputType="text"
-            value={username}
+            value={username.value}
             onChange={setUsername}
             placeholder="Username"
+            error={username.error}
           />
           <InputField
             name="phoneNumber"
             label="Phone number"
             inputType="text"
             placeholder="Phone number"
-            value={phoneNumber}
+            value={phoneNumber.value}
             onChange={setPhoneNumber}
+            error={phoneNumber.error}
           />
           <Checkbox
             name="isDriver"
             label="Do you drive?"
-            checked={isDriver}
+            checked={isDriver.value}
             onChange={setIsDriver}
+            error={isDriver.error}
           />
           <Checkbox
             name="isOwner"
             label="Do you own a parking space?"
-            checked={isOwner}
+            checked={isOwner.value}
             onChange={setIsOwner}
+            error={isOwner.error}
           />
           <button onClick={submitForm} disabled={isPosting}>
-            {" "}
-            Create your profile{" "}
+            Create your profile
           </button>
         </div>
       </div>
