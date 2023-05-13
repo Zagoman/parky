@@ -49,54 +49,58 @@ const CreateProfile: React.FC = () => {
   return (
     <>
       <div className={styles.form}>
-        <InputField
-          name="firstname"
-          label="First name"
-          inputType="text"
-          value={firstName}
-          onChange={setFirstName}
-          placeholder="First Name"
-        />
-        <InputField
-          name="lastName"
-          label="Last name"
-          inputType="text"
-          value={lastName}
-          onChange={setLastName}
-          placeholder="Last Name"
-        />
-        <InputField
-          name="username"
-          label="Username"
-          inputType="text"
-          value={username}
-          onChange={setUsername}
-          placeholder="Username"
-        />
-        <InputField
-          name="phoneNumber"
-          label="Phone number"
-          inputType="text"
-          placeholder="Phone number"
-          value={phoneNumber}
-          onChange={setPhoneNumber}
-        />
-        <Checkbox
-          name="isDriver"
-          label="Do you drive?"
-          checked={isDriver}
-          onChange={setIsDriver}
-        />
-        <Checkbox
-          name="isOwner"
-          label="Do you own a parking space?"
-          checked={isOwner}
-          onChange={setIsOwner}
-        />
-        <button onClick={submitForm} disabled={isPosting}>
-          {" "}
-          Create your profile{" "}
-        </button>
+        <h1>Create your profile</h1>
+        <p>Complete your profile so you can start using the app</p>
+        <div className={styles.inputFields}>
+          <InputField
+            name="firstname"
+            label="First name"
+            inputType="text"
+            value={firstName}
+            onChange={setFirstName}
+            placeholder="First Name"
+          />
+          <InputField
+            name="lastName"
+            label="Last name"
+            inputType="text"
+            value={lastName}
+            onChange={setLastName}
+            placeholder="Last Name"
+          />
+          <InputField
+            name="username"
+            label="Username"
+            inputType="text"
+            value={username}
+            onChange={setUsername}
+            placeholder="Username"
+          />
+          <InputField
+            name="phoneNumber"
+            label="Phone number"
+            inputType="text"
+            placeholder="Phone number"
+            value={phoneNumber}
+            onChange={setPhoneNumber}
+          />
+          <Checkbox
+            name="isDriver"
+            label="Do you drive?"
+            checked={isDriver}
+            onChange={setIsDriver}
+          />
+          <Checkbox
+            name="isOwner"
+            label="Do you own a parking space?"
+            checked={isOwner}
+            onChange={setIsOwner}
+          />
+          <button onClick={submitForm} disabled={isPosting}>
+            {" "}
+            Create your profile{" "}
+          </button>
+        </div>
       </div>
     </>
   )
