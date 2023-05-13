@@ -1,4 +1,4 @@
-import styles from './InputField.module.scss'
+import styles from "./InputField.module.scss"
 interface InputFieldProps {
   inputType: string
   value: string
