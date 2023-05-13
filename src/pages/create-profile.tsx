@@ -4,7 +4,6 @@ import { type NextPage } from "next"
 import Head from "next/head"
 import CreateProfile from "~/components/CreateProfile/CreateProfile"
 import { api } from "~/utils/api"
-import { useEffect, useState } from "react"
 import Link from "next/link"
 
 const CreateProfilePage: NextPage = () => {
@@ -12,12 +11,10 @@ const CreateProfilePage: NextPage = () => {
   const profile = user
     ? api.profile.getProfileById.useQuery({ id: user.id })
     : undefined
-  console.log(profile?.data?.id)
   if (!isLoaded) {
     return <div>Loading...</div>
   }
-  //if (isSignedIn && !profile) {
-  if (isSignedIn) {
+  if (isSignedIn && !profile) {
     return (
       <>
         <Head>
@@ -31,15 +28,15 @@ const CreateProfilePage: NextPage = () => {
       </>
     )
   }
-  /*
-    if (profile) {
-      return (
-        <div>
-          <h1>You already have a profile at Parky</h1>
-          <Link href={"/"}>Go back home</Link>
-        </div>
-      )
-    }*/
+
+  if (profile) {
+    return (
+      <div>
+        <h1>You already have a profile at Parky</h1>
+        <Link href={"/"}>Go back home</Link>
+      </div>
+    )
+  }
   return (
     <div>
       <h1>You need to create an account first</h1>
