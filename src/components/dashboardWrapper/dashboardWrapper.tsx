@@ -16,7 +16,15 @@ import helpImage from "../../../public/icon/help.svg";
 
 import { DashboardMenuElement } from "./components/dashboardMenuElement/dashboardMenuElement";
 
-export const DashboardWrapper = ({ children, active }: any) => {
+type DashboardWrapperProps = {
+  children: any;
+  active: string;
+};
+
+export const DashboardWrapper = ({
+  children,
+  active,
+}: DashboardWrapperProps) => {
   const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
   const logo = logoImage as string;
   const menuIcon = menuImage as string;
