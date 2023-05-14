@@ -8,12 +8,7 @@ type ButtonProps = {
 
 export const Button = ({ onClick, text, type }: ButtonProps) => {
   return (
-    <button
-      className={styles[type]}
-      onClick={() => {
-        onClick;
-      }}
-    >
+    <button className={styles[type]} onClick={onClick}>
       {text}
     </button>
   );

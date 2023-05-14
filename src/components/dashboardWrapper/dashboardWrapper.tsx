@@ -16,7 +16,7 @@ import helpImage from "../../../public/icon/help.svg";
 
 import { DashboardMenuElement } from "./components/dashboardMenuElement/dashboardMenuElement";
 
-export const DashboardWrapper = ({ children }: any) => {
+export const DashboardWrapper = ({ children, active }: any) => {
   const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
   const logo = logoImage as string;
   const menuIcon = menuImage as string;
@@ -33,6 +33,7 @@ export const DashboardWrapper = ({ children }: any) => {
 
   return (
     <>
+      {console.log(active)}
       <header className={styles.pageHeader}>
         {/* page details toggle */}
 
@@ -69,52 +70,52 @@ export const DashboardWrapper = ({ children }: any) => {
               href="/dashboard"
               icon={dashboardIcon}
               title="Dashboard"
-              active={false}
+              active={active === "dashboard" ? true : false}
             />
             <DashboardMenuElement
               href="/my-parking-spots"
               icon={parkingIcon}
               title="My parking spots"
-              active={true}
+              active={active === "myparkingspots" ? true : false}
             />
             <DashboardMenuElement
               href="/recent-bookings"
               icon={calendarIcon}
               title="Recent bookings"
-              active={false}
+              active={active === "recentbookings" ? true : false}
             />
             <DashboardMenuElement
               href="/earnings"
               icon={chartIcon}
               title="Earnings overview"
-              active={false}
+              active={active === "earningsoverview" ? true : false}
             />
             <DashboardMenuElement
               href="/top-up-account"
               icon={parkcoinIcon}
               title="Top up account"
-              active={false}
+              active={active === "topupaccount" ? true : false}
             />
             <DashboardMenuElement
               href="/get-benefits"
               icon={parkyIcon}
               title="Get benefits"
-              active={false}
+              active={active === "benefits" ? true : false}
             />
           </ul>
           <div className={styles.spacer}></div>
           <ul>
             <DashboardMenuElement
-              href="/halp"
+              href="/help"
               icon={helpIcon}
               title="Help"
-              active={false}
+              active={active === "help" ? true : false}
             />
             <DashboardMenuElement
               href="/account"
               icon={cogIcon}
               title="Account settings"
-              active={false}
+              active={active === "accountsettings" ? true : false}
             />
             <DashboardMenuElement
               href="/logout"

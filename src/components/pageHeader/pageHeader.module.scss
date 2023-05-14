@@ -37,29 +37,46 @@
     font-family: $font-display;
     background-color: $neutral-100;
     border-left: solid $border-width-100 $neutral-300;
+
     ul {
       display: flex;
       flex-direction: column;
       gap: $spacer-500;
       font-size: $font-size-header-4;
+
       li {
         text-align: center;
       }
     }
   }
+
   &LogoWrapper {
     max-width: 128px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+
   &Logo {
     width: 100%;
     height: $spacer-500;
   }
+
   .menuIcon {
     height: $spacer-400;
     width: $spacer-400;
+  }
+
+  section {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: 0.5s ease-in-out;
+    background-color: $neutral-100;
+    border-right: $border-width-100 $neutral-300;
+    padding-top: $spacer-700;
   }
 }
 
@@ -68,6 +85,10 @@
 }
 .hidden {
   transform: translateX(120%);
+}
+
+.hiddenSecondary {
+  transform: translateX(-120%);
 }
 
 @media only screen and (min-width: 768px) {
@@ -94,6 +115,7 @@
       display: flex;
       align-items: flex-end;
       border: none;
+
       ul {
         display: flex;
         flex-direction: row;
@@ -104,13 +126,31 @@
         }
       }
     }
+    .menuIcon {
+      display: none;
+    }
+
+    section {
+      width: 30%;
+    }
   }
+
+  .contentWrapper {
+    margin-left: 30%;
+  }
+
   .visible {
     transform: translateX(0);
   }
+
   .hidden {
     transform: translateX(0);
   }
+
+  .hiddenSecondary {
+    transform: translateX(0);
+  }
+
   .mobileButton {
     display: none;
   }
@@ -129,12 +169,22 @@
         }
       }
     }
+
     &LogoWrapper {
       max-width: 250px;
     }
+
     &Logo {
       height: $spacer-600;
     }
+
+    section {
+      width: 25%;
+    }
+  }
+
+  .contentWrapper {
+    margin-left: 25%;
   }
 }
 

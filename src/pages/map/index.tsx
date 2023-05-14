@@ -6,7 +6,7 @@ import { Button } from "~/components/button/button";
 const Map: NextPage = () => {
   return (
     <>
-      <DashboardWrapper>
+      {/* <DashboardWrapper active="myparkingspots">
         <div>
           <UiBox>
             <Button
@@ -33,7 +33,16 @@ const Map: NextPage = () => {
             />
           </UiBox>
         </div>
-      </DashboardWrapper>
+      </DashboardWrapper> */}
+      <PageHeader secondaryMenu={true}>
+        <UiBox>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat
+            obcaecati cumque odit saepe molestias laborum a maiores architecto
+            vitae recusandae?
+          </p>
+        </UiBox>
+      </PageHeader>
     </>
   );
 };
