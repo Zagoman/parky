@@ -1,0 +1,70 @@
+// token values for frontend
+
+// COLORS
+
+$neutral-100: #f7f7fb;
+$neutral-200: #ededf3;
+$neutral-300: #cbd1d7;
+$neutral-400: #a2adb9;
+$neutral-500: #566777;
+$neutral-600: #28333e;
+$neutral-700: #10171d;
+$neutral-800: #0c0f11;
+
+$blue-100: #4c75dd;
+$blue-200: #1b31a4;
+$blue-300: #0f165a;
+
+$yellow-100: #ffd687;
+$yellow-200: #ffc25a;
+$yellow-300: #e39909;
+
+$red-100: #ff5247;
+$red-200: #eb2323;
+$red-300: #870c0c;
+
+$green-100: #4eff4b;
+$green-200: #11e50c;
+$green-300: #008d1f;
+
+// SPACERS
+
+$spacer-100: 4px;
+$spacer-200: 8px;
+$spacer-300: 12px;
+$spacer-400: 24px;
+$spacer-500: 36px;
+$spacer-600: 48px;
+$spacer-700: 64px;
+$spacer-800: 128px;
+
+// BORDERS
+
+$border-width-100: 1px;
+$border-width-200: 2px;
+
+$border-roundness-100: 6px;
+$border-roundness-200: 12px;
+
+// FONTS
+
+$font-display: "Noto Sans", sans-serif;
+$font-body: "Source Sans Pro", sans-serif;
+
+$font-weight-regular: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$font-size-body-small: 0.625rem; // 10px
+$font-size-label: 0.75rem; // 12px
+$font-size-body: 1rem; // 16px
+$font-size-body-large: 1.125rem; //18px
+$font-size-header-4: 1.333rem; // 21.33px
+$font-size-header-3: 1.777rem; // 28.43px@andre
+$font-size-header-2: 3.157rem; // 37.90px
+$font-size-header-1: 4.209rem; // 50.52px
+
+// OTHERS
+
+$box-shadow: 0px 4px 12px rgba(121, 121, 121, 0.25);
+$drop-shadow: drop-shadow(0px 4px 12px rgba(121, 121, 121, 0.25));
