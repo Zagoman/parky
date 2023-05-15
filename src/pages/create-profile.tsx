@@ -39,7 +39,7 @@ const CreateProfilePage: NextPage = () => {
   }
   return (
     <div>
-      <h1>You need to create an account first</h1>
+      <h1>You need to sign up first</h1>
       <Link href={"/"}>Go back home</Link>
     </div>
   )

@@ -28,10 +28,48 @@ const CreateProfile: React.FC = () => {
     },
     onError: (e) => {
       const errorMessages = e.data?.zodError?.fieldErrors
+      console.log(e.data?.zodError?.formErrors)
       if (errorMessages) {
+        console.log(errorMessages)
         for (const key in errorMessages) {
-          if (errorMessages[key] !== undefined) {
-            toast.error(errorMessages[key]?.at(0) as string)
+          switch (key) {
+            case "firstName":
+              setFirstName((old) => ({
+                ...old,
+                error: errorMessages["firstName"]?.at(0),
+              }))
+              break
+            case "lastName":
+              setLastName((old) => ({
+                ...old,
+                error: errorMessages["lastName"]?.at(0),
+              }))
+              break
+            case "isOwner":
+              setIsOwner((old) => ({
+                ...old,
+                error: errorMessages["isOwner"]?.at(0),
+              }))
+              break
+            case "isDriver":
+              setIsDriver((old) => ({
+                ...old,
+                error: errorMessages["isDriver"]?.at(0),
+              }))
+              break
+            case "phoneNumber":
+              setPhoneNumber((old) => ({
+                ...old,
+                error: errorMessages["phoneNumber"]?.at(0),
+              }))
+              break
+            case "username":
+              setUsername((old) => ({
+                ...old,
+                error: errorMessages["username"]?.at(0),
+              }))
+              break
+            default:
           }
         }
         return
@@ -40,7 +78,14 @@ const CreateProfile: React.FC = () => {
     },
   })
   const submitForm = () => {
-    const profile = mutate({
+    setUsername({ value: username.value })
+    setPhoneNumber({ value: phoneNumber.value })
+    setIsDriver({ value: isDriver.value })
+    setIsOwner({ value: isOwner.value })
+    setFirstName({ value: firstName.value })
+    setLastName({ value: lastName.value })
+
+    mutate({
       firstName: firstName.value,
       lastName: lastName.value,
       isOwner: isOwner.value,

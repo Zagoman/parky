@@ -17,6 +17,7 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
       <label htmlFor={name} className={styles.label}>
         {label}
         <input
+          className={error ? styles.inputError : ""}
           type={inputType}
           value={value}
           id={name}

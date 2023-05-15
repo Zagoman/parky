@@ -9,7 +9,7 @@ interface CheckboxProps {
   onChange: (value: SetStateAction<InputInfo<boolean>>) => void
 }
 export const Checkbox: React.FC<CheckboxProps> = (props) => {
-  const { checked, label, name, onChange } = props
+  const { checked, label, name, onChange, error } = props
   return (
     <div>
       <label htmlFor={name}>
@@ -24,6 +24,7 @@ export const Checkbox: React.FC<CheckboxProps> = (props) => {
           }
         />
       </label>
+      {error && <p> {error} </p>}
     </div>
   )
 }
