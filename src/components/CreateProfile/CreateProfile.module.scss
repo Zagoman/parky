@@ -1,0 +1,23 @@
+@import "~/styles/mixins";
+.form {
+  h1,
+  p {
+    text-align: center;
+  }
+  background-color: white;
+  padding-inline: 1rem;
+  padding-block: pxToRem(32px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  .inputFields {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  @include for-size(tablet-up) {
+    padding-inline: pxToRem(160px);
+    padding-block: pxToRem(64px);
+  }
+}

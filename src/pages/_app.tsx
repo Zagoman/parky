@@ -1,16 +1,19 @@
-import { type AppType } from "next/app";
-import { ClerkProvider } from "@clerk/nextjs";
-
-import { api } from "~/utils/api";
-
+import { type AppType } from 'next/app'
+import { ClerkProvider } from '@clerk/nextjs'
+import { api } from '~/utils/api'
+import '~/styles/globals.css'
+import { Toaster } from 'react-hot-toast'
 import "~/styles/globals.scss";
+
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider {...pageProps}>
+      <Toaster position='bottom-center' reverseOrder={false} />
       <Component {...pageProps} />
     </ClerkProvider>
-  );
-};
+  )
+}
 
-export default api.withTRPC(MyApp);
+
+export default api.withTRPC(MyApp)
