@@ -9,9 +9,14 @@ import closeImage from "../../../public/icon/close.svg";
 type headerProps = {
   children: any;
   secondaryMenu: boolean;
+  secondaryMenuContents: any;
 };
 
-export const PageHeader = ({ children, secondaryMenu }: headerProps) => {
+export const PageHeader = ({
+  children,
+  secondaryMenu,
+  secondaryMenuContents,
+}: headerProps) => {
   const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
   const [secondaryMenuVisibility, setSecondaryMenuVisiblity] =
     useState<boolean>(false);
@@ -46,15 +51,7 @@ export const PageHeader = ({ children, secondaryMenu }: headerProps) => {
                   : styles.hiddenSecondary
               }
             >
-              <div>
-                <ul>
-                  <li>test</li>
-                  <li>test</li>
-                  <li>test</li>
-                  <li>test</li>
-                  <li>test</li>
-                </ul>
-              </div>
+              <div>{secondaryMenuContents}</div>
             </section>
           </>
         ) : (

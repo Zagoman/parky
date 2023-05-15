@@ -1,0 +1,12 @@
+.mapWrapper {
+  width: 100%;
+  height: calc(100vh - 100px);
+  overflow: hidden;
+  position: relative;
+}
+
+@media only screen and (min-width: 1600px) {
+  .mapWrapper {
+    height: calc(100vh - 74px);
+  }
+}
