@@ -1,6 +1,8 @@
 @import "../../styles/tokens.scss";
 
 .pageHeader {
+  position: relative;
+  z-index: 1200;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   flex-direction: row;
