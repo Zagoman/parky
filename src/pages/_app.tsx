@@ -1,10 +1,10 @@
 import { type AppType } from 'next/app'
 import { ClerkProvider } from '@clerk/nextjs'
-
 import { api } from '~/utils/api'
-
 import '~/styles/globals.css'
 import { Toaster } from 'react-hot-toast'
+import "~/styles/globals.scss";
+
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -14,5 +14,6 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     </ClerkProvider>
   )
 }
+
 
 export default api.withTRPC(MyApp)
