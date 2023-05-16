@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server"
+import { filterUserForClient } from "utils/user"
 import { z } from "zod"
 
 import {
@@ -11,13 +12,19 @@ export const profileRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.profile.findMany()
   }),
-  getProfileById: publicProcedure
-    .input(z.object({ id: z.string() }))
+  getProfileByUsername: publicProcedure
+    .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {
       const profile = await ctx.prisma.profile.findFirst({
-        where: { id: input.id },
+        where: { username: input.username },
       })
-      return profile
+      if (!profile) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `No user was found with the ${input.username} username`,
+        })
+      }
+      return filterUserForClient(profile)
     }),
   create: privateProcedure
     .input(
