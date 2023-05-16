@@ -115,9 +115,6 @@ export const parkingRouter = createTRPCRouter({
         features: z.object({
           features: z.string().array(),
         }),
-        geolocation: z.object({
-          location: z.string(),
-        }),
         description: z.string().min(3).max(255),
         dimensions: z.enum(["XSMALL", "SMALL", "MEDIUM", "LARGE", "XLARGE"]),
       })
@@ -139,7 +136,6 @@ export const parkingRouter = createTRPCRouter({
                 availableStart: input.availableStart,
                 availableEnd: input.availableEnd,
                 features: input.features,
-                geolocation: input.geolocation,
                 description: input.description,
                 dimensions: input.dimensions,
               },

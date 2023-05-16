@@ -4,6 +4,8 @@ import { InputField } from "../FormElements/InputField/InputField"
 import { Checkbox } from "../FormElements/CheckBox/Checkbox"
 import { api } from "~/utils/api"
 import { toast } from "react-hot-toast"
+import { Sizes } from "@prisma/client"
+import SelectField from "../FormElements/SelectField/SelectField"
 export type InputInfo<T> = {
   value: T
   error?: string
@@ -17,6 +19,16 @@ const CreateProfile: React.FC = () => {
   })
   const [isDriver, setIsDriver] = useState<InputInfo<boolean>>({ value: false })
   const [isOwner, setIsOwner] = useState<InputInfo<boolean>>({ value: false })
+  const [licensePlate, setLicensePlate] = useState<InputInfo<string>>({
+    value: "",
+  })
+  const [vehicleModel, setVehicleModel] = useState<InputInfo<string>>({
+    value: "",
+  })
+  const [vehicleSize, setVehicleSize] = useState<InputInfo<Sizes | string>>({
+    value: "",
+  })
+  //    const [vehicleSize, setVehicleSize] = useState()
   const { mutate, isLoading: isPosting } = api.profile.create.useMutation({
     onSuccess: () => {
       setFirstName({ value: "" })
@@ -25,12 +37,12 @@ const CreateProfile: React.FC = () => {
       setIsDriver({ value: false })
       setPhoneNumber({ value: "" })
       setUsername({ value: "" })
+      setVehicleModel({ value: "" })
+      setLicensePlate({ value: "" })
     },
     onError: (e) => {
       const errorMessages = e.data?.zodError?.fieldErrors
-      console.log(e.data?.zodError?.formErrors)
       if (errorMessages) {
-        console.log(errorMessages)
         for (const key in errorMessages) {
           switch (key) {
             case "firstName":
@@ -69,7 +81,23 @@ const CreateProfile: React.FC = () => {
                 error: errorMessages["username"]?.at(0),
               }))
               break
-            default:
+            case "vehicleModel":
+              setVehicleModel((old) => ({
+                ...old,
+                error: errorMessages["vehicleModel"]?.at(0),
+              }))
+              break
+            case "licensePlate":
+              setLicensePlate((old) => ({
+                ...old,
+                error: errorMessages["licensePlate"]?.at(0),
+              }))
+              break
+            case "vehicleSize":
+              setVehicleSize((old) => ({
+                ...old,
+                error: errorMessages["vehicleSize"]?.at(0),
+              }))
           }
         }
         return
@@ -84,6 +112,8 @@ const CreateProfile: React.FC = () => {
     setIsOwner({ value: isOwner.value })
     setFirstName({ value: firstName.value })
     setLastName({ value: lastName.value })
+    setLicensePlate({ value: lastName.value })
+    setVehicleModel({ value: lastName.value })
 
     mutate({
       firstName: firstName.value,
@@ -92,6 +122,9 @@ const CreateProfile: React.FC = () => {
       isDriver: isDriver.value,
       phoneNumber: phoneNumber.value,
       username: username.value,
+      licensePlate: licensePlate.value,
+      vehicleModel: vehicleModel.value,
+      vehicleSize: vehicleSize.value as Sizes,
     })
   }
 
@@ -151,6 +184,43 @@ const CreateProfile: React.FC = () => {
             onChange={setIsOwner}
             error={isOwner.error}
           />
+          {isDriver.value && (
+            <>
+              <InputField
+                label="Your vehicle's license plate"
+                name="licensePlate"
+                inputType="text"
+                placeholder="License plate"
+                value={licensePlate.value}
+                onChange={setLicensePlate}
+                error={licensePlate.error}
+              />
+              <InputField
+                label="Your vehicle model"
+                name="vehicleModel"
+                inputType="text"
+                placeholder="Vehicle model"
+                value={vehicleModel.value}
+                onChange={setVehicleModel}
+                error={vehicleModel.error}
+              />
+              <SelectField<Sizes | string>
+                placeholder="Select size of your car"
+                onChange={setVehicleSize}
+                label="What is the size of your car?"
+                value={vehicleSize.value}
+                error={vehicleSize.error}
+                options={[
+                  { label: "x-Small", value: "XSMALL" },
+                  { label: "Small", value: "SMALL" },
+                  { label: "Medium", value: "MEDIUM" },
+                  { label: "Large", value: "LARGE" },
+                  { label: "x-Large", value: "XLARGE" },
+                ]}
+                name="vehicleSize"
+              />
+            </>
+          )}
           <button onClick={submitForm} disabled={isPosting}>
             Create your profile
           </button>
