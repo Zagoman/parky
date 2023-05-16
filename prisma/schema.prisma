@@ -90,9 +90,10 @@ model ParkingSpot {
     availableStart DateTime
     availableEnd   DateTime
     features       Json?
-    geolocation    Json?
     description    String
     dimensions     Sizes
+    latitude       Decimal
+    longitude      Decimal
     createdAt      DateTime        @default(now())
     updatedAt      DateTime        @updatedAt
     ParkingReview  ParkingReview[]
