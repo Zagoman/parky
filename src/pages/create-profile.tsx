@@ -14,7 +14,7 @@ const CreateProfilePage: NextPage = () => {
   if (!isLoaded) {
     return <div>Loading...</div>
   }
-  if (isSignedIn && !profile) {
+  if (isSignedIn && profile) {
     return (
       <>
         <Head>
@@ -29,7 +29,7 @@ const CreateProfilePage: NextPage = () => {
     )
   }
 
-  if (profile) {
+  if (!profile) {
     return (
       <div>
         <h1>You already have a profile at Parky</h1>
