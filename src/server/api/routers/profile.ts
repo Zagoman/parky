@@ -19,6 +19,11 @@ export const profileRouter = createTRPCRouter({
       })
       return profile
     }),
+  getProfileReviews: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.profileReview.findMany({ where: { id: input.id } })
+    }),
   create: privateProcedure
     .input(
       z.object({
