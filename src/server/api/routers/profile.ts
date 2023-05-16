@@ -30,13 +30,15 @@ export const profileRouter = createTRPCRouter({
         isOwner: z.boolean(),
         licensePlate: z.optional(z.string()),
         vehicleModel: z.optional(z.string()),
-        vehicleSize: z.union([
-          z.literal("XSMALL"),
-          z.literal("SMALL"),
-          z.literal("MEDIUM"),
-          z.literal("LARGE"),
-          z.literal("XLARGE"),
-        ]),
+        vehicleSize: z.optional(
+          z.union([
+            z.literal("XSMALL"),
+            z.literal("SMALL"),
+            z.literal("MEDIUM"),
+            z.literal("LARGE"),
+            z.literal("XLARGE"),
+          ])
+        ),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -56,13 +58,15 @@ export const profileRouter = createTRPCRouter({
         lastName: z.string().min(3).max(255),
         username: z.string().min(3).max(255),
         phoneNumber: z.optional(z.string().min(8).max(16)),
-        vehicleSize: z.union([
-          z.literal("XSMALL"),
-          z.literal("SMALL"),
-          z.literal("MEDIUM"),
-          z.literal("LARGE"),
-          z.literal("XLARGE"),
-        ]),
+        vehicleSize: z.optional(
+          z.union([
+            z.literal("XSMALL"),
+            z.literal("SMALL"),
+            z.literal("MEDIUM"),
+            z.literal("LARGE"),
+            z.literal("XLARGE"),
+          ])
+        ),
         vehicleModel: z.string(),
         licensePlate: z.string(),
       })

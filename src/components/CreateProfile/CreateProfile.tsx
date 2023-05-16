@@ -93,6 +93,11 @@ const CreateProfile: React.FC = () => {
                 error: errorMessages["licensePlate"]?.at(0),
               }))
               break
+            case "vehicleSize":
+              setVehicleSize((old) => ({
+                ...old,
+                error: errorMessages["vehicleSize"]?.at(0),
+              }))
           }
         }
         return
@@ -117,10 +122,9 @@ const CreateProfile: React.FC = () => {
       isDriver: isDriver.value,
       phoneNumber: phoneNumber.value,
       username: username.value,
-      ...(isDriver && {
-        licensePlate: licensePlate.value,
-        vehicleModel: vehicleModel.value,
-      }),
+      licensePlate: licensePlate.value,
+      vehicleModel: vehicleModel.value,
+      vehicleSize: vehicleSize.value as Sizes,
     })
   }
 
