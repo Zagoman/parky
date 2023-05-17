@@ -1,0 +1,27 @@
+@use "sass:math";
+
+@mixin for-size($size) {
+  @if $size == phone-only {
+    @media (max-width: 960px) {
+      @content;
+    }
+  } @else if $size == tablet-up {
+    @media (min-width: 760px) {
+      @content;
+    }
+  } @else if $size == desktop-up {
+    @media (min-width: 1400px) {
+      @content;
+    }
+  } @else if $size == big-desktop-up {
+    @media (min-width: 1400px) {
+      @content;
+    }
+  }
+}
+
+@function pxToRem($pxValue) {
+  @return math.div($pxValue, 16px) * 1rem;
+}
+
+$var--gutter: 20px;

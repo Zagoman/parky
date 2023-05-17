@@ -6,7 +6,7 @@ import L from "leaflet";
 import { useMap } from "react-leaflet";
 
 import { Circle } from "react-leaflet";
-import { type OSMdata } from "../utils";
+import { type OSMdata } from "../../utils";
 
 const pinIcon = L.icon({
   iconSize: [36, 36],
@@ -18,7 +18,7 @@ type MapProps = {
 };
 
 type ResetViewProps = {
-  selectPosition: OSMdata;
+  selectPosition: OSMdata | undefined;
 };
 
 const MapComponent = ({ location }: MapProps) => {

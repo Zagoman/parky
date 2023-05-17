@@ -1,12 +1,19 @@
 export type OSMdata = {
   address: {
-    town: string;
-    city: string;
+    town?: string;
+    city?: string;
     state_district: string;
-    state: string;
+    muncipality?: string;
+    state?: string;
     postcode: string;
     country: string;
     country_code: string;
+    village?: string;
+    road?: string;
+    house_number?: string;
+    suburb?: string;
+    hamlet?: string;
+    locality?: string;
   };
   lat: number;
   lon: number;

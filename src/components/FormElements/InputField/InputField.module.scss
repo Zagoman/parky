@@ -1,0 +1,25 @@
+.inputWrapper {
+  padding: 0.5rem 0 1rem 0;
+  .label {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+  }
+  input {
+    font-size: 1rem;
+    line-height: 1.2;
+    height: 51px;
+    padding-block: 1rem;
+    padding-inline: 14px;
+    border-style: unset;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+  .inputError {
+    border: 2px solid red;
+  }
+  .error {
+    font-size: 0.8em;
+    color: red;
+  }
+}

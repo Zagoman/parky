@@ -134,6 +134,7 @@
 
     section {
       width: 30%;
+      padding-top: 90px;
     }
   }
 
@@ -160,7 +161,7 @@
 
 @media only screen and (min-width: 1366px) {
   .pageHeader {
-    padding: $spacer-400 $spacer-600;
+    padding: $spacer-300 $spacer-600;
 
     nav {
       ul {
@@ -182,7 +183,7 @@
 
     section {
       width: 25%;
-      padding-top: 100px;
+      padding-top: 72px;
     }
   }
 
@@ -192,7 +193,4 @@
 }
 
 @media only screen and (min-width: 1600px) {
-  .pageHeader {
-    padding: $spacer-300 $spacer-600;
-  }
 }

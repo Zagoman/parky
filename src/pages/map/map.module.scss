@@ -1,8 +1,78 @@
+@import "../../styles/tokens.scss";
 .mapWrapper {
   width: 100%;
   height: calc(100vh - 100px);
   overflow: hidden;
   position: relative;
+}
+
+.spinner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  span {
+    height: 24px;
+    width: 24px;
+    border: solid 4px $blue-200;
+    border-top: solid 4px transparent;
+    border-radius: 50%;
+    animation: loading 1.5s infinite forwards linear;
+    display: flex;
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.secondaryMenuWrapper {
+  padding: $spacer-400;
+}
+
+.resultsWrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  max-height: 220px;
+  overflow: scroll;
+  border: solid $border-width-100 $neutral-300;
+
+  .resultsItem {
+    cursor: pointer;
+    &:hover {
+      background-color: $neutral-300;
+      color: $neutral-800;
+    }
+  }
+  li {
+    width: 100%;
+    padding: $spacer-200 $spacer-300;
+    background-color: $neutral-100;
+    color: $neutral-600;
+  }
+}
+
+.dropdownHidden {
+  max-height: 0;
+}
+
+.inputWrapper {
+  position: relative;
+
+  > div {
+    padding: 0;
+  }
+}
+
+.emptyState {
+  cursor: default;
 }
 
 @media only screen and (min-width: 1600px) {
