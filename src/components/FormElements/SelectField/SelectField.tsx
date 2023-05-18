@@ -1,16 +1,16 @@
-import styles from "./SelectField.module.scss"
-import type { SetStateAction } from "react"
-import type { InputInfo } from "~/components/CreateProfile/CreateProfile"
+import styles from "./SelectField.module.scss";
+import type { SetStateAction } from "react";
+import type { InputInfo } from "~/components/CreateProfile/CreateProfile";
 
 interface SelectFieldProps<T> {
-  value: T
-  label: string
-  name: string
-  placeholder: string
-  options: { label: string; value: T }[]
-  error?: string
-  initialValue?: T
-  onChange: (value: SetStateAction<InputInfo<T>>) => void
+  value: T;
+  label: string;
+  name: string;
+  placeholder: string;
+  options: { label: string; value: T }[];
+  error?: string;
+  initialValue?: T;
+  onChange: (value: SetStateAction<InputInfo<T>>) => void;
 }
 
 function SelectField<T extends string>(props: SelectFieldProps<T>) {
@@ -23,7 +23,7 @@ function SelectField<T extends string>(props: SelectFieldProps<T>) {
     options,
     error,
     onChange,
-  } = props
+  } = props;
   return (
     <div>
       <label>
@@ -46,6 +46,6 @@ function SelectField<T extends string>(props: SelectFieldProps<T>) {
       </label>
       {error && <p className={styles.errorText}>{error}</p>}
     </div>
-  )
+  );
 }
-export default SelectField
+export default SelectField;
