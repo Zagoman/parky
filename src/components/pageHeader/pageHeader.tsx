@@ -7,9 +7,9 @@ import pageInfoImage from "../../../public/icon/page-info.svg";
 import closeImage from "../../../public/icon/close.svg";
 
 type headerProps = {
-  children: any;
+  children: JSX.Element;
   secondaryMenu: boolean;
-  secondaryMenuContents: any;
+  secondaryMenuContents: JSX.Element;
 };
 
 export const PageHeader = ({

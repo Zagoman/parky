@@ -17,7 +17,7 @@ import helpImage from "../../../public/icon/help.svg";
 import { DashboardMenuElement } from "./components/dashboardMenuElement/dashboardMenuElement";
 
 type DashboardWrapperProps = {
-  children: any;
+  children: JSX.Element;
   active: string;
 };
 

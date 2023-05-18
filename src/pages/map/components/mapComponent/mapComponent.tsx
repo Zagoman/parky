@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import styles from "./mapComponent.module.scss";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
@@ -35,6 +34,7 @@ const MapComponent = ({ location }: MapProps) => {
           }
         );
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectPosition]);
     return null;
   }

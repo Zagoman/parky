@@ -5,11 +5,9 @@ import styles from "./map.module.scss";
 import dynamic from "next/dynamic";
 import { InputField } from "~/components/FormElements/InputField/InputField";
 import { useEffect, useState } from "react";
-import { Button } from "~/components/button/button";
 import { type OSMdata } from "./utils";
 import { type InputInfo } from "~/components/CreateProfile/CreateProfile";
 import { SearchResult } from "./components/SearchResult/SearchResult";
-import useDebounce from "~/utils/debouncer";
 
 type QueryParameters = {
   q: string;
@@ -34,7 +32,6 @@ const Map: NextPage = () => {
   const [queryResults, setQueryResults] = useState<OSMdata[]>([]);
   const [selectPosition, setSelectPosition] = useState<OSMdata>();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const debouncedQueryValue = useDebounce(parkingQuery, 500);
   const [isSearching, setIsSearching] = useState(false);
   const mapHandler = (
     <div
@@ -43,8 +40,10 @@ const Map: NextPage = () => {
     >
       <div
         className={styles.inputWrapper}
-        onFocus={() => setIsDropdownVisible(true)}
         onBlur={() => setIsDropdownVisible(false)}
+        onFocus={() =>
+          parkingQuery.value.length > 0 && setIsDropdownVisible(true)
+        }
       >
         <InputField
           inputType="text"
@@ -65,7 +64,7 @@ const Map: NextPage = () => {
                 }`
           }
         >
-          {queryResults.length > 0 && parkingQuery ? (
+          {queryResults.length > 0 && parkingQuery.value.length > 0 ? (
             queryResults.map((place) => (
               <SearchResult
                 key={place.osm_id}
@@ -76,28 +75,25 @@ const Map: NextPage = () => {
                 }}
               />
             ))
-          ) : isSearching ? (
+          ) : isSearching && parkingQuery.value.length > 0 ? (
             <li className={styles.spinner}>
               Searching... <span></span>
             </li>
+          ) : parkingQuery.value.length == 0 ? (
+            <li className={styles.emptyState}>Please type your query</li>
           ) : (
             <li className={styles.emptyState}>No places found</li>
           )}
         </ul>
       </div>
-      <Button
-        text="Search"
-        type="primary"
-        onClick={() => {
-          console.log("button_clicked");
-        }}
-      />
     </div>
   );
 
   useEffect(() => {
+    setQueryResults([]);
     setIsSearching(true);
-    if (debouncedQueryValue) {
+    const delayDebounceFn = setTimeout(() => {
+      console.log("debouncing");
       const queryParameters: QueryParameters = {
         q: parkingQuery.value,
         format: "json",
@@ -117,20 +113,16 @@ const Map: NextPage = () => {
               place.class === "place" ||
               place.class === "highway"
           );
-          {
-            console.log(results);
-          }
+          console.log(filteredResults);
+          setIsSearching(false);
           setQueryResults(filteredResults);
           setIsDropdownVisible(true);
-          setIsSearching(false);
         })
         .catch((err) => console.log("error:", err));
-    } else {
-      setQueryResults([]);
-      setIsSearching(false);
-    }
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parkingQuery]);
+  }, [parkingQuery.value]);
 
   return (
     <>

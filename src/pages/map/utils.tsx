@@ -14,6 +14,7 @@ export type OSMdata = {
     suburb?: string;
     hamlet?: string;
     locality?: string;
+    isolated_dwelling?: string;
   };
   lat: number;
   lon: number;
