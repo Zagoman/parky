@@ -1,3 +1,5 @@
+@import "../styles/tokens.scss";
+
 .main {
   display: flex;
   flex-direction: column;
@@ -15,6 +17,61 @@
   justify-content: center;
   gap: 3rem;
   padding: 4rem 1rem;
+}
+
+.hero {
+  position: relative;
+  padding: $spacer-400 $spacer-400;
+  display: grid;
+  gap: $spacer-400;
+  > div {
+    min-height: 300px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  > span {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: $font-size-header-3;
+    color: $neutral-700;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 70vh;
+    > span {
+      align-items: center;
+      position: absolute;
+      width: 4rem;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 70vh;
+
+      &:before {
+        content: "";
+        width: 2px;
+        height: 30vh;
+        background-color: $neutral-200;
+        position: absolute;
+        top: 0;
+      }
+      &:after {
+        content: "";
+        width: 2px;
+        height: 30vh;
+        background-color: $neutral-200;
+        position: absolute;
+        bottom: 0;
+      }
+    }
+  }
 }
 
 @media (min-width: 640px) {

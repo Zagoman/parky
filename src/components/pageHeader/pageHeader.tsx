@@ -9,7 +9,7 @@ import closeImage from "../../../public/icon/close.svg";
 type headerProps = {
   children: JSX.Element;
   secondaryMenu: boolean;
-  secondaryMenuContents: JSX.Element;
+  secondaryMenuContents: JSX.Element | null;
 };
 
 export const PageHeader = ({
@@ -60,7 +60,9 @@ export const PageHeader = ({
 
         <div className={styles.pageHeaderLogoWrapper}>
           <Image
-            src={logo}
+            src="/parky-logo-blue.svg"
+            width="200"
+            height="50"
             alt="parky logo"
             className={styles.pageHeaderLogo}
           />

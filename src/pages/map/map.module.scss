@@ -43,7 +43,8 @@
   max-height: 220px;
   overflow: scroll;
   border: solid $border-width-100 $neutral-300;
-
+  box-sizing: border-box;
+  border-radius: 0 0 $border-roundness-100 $border-roundness-100;
   .resultsItem {
     cursor: pointer;
     &:hover {
@@ -61,6 +62,7 @@
 
 .dropdownHidden {
   max-height: 0;
+  opacity: 0;
 }
 
 .inputWrapper {
