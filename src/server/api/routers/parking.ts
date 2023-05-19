@@ -7,7 +7,19 @@ import {
 } from "~/server/api/trpc"
 
 const METER_UNIT = 0.00001
-
+const createSchema = z.object({
+  address: z.string().min(3).max(255),
+  imageURL: z.optional(z.string()),
+  price: z.number().multipleOf(0.00001),
+  availableStart: z.date(),
+  availableEnd: z.date(),
+  features: z.string().array(),
+  latitude: z.number(),
+  longitude: z.number(),
+  description: z.string().min(3).max(255),
+  dimensions: z.enum(["XSMALL", "SMALL", "MEDIUM", "LARGE", "XLARGE"]),
+})
+const updateSchema = createSchema.extend({ id: z.string() })
 export const parkingRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.parkingSpot.findMany()
@@ -80,12 +92,10 @@ export const parkingRouter = createTRPCRouter({
       z.object({
         address: z.string().min(3).max(255),
         imageURL: z.optional(z.string()),
-        price: z.number(),
-        availableStart: z.string().datetime(),
-        availableEnd: z.string().datetime(),
-        features: z.object({
-          features: z.string().array(),
-        }),
+        price: z.number().multipleOf(0.00001),
+        availableStart: z.date(),
+        availableEnd: z.date(),
+        features: z.string().array(),
         latitude: z.number(),
         longitude: z.number(),
         description: z.string().min(3).max(255),
@@ -104,24 +114,7 @@ export const parkingRouter = createTRPCRouter({
     }),
 
   update: privateProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        address: z.string().min(3).max(255),
-        imageURL: z.optional(z.string()),
-        price: z.number(),
-        availableStart: z.string().datetime(),
-        availableEnd: z.string().datetime(),
-        features: z.object({
-          features: z.string().array(),
-        }),
-        geolocation: z.object({
-          location: z.string(),
-        }),
-        description: z.string().min(3).max(255),
-        dimensions: z.enum(["XSMALL", "SMALL", "MEDIUM", "LARGE", "XLARGE"]),
-      })
-    )
+    .input(updateSchema)
     .mutation(async ({ ctx, input }) => {
       const profile = await ctx.prisma.profile.update({
         where: { id: ctx.userId },
