@@ -56,6 +56,9 @@ const MapComponent = ({ location }: MapProps) => {
           <Marker position={[location.lat, location.lon]} icon={pinIcon}>
             <Popup>
               <p>{location.display_name}</p>
+              <p>
+                {location.lon} {location.lat}
+              </p>
             </Popup>
           </Marker>
 

@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { PageHeader } from "~/components/pageHeader/pageHeader";
 import { UiBox } from "~/components/uiBox/uiBox";
+import { Accordion } from "~/components/Accordion/Accordion";
 
 const Home: NextPage = () => {
   const { mutate } = api.profile.create.useMutation();
@@ -16,6 +17,8 @@ const Home: NextPage = () => {
   // useEffect(() => {
   //   console.log(test);
   // }, [isLoading]);
+
+  // arrows
 
   return (
     <>
@@ -39,6 +42,87 @@ const Home: NextPage = () => {
               </UiBox>
             </div>
           </section>
+          <section className={styles.explainer}>
+            <h1 className={styles.headerBlue}>What is Parky?</h1>
+            <div className={styles.explainerWrapper}>
+              <article>
+                <span>1</span>
+                <div>
+                  <h3>Register an account</h3>
+                  <p>
+                    Parky can be accessed with your account, providing security
+                    for both drivers and owners.
+                  </p>
+                </div>
+              </article>
+              <article>
+                <span>2</span>
+                <div>
+                  <h3>Top up your account</h3>
+                  <p>
+                    Payments are handled through ParkCoin - a platform currency
+                    which can be exchanged for parking spots and other benefits.
+                  </p>
+                </div>
+              </article>
+              <article>
+                <span>
+                  <div></div>3 <div></div>
+                </span>
+                <div>
+                  <h3>Find the desired location</h3>
+                  <p>
+                    Parky map consists of rentable private parking spots
+                    provided by other users of the platform.
+                  </p>
+                </div>
+              </article>
+              <article>
+                <span>4</span>
+                <div>
+                  <h3>Book it</h3>
+                  <p>
+                    Booking process is quick and seamless, just adjust the
+                    duration and date to proceed.
+                  </p>
+                </div>
+              </article>
+              <article>
+                <span>5</span>
+                <div>
+                  <h3>Park in your spot</h3>
+                  <p>
+                    You are provided with a 15 minute window before and after if
+                    your commute took longer than expected.
+                  </p>
+                </div>
+              </article>
+            </div>
+          </section>
+          {/* features */}
+          <section className={styles.features}>
+            <UiBox>
+              <div></div>
+              <h3>Save fuel</h3>
+            </UiBox>
+            <UiBox>
+              <div></div>
+              <h3>Drive sustainably</h3>
+            </UiBox>
+            <UiBox>
+              <div></div>
+              <h3>Quick booking</h3>
+            </UiBox>
+            <UiBox>
+              <div></div>
+              <h3>Get benefits</h3>
+            </UiBox>
+          </section>
+          <section className={styles.faq}>
+            <div>SOME IMAGE</div>
+            <Accordion />
+          </section>
+          {/* old sign in component */}
           <main className={styles.main}>
             {!user.isSignedIn && <SignInButton></SignInButton>}
             {!!user.isSignedIn && (
