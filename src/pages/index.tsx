@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { PageHeader } from "~/components/pageHeader/pageHeader";
 import { UiBox } from "~/components/uiBox/uiBox";
 import { Accordion } from "~/components/Accordion/Accordion";
+import { Footer } from "~/components/Footer/Footer";
 
 const Home: NextPage = () => {
   const { mutate } = api.profile.create.useMutation();
@@ -132,6 +133,7 @@ const Home: NextPage = () => {
             )}
             <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
           </main>
+          <Footer />
         </div>
       </PageHeader>
     </>
