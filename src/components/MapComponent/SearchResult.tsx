@@ -1,5 +1,5 @@
-import { type OSMdata } from "../../utils";
-import styles from "../../map.module.scss";
+import { type OSMdata } from "../../pages/map/utils";
+import styles from "./SearchResult.module.scss";
 
 type SearchResultProps = {
   place: OSMdata;
