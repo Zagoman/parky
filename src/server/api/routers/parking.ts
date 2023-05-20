@@ -1,16 +1,28 @@
-import { TRPCError } from "@trpc/server"
-import { z } from "zod"
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import {
   createTRPCRouter,
   privateProcedure,
   publicProcedure,
-} from "~/server/api/trpc"
+} from "~/server/api/trpc";
 
-const METER_UNIT = 0.00001
-
+const METER_UNIT = 0.00001;
+const createSchema = z.object({
+  address: z.string().min(3).max(255),
+  imageURL: z.optional(z.string()),
+  price: z.number().multipleOf(0.00001),
+  availableStart: z.date(),
+  availableEnd: z.date(),
+  features: z.string().array(),
+  latitude: z.number(),
+  longitude: z.number(),
+  description: z.string().min(3).max(255),
+  dimensions: z.enum(["XSMALL", "SMALL", "MEDIUM", "LARGE", "XLARGE"]),
+});
+const updateSchema = createSchema.extend({ id: z.string() });
 export const parkingRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.parkingSpot.findMany()
+    return ctx.prisma.parkingSpot.findMany();
   }),
   getShort: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.parkingSpot.findMany({
@@ -30,7 +42,7 @@ export const parkingRouter = createTRPCRouter({
         latitude: true,
         longitude: true,
       },
-    })
+    });
   }),
   getParkingWithinRange: publicProcedure
     .input(
@@ -67,31 +79,16 @@ export const parkingRouter = createTRPCRouter({
           latitude: true,
           longitude: true,
         },
-      })
+      });
     }),
   getParkingById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.prisma.parkingSpot.findFirst({ where: { id: input.id } })
+      return ctx.prisma.parkingSpot.findFirst({ where: { id: input.id } });
     }),
 
   create: privateProcedure
-    .input(
-      z.object({
-        address: z.string().min(3).max(255),
-        imageURL: z.optional(z.string()),
-        price: z.number(),
-        availableStart: z.string().datetime(),
-        availableEnd: z.string().datetime(),
-        features: z.object({
-          features: z.string().array(),
-        }),
-        latitude: z.number(),
-        longitude: z.number(),
-        description: z.string().min(3).max(255),
-        dimensions: z.enum(["XSMALL", "SMALL", "MEDIUM", "LARGE", "XLARGE"]),
-      })
-    )
+    .input(createSchema)
     .mutation(async ({ ctx, input }) => {
       const parking = await ctx.prisma.parkingSpot.create({
         data: {
@@ -99,26 +96,12 @@ export const parkingRouter = createTRPCRouter({
           profileId: ctx.userId,
           ...input,
         },
-      })
-      return parking
+      });
+      return parking;
     }),
 
   update: privateProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        address: z.string().min(3).max(255),
-        imageURL: z.optional(z.string()),
-        price: z.number(),
-        availableStart: z.string().datetime(),
-        availableEnd: z.string().datetime(),
-        features: z.object({
-          features: z.string().array(),
-        }),
-        description: z.string().min(3).max(255),
-        dimensions: z.enum(["XSMALL", "SMALL", "MEDIUM", "LARGE", "XLARGE"]),
-      })
-    )
+    .input(updateSchema)
     .mutation(async ({ ctx, input }) => {
       const profile = await ctx.prisma.profile.update({
         where: { id: ctx.userId },
@@ -142,9 +125,9 @@ export const parkingRouter = createTRPCRouter({
             },
           },
         },
-      })
-      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
-      return profile.ParkingSpot[0]
+      });
+      if (!profile) throw new TRPCError({ code: "NOT_FOUND" });
+      return profile.ParkingSpot[0];
     }),
 
   delete: privateProcedure
@@ -156,10 +139,10 @@ export const parkingRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const parking = await ctx.prisma.parkingSpot.delete({
         where: { id: input.id },
-      })
+      });
       if (!parking) {
-        throw new TRPCError({ code: "NOT_FOUND" })
+        throw new TRPCError({ code: "NOT_FOUND" });
       }
-      return parking
+      return parking;
     }),
-})
+});
