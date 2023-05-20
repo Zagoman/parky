@@ -1,43 +1,52 @@
-import type { NextPage } from "next"
-import { PageHeader } from "../../components/pageHeader/pageHeader"
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import styles from "./map.module.scss"
-import dynamic from "next/dynamic"
-import { InputField } from "~/components/FormElements/InputField/InputField"
-import { useEffect, useState } from "react"
-import type { OSMdata } from "./utils"
-import { SearchResult } from "./components/SearchResult/SearchResult"
-import { useForm } from "react-hook-form"
+import type { NextPage } from "next";
+import { PageHeader } from "../../components/pageHeader/pageHeader";
+
+import styles from "./map.module.scss";
+import dynamic from "next/dynamic";
+import { InputField } from "~/components/FormElements/InputField/InputField";
+import { useEffect, useState } from "react";
+import type OSMdata from "../../components/MapComponent/utils";
+import { SearchResult } from "../../components/MapComponent/SearchResult";
+import { useForm } from "react-hook-form";
 
 type QueryParameters = {
-  q: string
-  format: string
-  addressdetails: string
-  polygon_geojson: string
-}
+  q: string;
+  format: string;
+  addressdetails: string;
+  polygon_geojson: string;
+};
 
 const MapComponent = dynamic(
-  () => import("./components/mapComponent/mapComponent"),
+  () => import("../../components/MapComponent/MapComponent"),
   {
     ssr: false,
   }
-)
+);
 
-const NominatimUrl = "https://nominatim.openstreetmap.org/search?"
+const NominatimUrl = "https://nominatim.openstreetmap.org/search?";
 
 const Map: NextPage = () => {
   const { register, watch } = useForm<{ parkingQuery: string }>({
     defaultValues: { parkingQuery: "" },
-  })
-  const { parkingQuery } = watch()
-  const [queryResults, setQueryResults] = useState<OSMdata[]>([])
-  const [selectPosition, setSelectPosition] = useState<OSMdata>()
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
+  });
+  const { parkingQuery } = watch();
+  const [queryResults, setQueryResults] = useState<OSMdata[]>([]);
+  const [selectPosition, setSelectPosition] = useState<OSMdata>();
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const mapHandler = (
     <div
       className={styles.secondaryMenuWrapper}
-      onFocus={() => parkingQuery.length > 0 && setIsDropdownVisible(true)}
+      onFocus={() =>
+        parkingQuery.length > 0
+          ? setIsDropdownVisible(true)
+          : setIsDropdownVisible(false)
+      }
+      onBlur={() => setIsDropdownVisible(false)}
     >
       <div className={styles.inputWrapper}>
         <InputField
@@ -64,8 +73,8 @@ const Map: NextPage = () => {
                 key={place.osm_id}
                 place={place}
                 onClick={() => {
-                  console.log(place)
-                  setSelectPosition(place)
+                  console.log(place);
+                  setSelectPosition(place);
                   // setIsDropdownVisible(false)
                 }}
               />
@@ -82,41 +91,41 @@ const Map: NextPage = () => {
         </ul>
       </div>
     </div>
-  )
+  );
   useEffect(() => {
-    setQueryResults([])
-    setIsSearching(true)
+    setQueryResults([]);
+    setIsSearching(true);
     const delayDebounceFn = setTimeout(() => {
-      console.log("debouncing")
+      console.log("debouncing");
       const queryParameters: QueryParameters = {
         q: parkingQuery,
         format: "json",
         addressdetails: "1",
         polygon_geojson: "0",
-      }
-      const queryString = new URLSearchParams(queryParameters).toString()
+      };
+      const queryString = new URLSearchParams(queryParameters).toString();
 
       fetch(`${NominatimUrl}${queryString}`)
         .then((response) => response.text())
         .then((result: string) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const results: [OSMdata] = JSON.parse(result)
+          const results: [OSMdata] = JSON.parse(result);
           const filteredResults = results.filter(
             (place) =>
               place.class === "boundary" ||
               place.class === "place" ||
               place.class === "highway"
-          )
-          console.log(filteredResults)
-          setIsSearching(false)
-          setQueryResults(filteredResults)
-          setIsDropdownVisible(true)
+          );
+          console.log(filteredResults);
+          setIsSearching(false);
+          setQueryResults(filteredResults);
+          parkingQuery.length && setIsDropdownVisible(true);
         })
-        .catch((err) => console.log("error:", err))
-    }, 500)
-    return () => clearTimeout(delayDebounceFn)
+        .catch((err) => console.log("error:", err));
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parkingQuery])
+  }, [parkingQuery]);
   return (
     <>
       <PageHeader secondaryMenu={true} secondaryMenuContents={mapHandler}>
@@ -125,7 +134,7 @@ const Map: NextPage = () => {
         </div>
       </PageHeader>
     </>
-  )
-}
+  );
+};
 
-export default Map
+export default Map;

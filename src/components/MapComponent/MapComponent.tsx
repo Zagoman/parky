@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useMap } from "react-leaflet";
-
-import { Circle } from "react-leaflet";
-import { type OSMdata } from "../../utils";
+import { useMap, Circle } from "react-leaflet";
+import type OSMdata from "./utils";
 
 const pinIcon = L.icon({
   iconSize: [36, 36],
@@ -43,7 +41,7 @@ const MapComponent = ({ location }: MapProps) => {
 
   return (
     <MapContainer
-      center={[55.6, 12.5]}
+      center={[55.6867243, 12.5700724]}
       zoom={13}
       style={{ width: "100%", height: "100%" }}
     >
@@ -58,6 +56,9 @@ const MapComponent = ({ location }: MapProps) => {
           <Marker position={[location.lat, location.lon]} icon={pinIcon}>
             <Popup>
               <p>{location.display_name}</p>
+              <p>
+                {location.lon} {location.lat}
+              </p>
             </Popup>
           </Marker>
 

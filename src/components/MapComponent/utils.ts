@@ -1,4 +1,4 @@
-export type OSMdata = {
+type OSMdata = {
   address: {
     town?: string;
     city?: string;
@@ -29,3 +29,5 @@ export type OSMdata = {
   place_id: number;
   boundingbox: [number];
 };
+
+export default OSMdata;

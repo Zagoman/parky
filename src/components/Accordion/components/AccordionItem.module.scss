@@ -1,0 +1,37 @@
+@import "../../../styles/tokens.scss";
+
+.accordionItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  * {
+    transition: 0.5s ease;
+  }
+  &Header {
+    background-color: $neutral-200;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: $spacer-300;
+    border-radius: $border-roundness-100;
+    h4 {
+      color: $neutral-600;
+      font-size: $font-size-body-large;
+    }
+  }
+  .activeHeader {
+    background-color: $neutral-300;
+  }
+  &Contents {
+    max-height: 0;
+    overflow: hidden;
+    font-size: $font-size-body-large;
+  }
+}
+.activeContents {
+  max-height: 300px;
+  padding: $spacer-300;
+  background-color: $neutral-100;
+}

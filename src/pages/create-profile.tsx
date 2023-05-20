@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/nextjs";
-import styles from "./index.module.css";
+import styles from "./index.module.scss";
 import { type NextPage } from "next";
 import Head from "next/head";
 import CreateProfile from "~/components/CreateProfile/CreateProfile";
