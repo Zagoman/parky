@@ -4,14 +4,18 @@ import { InputField } from "../FormElements/InputField/InputField"
 import { Checkbox } from "../FormElements/CheckBox/Checkbox"
 import { api } from "~/utils/api"
 import { toast } from "react-hot-toast"
+
 import { SubmitHandler, useForm } from "react-hook-form"
 import type { inferRouterInputs } from "@trpc/server"
 import type { AppRouter } from "~/server/api/root"
+
+import { Sizes } from "@prisma/client"
+import SelectField from "../FormElements/SelectField/SelectField"
+
 export type InputInfo<T> = {
   value: T
   error?: string
 }
-
 type RouterInput = inferRouterInputs<AppRouter>
 type CreateProfileInput = RouterInput["profile"]["create"]
 

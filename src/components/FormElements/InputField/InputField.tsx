@@ -35,5 +35,5 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
       </label>
       {error && <p className={styles.error}>{error}</p>}
     </div>
-  )
-}
+  );
+};

@@ -1,20 +1,20 @@
-import { useUser } from "@clerk/nextjs"
-import styles from "./index.module.css"
-import { type NextPage } from "next"
-import Head from "next/head"
-import CreateProfile from "~/components/CreateProfile/CreateProfile"
-import { api } from "~/utils/api"
-import Link from "next/link"
+import { useUser } from "@clerk/nextjs";
+import styles from "./index.module.css";
+import { type NextPage } from "next";
+import Head from "next/head";
+import CreateProfile from "~/components/CreateProfile/CreateProfile";
+import { api } from "~/utils/api";
+import Link from "next/link";
 
 const CreateProfilePage: NextPage = () => {
-  const { user, isSignedIn, isLoaded } = useUser()
+  const { user, isSignedIn, isLoaded } = useUser();
   const profile = user
     ? api.profile.getProfileById.useQuery({ id: user.id })
-    : undefined
+    : undefined;
   if (!isLoaded) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
-  if (isSignedIn && !profile) {
+  if (isSignedIn && profile) {
     return (
       <>
         <Head>
@@ -26,22 +26,22 @@ const CreateProfilePage: NextPage = () => {
           <CreateProfile />
         </main>
       </>
-    )
+    );
   }
 
-  if (profile) {
+  if (!profile) {
     return (
       <div>
         <h1>You already have a profile at Parky</h1>
         <Link href={"/"}>Go back home</Link>
       </div>
-    )
+    );
   }
   return (
     <div>
       <h1>You need to sign up first</h1>
       <Link href={"/"}>Go back home</Link>
     </div>
-  )
-}
-export default CreateProfilePage
+  );
+};
+export default CreateProfilePage;
