@@ -3,7 +3,7 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useMap, Circle } from "react-leaflet";
-import { type OSMdata } from "../../pages/map/utils";
+import type OSMdata from "../../pages/map/utils";
 
 const pinIcon = L.icon({
   iconSize: [36, 36],
