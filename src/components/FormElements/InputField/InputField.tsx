@@ -1,25 +1,25 @@
-import styles from "./InputField.module.scss";
-import type { FieldValues, UseFormRegister } from "react-hook-form";
+import styles from "./InputField.module.scss"
+import type { FieldValues, UseFormRegister } from "react-hook-form"
 
 interface InputFieldProps {
-  inputType: string;
-  label: string;
-  name: string;
-  placeholder: string;
-  error?: string;
-  register: UseFormRegister<FieldValues[0]>;
+  inputType: string
+  label: string
+  name: string
+  placeholder: string
+  error?: string
+  register: UseFormRegister<FieldValues[0]>
   //eslint-disable-next-line
-  [x: string]: any;
+  [x: string]: any
 }
 export const InputField: React.FC<InputFieldProps> = (props) => {
   const { inputType, register, label, name, error, placeholder, ...rest } =
-    props;
+    props
   const options =
     inputType === "number"
       ? { valueAsNumber: true }
       : inputType === "datetime-local"
-      ? { valueAsDate: true }
-      : {};
+      ? { valueAsDate: false }
+      : {}
   return (
     <div className={styles.inputWrapper}>
       <label htmlFor={name} className={styles.label}>
@@ -35,5 +35,5 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
       </label>
       {error && <p className={styles.error}>{error}</p>}
     </div>
-  );
-};
+  )
+}
