@@ -14,9 +14,8 @@ type CreateProfileInput = RouterInput["profile"]["create"];
 
 const CreateProfile: React.FC = () => {
   const { register, handleSubmit } = useForm<CreateProfileInput>();
-  const { mutate, isLoading: isPosting } = api.profile.create.useMutation({});
+  const { mutate } = api.profile.create.useMutation({});
   const onSubmit: SubmitHandler<CreateProfileInput> = (data) => {
-    console.log(data);
     mutate(data);
   };
   return (
