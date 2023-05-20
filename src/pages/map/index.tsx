@@ -9,8 +9,8 @@ import styles from "./map.module.scss";
 import dynamic from "next/dynamic";
 import { InputField } from "~/components/FormElements/InputField/InputField";
 import { useEffect, useState } from "react";
-import type { OSMdata } from "./utils";
-import { SearchResult } from "./components/SearchResult/SearchResult";
+import type OSMdata from "../../components/MapComponent/utils";
+import { SearchResult } from "../../components/MapComponent/SearchResult";
 import { useForm } from "react-hook-form";
 
 type QueryParameters = {
@@ -21,7 +21,7 @@ type QueryParameters = {
 };
 
 const MapComponent = dynamic(
-  () => import("./components/mapComponent/mapComponent"),
+  () => import("../../components/MapComponent/MapComponent"),
   {
     ssr: false,
   }

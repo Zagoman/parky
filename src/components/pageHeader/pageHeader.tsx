@@ -4,6 +4,7 @@ import Image from "next/image";
 import menuImage from "../../../public/icon/menu.svg";
 import pageInfoImage from "../../../public/icon/page-info.svg";
 import closeImage from "../../../public/icon/close.svg";
+import PakyLogoBlue from "../../../public/parky-logo-blue.svg";
 
 type headerProps = {
   children: JSX.Element;
@@ -22,7 +23,7 @@ export const PageHeader = ({
   const menuIcon = menuImage as string;
   const pageInfoIcon = pageInfoImage as string;
   const closeIcon = closeImage as string;
-
+  const parkyLogo = PakyLogoBlue as string;
   return (
     <>
       <header className={styles.pageHeader}>
@@ -58,7 +59,7 @@ export const PageHeader = ({
 
         <div className={styles.pageHeaderLogoWrapper}>
           <Image
-            src="/parky-logo-blue.svg"
+            src={parkyLogo}
             width="200"
             height="50"
             alt="parky logo"
