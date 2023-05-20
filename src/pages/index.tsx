@@ -10,6 +10,7 @@ import { Accordion } from "~/components/Accordion/Accordion";
 import { Footer } from "~/components/Footer/Footer";
 
 const Home: NextPage = () => {
+  // sign in will be moved into header
   const { mutate } = api.profile.create.useMutation();
   const profiles = api.profile.getAll.useQuery();
   const user = useUser();
@@ -115,7 +116,7 @@ const Home: NextPage = () => {
             <div>SOME IMAGE</div>
             <Accordion />
           </section>
-          {/* old sign in component */}
+          {/* old sign in component, will be moved into header*/}
           <main className={styles.main}>
             {!user.isSignedIn && <SignInButton></SignInButton>}
             {!!user.isSignedIn && (
