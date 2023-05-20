@@ -8,10 +8,12 @@ import styles from "./map.module.scss";
 import dynamic from "next/dynamic";
 import { InputField } from "~/components/FormElements/InputField/InputField";
 import { useEffect, useState } from "react";
-import type OSMdata from "../../components/MapComponent/utils";
+import { type OSMdata } from "../../components/MapComponent/utils";
 import { SearchResult } from "../../components/MapComponent/SearchResult";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
+import { type ParkingSpot } from "../../components/MapComponent/utils";
+import { ParkingSpotCard } from "~/components/ParkingSpotCard/ParkingSpotCard";
 
 type QueryParameters = {
   q: string;
@@ -39,7 +41,9 @@ const Map: NextPage = () => {
   const [selectPosition, setSelectPosition] = useState<OSMdata>();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [nearbyParkingSpots, setNearbyParkingSpots] = useState<any[]>([]);
+  const [nearbyParkingSpots, setNearbyParkingSpots] = useState<
+    ParkingSpot[] | []
+  >([]);
 
   type QueryVariables = {
     current: {
@@ -54,71 +58,117 @@ const Map: NextPage = () => {
     range: 15,
   });
 
-  const { data } = api.parking.getParkingWithinRange.useQuery(variables);
+  const { data, isLoading } =
+    api.parking.getParkingWithinRange.useQuery(variables);
 
   useEffect(() => {
     if (data?.length) {
-      setNearbyParkingSpots(data);
+      const fetchedData = data as ParkingSpot[];
+      setNearbyParkingSpots(fetchedData);
+      console.log(nearbyParkingSpots[0]);
+      console.log(data[0]);
+    } else {
+      setNearbyParkingSpots([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const mapHandler = () => {
     return (
-      <div
-        className={styles.secondaryMenuWrapper}
-        onFocus={() =>
-          parkingQuery.length > 0
-            ? setIsDropdownVisible(true)
-            : setIsDropdownVisible(false)
-        }
-        onBlur={() => setIsDropdownVisible(false)}
-      >
-        <div className={styles.inputWrapper}>
-          <InputField
-            name="parkingQuery"
-            inputType="text"
-            label="Search parking spots"
-            placeholder="Street address"
-            register={register}
-          />
-          <ul
-            className={
-              isDropdownVisible
-                ? styles.resultsWrapper
-                : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  `${styles.resultsWrapper} ${
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                    styles.dropdownHidden && styles.dropdownHidden
-                  }`
-            }
-          >
-            {queryResults.length > 0 && parkingQuery.length > 0 ? (
-              queryResults.map((place) => (
-                <SearchResult
-                  key={place.osm_id}
-                  place={place}
-                  onClick={() => {
-                    setSelectPosition(place);
-                    setVariables({
-                      current: {
-                        latitude: parseFloat(place.lat),
-                        longitude: parseFloat(place.lon),
-                      },
-                      range: 1000,
-                    });
-                  }}
-                />
-              ))
-            ) : isSearching && parkingQuery.length > 0 ? (
-              <li className={styles.spinner}>
-                Searching... <span></span>
-              </li>
-            ) : parkingQuery.length == 0 ? (
-              <li className={styles.emptyState}>Please type your query</li>
+      <div className={styles.secondaryMenu}>
+        {/* daily/monthly selector */}
+        <div></div>
+        {/* address input */}
+        <div
+          className={styles.secondaryMenuWrapper}
+          onFocus={() =>
+            parkingQuery.length > 0
+              ? setIsDropdownVisible(true)
+              : setIsDropdownVisible(false)
+          }
+          onBlur={() => setIsDropdownVisible(false)}
+        >
+          <div className={styles.inputWrapper}>
+            <InputField
+              name="parkingQuery"
+              inputType="text"
+              label="Search parking spots"
+              placeholder="Street address"
+              register={register}
+            />
+            <ul
+              className={
+                isDropdownVisible
+                  ? styles.resultsWrapper
+                  : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                    `${styles.resultsWrapper} ${
+                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                      styles.dropdownHidden && styles.dropdownHidden
+                    }`
+              }
+            >
+              {queryResults.length > 0 && parkingQuery.length > 0 ? (
+                queryResults.map((place) => (
+                  <SearchResult
+                    key={place.osm_id}
+                    place={place}
+                    onClick={() => {
+                      setSelectPosition(place);
+                      setVariables({
+                        current: {
+                          latitude: parseFloat(place.lat),
+                          longitude: parseFloat(place.lon),
+                        },
+                        range: 1000,
+                      });
+                    }}
+                  />
+                ))
+              ) : isSearching && parkingQuery.length > 0 ? (
+                <li className={styles.spinner}>
+                  Searching... <span></span>
+                </li>
+              ) : parkingQuery.length == 0 ? (
+                <li className={styles.emptyState}>Please type your query</li>
+              ) : (
+                <li className={styles.emptyState}>No places found</li>
+              )}
+            </ul>
+          </div>
+        </div>
+        {/*date selector*/}
+        <div></div>
+        {/* search results wrapper */}
+        <div className={styles.spotList}>
+          <div className={styles.spotListControls}>
+            <div>Duration:</div>
+            <div className={styles.spotListControlsButtons}>
+              <p>Sort</p>
+              <p>Filter</p>
+            </div>
+          </div>
+          <div className={styles.spotListWrapper}>
+            {nearbyParkingSpots.length === 0 ? (
+              <div className={styles.spotListWrapperEmptyState}>
+                No parking spots within 1km found. Please change location.
+              </div>
+            ) : isLoading ? (
+              <div className={styles.spotListWrapperLoader}>
+                <div className={styles.skeletonElement}></div>
+                <div className={styles.skeletonElement}></div>
+                <div className={styles.skeletonElement}></div>
+                <div className={styles.skeletonElement}></div>
+              </div>
+            ) : nearbyParkingSpots.length > 0 && !isLoading ? (
+              <div className={styles.spotListWrapperItems}>
+                {nearbyParkingSpots.map((spot) => (
+                  <ParkingSpotCard spot={spot} key={spot.id} />
+                ))}
+              </div>
             ) : (
-              <li className={styles.emptyState}>No places found</li>
+              ""
             )}
-          </ul>
+          </div>
         </div>
       </div>
     );

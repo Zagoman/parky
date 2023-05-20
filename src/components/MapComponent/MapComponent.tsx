@@ -3,8 +3,8 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useMap, Circle } from "react-leaflet";
-import type OSMdata from "./utils";
-import { type date } from "zod";
+import { type OSMdata } from "./utils";
+import { type ParkingSpot } from "./utils";
 
 const pinIcon = L.icon({
   iconSize: [36, 36],
@@ -13,28 +13,11 @@ const pinIcon = L.icon({
 
 type MapProps = {
   location?: OSMdata;
-  nearbyParkingSpots: ParkingSpot[] | null[];
+  nearbyParkingSpots: ParkingSpot[] | [];
 };
 
 type ResetViewProps = {
   selectPosition: OSMdata | undefined;
-};
-
-type ParkingSpot = {
-  availableEnd: typeof date;
-  availableStart: typeof date;
-  price: number;
-  imageURL: string | null;
-  id: string;
-  address: string;
-  rating: number;
-  features: string[];
-  dimensions: string;
-  latitude: number;
-  longitude: number;
-  _count: {
-    Booking: number;
-  };
 };
 
 const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {

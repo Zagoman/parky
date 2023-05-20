@@ -6,6 +6,10 @@
   position: relative;
 }
 
+.secondaryMenu {
+  width: 100%;
+}
+
 .spinner {
   display: flex;
   flex-direction: row;
@@ -75,6 +79,76 @@
 
 .emptyState {
   cursor: default;
+}
+
+.spotList {
+  width: 100%;
+  padding: $spacer-200 $spacer-400;
+  &Controls {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &Buttons {
+      p {
+        color: $blue-200;
+        font-weight: $font-weight-semibold;
+        cursor: pointer;
+      }
+    }
+
+    div {
+      display: flex;
+      flex-direction: row;
+      gap: $spacer-500;
+    }
+  }
+  &Wrapper {
+    padding: $spacer-400 0;
+
+    &EmptyState {
+      border-radius: $border-roundness-100;
+      background-color: $neutral-200;
+      padding: $spacer-300;
+      color: $neutral-600;
+      line-height: 1.4;
+    }
+    &Loader {
+      display: flex;
+      flex-direction: column;
+      gap: $spacer-300;
+    }
+    &Items {
+      display: flex;
+      flex-direction: column;
+      gap: $spacer-300;
+    }
+    .skeletonElement {
+      display: flex;
+      height: $spacer-800;
+      border-radius: $border-roundness-100;
+      background-color: $neutral-200;
+      background-image: linear-gradient(
+        90deg,
+        $neutral-200 0px,
+        $neutral-100 40px,
+        $neutral-200 80px
+      );
+      background-size: 600px;
+      animation: shine-lines 1.5s infinite linear;
+    }
+
+    @keyframes shine-lines {
+      0% {
+        background-position: -100px;
+      }
+      40%,
+      100% {
+        background-position: 400px;
+      }
+    }
+  }
 }
 
 @media only screen and (min-width: 1600px) {
