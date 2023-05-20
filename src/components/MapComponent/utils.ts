@@ -16,8 +16,8 @@ type OSMdata = {
     locality?: string;
     isolated_dwelling?: string;
   };
-  lat: number;
-  lon: number;
+  lat: string;
+  lon: string;
   display_name: string;
   class: string;
   type: string;
