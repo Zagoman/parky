@@ -2,8 +2,7 @@ import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import styles from "./index.module.scss";
 import { type NextPage } from "next";
 import Head from "next/head";
-import { api } from "~/utils/api";
-import { useEffect, useState } from "react";
+// import { api } from "~/utils/api";
 import { PageHeader } from "~/components/pageHeader/pageHeader";
 import { UiBox } from "~/components/uiBox/uiBox";
 import { Accordion } from "~/components/Accordion/Accordion";
@@ -11,8 +10,8 @@ import { Footer } from "~/components/Footer/Footer";
 
 const Home: NextPage = () => {
   // sign in will be moved into header
-  const { mutate } = api.profile.create.useMutation();
-  const profiles = api.profile.getAll.useQuery();
+  // const { mutate } = api.profile.create.useMutation();
+  // const profiles = api.profile.getAll.useQuery();
   const user = useUser();
   return (
     <>

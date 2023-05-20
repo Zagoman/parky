@@ -1,7 +1,6 @@
 import styles from "./pageHeader.module.scss";
 import { useState } from "react";
 import Image from "next/image";
-import logoImage from "../../../public/parky-logo-blue.svg";
 import menuImage from "../../../public/icon/menu.svg";
 import pageInfoImage from "../../../public/icon/page-info.svg";
 import closeImage from "../../../public/icon/close.svg";
@@ -20,7 +19,6 @@ export const PageHeader = ({
   const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
   const [secondaryMenuVisibility, setSecondaryMenuVisiblity] =
     useState<boolean>(false);
-  const logo = logoImage as string;
   const menuIcon = menuImage as string;
   const pageInfoIcon = pageInfoImage as string;
   const closeIcon = closeImage as string;
