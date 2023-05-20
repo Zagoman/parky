@@ -6,18 +6,120 @@ generator client {
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
     relationMode = "prisma"
 }
 
-model Users {
+enum Sizes {
+    XSMALL @map("xsmall")
+    SMALL  @map("small")
+    MEDIUM @map("medium")
+    LARGE  @map("large")
+    XLARGE @map("xlarge")
+}
+
+model Profile {
+    id            String          @id @unique
+    firstName     String          @db.VarChar(255)
+    lastName      String          @db.VarChar(255)
+    username      String          @db.VarChar(255)
+    phoneNumber   String?         @db.VarChar(255)
+    isDriver      Boolean?
+    isOwner       Boolean?
+    balance       Int?            @default(0)
+    licensePlate  String?         @db.VarChar(255)
+    vehicleModel  String?         @db.VarChar(255)
+    vehicleSize   Sizes?
+    rating        Float?          @default(5.0) @db.Float
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @default(now())
+    ProfileReview ProfileReview[]
+    ParkingReview ParkingReview[]
+    CoinOrder     CoinOrder[]
+    Booking       Booking[]
+    ParkingSpot   ParkingSpot[]
+
+    @@index([id])
+}
+
+model ProfileReview {
     id        String   @id @default(cuid())
+    profile   Profile  @relation(fields: [profileId], references: [id])
+    profileId String
+    rating    Float @db.Float
+    content   String   @db.VarChar(255)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-}
-model Parking_spot {
 
-            }
-model Orders {}
-model Bookings {}
+    @@index(fields: [id, profileId])
+}
+
+model ParkingReview {
+    id        String      @id @default(cuid())
+    profile   Profile     @relation(fields: [profileId], references: [id])
+    profileId String
+    parking   ParkingSpot @relation(fields: [parkingId], references: [id])
+    parkingId String
+    rating    Float
+    content   String      @db.VarChar(255)
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+
+    @@index(fields: [id, profileId, parkingId])
+}
+
+model CoinOrder {
+    id        String   @id @default(cuid())
+    profile   Profile  @relation(fields: [profileId], references: [id])
+    profileId String
+    amount    Int
+    createdAt DateTime @default(now())
+
+    @@index([profileId, id])
+}
+
+model ParkingSpot {
+    id             String          @id @default(cuid())
+    profile        Profile         @relation(fields: [profileId], references: [id])
+    profileId      String
+    address        String          @db.VarChar(255)
+    imageURL       String?
+    price          Int
+    rating         Float?        @default(5.0) @db.Float
+    availableStart DateTime
+    availableEnd   DateTime
+    features       Json?
+    description    String
+    dimensions     Sizes
+    latitude       Float           @db.Double
+    longitude      Float           @db.Double
+    createdAt      DateTime        @default(now())
+    updatedAt      DateTime        @updatedAt
+    ParkingReview  ParkingReview[]
+    Booking        Booking[]
+
+    @@index([profileId, id])
+}
+
+enum bookingTypes {
+    HOURLY  @map("hourly")
+    MONTHLY @map("monthly")
+}
+
+model Booking {
+    id            String       @id @default(cuid())
+    bookingNumber String       @unique
+    profile       Profile      @relation(fields: [profileId], references: [id])
+    profileId     String
+    parking       ParkingSpot  @relation(fields: [parkingId], references: [id])
+    parkingId     String
+    start         DateTime
+    end           DateTime
+    price         Int
+    type          bookingTypes
+    createdAt     DateTime     @default(now())
+    updatedAt     DateTime     @updatedAt
+
+    @@index([parkingId, profileId])
+}
