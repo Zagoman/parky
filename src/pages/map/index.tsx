@@ -9,7 +9,7 @@ import styles from "./map.module.scss";
 import dynamic from "next/dynamic";
 import { InputField } from "~/components/FormElements/InputField/InputField";
 import { useEffect, useState } from "react";
-import type OSMdata from "./utils";
+import type OSMdata from "../../components/MapComponent/utils";
 import { SearchResult } from "../../components/MapComponent/SearchResult";
 import { useForm } from "react-hook-form";
 
