@@ -31,7 +31,7 @@ model Profile {
     licensePlate  String?         @db.VarChar(255)
     vehicleModel  String?         @db.VarChar(255)
     vehicleSize   Sizes?
-    rating        Decimal?        @default(5.0)
+    rating        Float?          @default(5.0) @db.Float
     createdAt     DateTime        @default(now())
     updatedAt     DateTime        @default(now())
     ProfileReview ProfileReview[]
@@ -47,7 +47,7 @@ model ProfileReview {
     id        String   @id @default(cuid())
     profile   Profile  @relation(fields: [profileId], references: [id])
     profileId String
-    rating    Float
+    rating    Float @db.Float
     content   String   @db.VarChar(255)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -86,14 +86,14 @@ model ParkingSpot {
     address        String          @db.VarChar(255)
     imageURL       String?
     price          Int
-    rating         Decimal?
+    rating         Float?        @default(5.0) @db.Float
     availableStart DateTime
     availableEnd   DateTime
     features       Json?
     description    String
     dimensions     Sizes
-    latitude       Decimal
-    longitude      Decimal
+    latitude       Float           @db.Double
+    longitude      Float           @db.Double
     createdAt      DateTime        @default(now())
     updatedAt      DateTime        @updatedAt
     ParkingReview  ParkingReview[]
