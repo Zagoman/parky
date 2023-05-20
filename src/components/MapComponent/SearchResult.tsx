@@ -1,4 +1,4 @@
-import { type OSMdata } from "../../pages/map/utils";
+import type OSMdata from "../../pages/map/utils";
 import styles from "./SearchResult.module.scss";
 
 type SearchResultProps = {
