@@ -39,6 +39,7 @@ const Test: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        {/*eslint-disable-next-line */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <InputField
             register={register}
