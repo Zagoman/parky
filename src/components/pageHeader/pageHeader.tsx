@@ -1,7 +1,6 @@
 import styles from "./pageHeader.module.scss";
 import { useState } from "react";
 import Image from "next/image";
-import logoImage from "../../../public/parky-logo-blue.svg";
 import menuImage from "../../../public/icon/menu.svg";
 import pageInfoImage from "../../../public/icon/page-info.svg";
 import closeImage from "../../../public/icon/close.svg";
@@ -9,7 +8,7 @@ import closeImage from "../../../public/icon/close.svg";
 type headerProps = {
   children: JSX.Element;
   secondaryMenu: boolean;
-  secondaryMenuContents: JSX.Element;
+  secondaryMenuContents: JSX.Element | null;
 };
 
 export const PageHeader = ({
@@ -20,7 +19,6 @@ export const PageHeader = ({
   const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
   const [secondaryMenuVisibility, setSecondaryMenuVisiblity] =
     useState<boolean>(false);
-  const logo = logoImage as string;
   const menuIcon = menuImage as string;
   const pageInfoIcon = pageInfoImage as string;
   const closeIcon = closeImage as string;
@@ -60,7 +58,9 @@ export const PageHeader = ({
 
         <div className={styles.pageHeaderLogoWrapper}>
           <Image
-            src={logo}
+            src="/parky-logo-blue.svg"
+            width="200"
+            height="50"
             alt="parky logo"
             className={styles.pageHeaderLogo}
           />
