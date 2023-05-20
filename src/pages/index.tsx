@@ -12,14 +12,12 @@ import { Footer } from "~/components/Footer/Footer";
 const Home: NextPage = () => {
   const { mutate } = api.profile.create.useMutation();
   const profiles = api.profile.getAll.useQuery();
-  // const { data: test, error, isLoading } = api.parking.getAll.useQuery();
+  const { data: test, error, isLoading } = api.parking.getAll.useQuery();
   const user = useUser();
 
-  // useEffect(() => {
-  //   console.log(test);
-  // }, [isLoading]);
-
-  // arrows
+  useEffect(() => {
+    console.log(test);
+  }, [isLoading]);
 
   return (
     <>

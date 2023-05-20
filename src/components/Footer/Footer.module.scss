@@ -7,7 +7,37 @@
   padding: $spacer-400;
   display: flex;
   flex-direction: column;
-  gap: $spacer-300;
+  gap: $spacer-400;
+
+  &Logo {
+    width: fit-content;
+    height: 3rem;
+    grid-column: span 3;
+    align-self: flex-start;
+  }
+
+  &Contents {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-300;
+    max-width: 400px;
+  }
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-300;
+  }
+
+  a {
+    color: $neutral-500;
+    font-weight: $font-weight-semibold;
+    position: relative;
+    width: fit-content;
+    padding: $spacer-100 0;
+    &:hover {
+      color: $blue-200;
+    }
+  }
 
   section:last-of-type {
     width: 100%;
@@ -25,11 +55,17 @@
     gap: $spacer-400;
     grid-template-columns: repeat(3, 1fr);
     justify-content: space-between;
+
+    &Contents {
+      max-width: auto;
+    }
   }
 }
 
 @media only screen and (min-width: 1366px) {
   .footer {
     padding: $spacer-400 $spacer-800;
+    column-gap: $spacer-800;
+    row-gap: $spacer-400;
   }
 }
