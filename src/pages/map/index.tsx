@@ -21,7 +21,7 @@ type QueryParameters = {
 };
 
 const MapComponent = dynamic(
-  () => import("../../components/MapComponent/MapComponent.tsx"),
+  () => import("../../components/MapComponent/MapComponent"),
   {
     ssr: false,
   }
