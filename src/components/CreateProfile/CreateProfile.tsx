@@ -1,23 +1,23 @@
-import styles from "./CreateProfile.module.scss";
-import { InputField } from "../FormElements/InputField/InputField";
-import { api } from "~/utils/api";
-import { type SubmitHandler, useForm } from "react-hook-form";
-import type { inferRouterInputs } from "@trpc/server";
-import type { AppRouter } from "~/server/api/root";
+import styles from "./CreateProfile.module.scss"
+import { InputField } from "../FormElements/InputField/InputField"
+import { api } from "~/utils/api"
+import { type SubmitHandler, useForm } from "react-hook-form"
+import type { inferRouterInputs } from "@trpc/server"
+import type { AppRouter } from "~/server/api/root"
 export type InputInfo<T> = {
-  value: T;
-  error?: string;
-};
+  value: T
+  error?: string
+}
 
-type RouterInput = inferRouterInputs<AppRouter>;
-type CreateProfileInput = RouterInput["profile"]["create"];
+type RouterInput = inferRouterInputs<AppRouter>
+type CreateProfileInput = RouterInput["profile"]["create"]
 
 const CreateProfile: React.FC = () => {
-  const { register, handleSubmit } = useForm<CreateProfileInput>();
-  const { mutate } = api.profile.create.useMutation({});
+  const { register, handleSubmit } = useForm<CreateProfileInput>()
+  const { mutate } = api.profile.create.useMutation({})
   const onSubmit: SubmitHandler<CreateProfileInput> = (data) => {
-    mutate(data);
-  };
+    mutate(data)
+  }
   return (
     <>
       <div className={styles.form}>
@@ -71,6 +71,6 @@ const CreateProfile: React.FC = () => {
         </form>
       </div>
     </>
-  );
-};
-export default CreateProfile;
+  )
+}
+export default CreateProfile

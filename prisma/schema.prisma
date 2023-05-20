@@ -27,7 +27,7 @@ model Profile {
     phoneNumber   String?         @db.VarChar(255)
     isDriver      Boolean?
     isOwner       Boolean?
-    balance       Int?            @default(0)
+    balance       Int?            @default(0) 
     licensePlate  String?         @db.VarChar(255)
     vehicleModel  String?         @db.VarChar(255)
     vehicleSize   Sizes?
