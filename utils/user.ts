@@ -1,9 +1,9 @@
-import type { User } from "@clerk/nextjs/dist/api"
+import { Profile } from "@prisma/client"
 
-export const filterUserForClient = (user: User) => {
-    return {
-        id: user.id,
-        username: user.username,
-        profilePicture: user.profileImageUrl
-    }
+export const filterUserForClient = (profile: Profile) => {
+  return {
+    id: profile.id,
+    username: profile.username,
+    rating: Number(profile.rating),
+  }
 }

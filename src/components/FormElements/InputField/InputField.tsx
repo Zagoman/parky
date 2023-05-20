@@ -1,17 +1,25 @@
-import type { InputInfo } from "~/components/CreateProfile/CreateProfile";
 import styles from "./InputField.module.scss";
-import type { SetStateAction } from "react";
+import type { FieldValues, UseFormRegister } from "react-hook-form";
+
 interface InputFieldProps {
   inputType: string;
-  value: string;
   label: string;
   name: string;
   placeholder: string;
   error?: string;
-  onChange: (value: SetStateAction<InputInfo<string>>) => void;
+  register: UseFormRegister<FieldValues[0]>;
+  //eslint-disable-next-line
+  [x: string]: any;
 }
 export const InputField: React.FC<InputFieldProps> = (props) => {
-  const { inputType, value, label, name, error, placeholder, onChange } = props;
+  const { inputType, register, label, name, error, placeholder, ...rest } =
+    props;
+  const options =
+    inputType === "number"
+      ? { valueAsNumber: true }
+      : inputType === "datetime-local"
+      ? { valueAsDate: true }
+      : {};
   return (
     <div className={styles.inputWrapper}>
       <label htmlFor={name} className={styles.label}>
@@ -19,13 +27,10 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
         <input
           className={error ? styles.inputError : ""}
           type={inputType}
-          value={value}
           id={name}
-          name={name}
           placeholder={placeholder}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onChange((old) => ({ ...old, value: e.target.value }))
-          }
+          {...register(name, options)}
+          {...rest}
         />
       </label>
       {error && <p className={styles.error}>{error}</p>}

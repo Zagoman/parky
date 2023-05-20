@@ -1,14 +1,14 @@
-import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
-import styles from "./index.module.css";
-import { type NextPage } from "next";
-import Head from "next/head";
-import { api } from "~/utils/api";
-import { useState } from "react";
+import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs"
+import styles from "./index.module.css"
+import { type NextPage } from "next"
+import Head from "next/head"
+import { api } from "~/utils/api"
+import { useState } from "react"
 
 const Home: NextPage = () => {
-  const { mutate } = api.profile.create.useMutation();
-  const profiles = api.profile.getAll.useQuery();
-  const user = useUser();
+  const { mutate } = api.profile.create.useMutation()
+  const profiles = api.profile.getAll.useQuery()
+  const user = useUser()
   return (
     <>
       <Head>
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
