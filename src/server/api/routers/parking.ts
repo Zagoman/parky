@@ -8,13 +8,26 @@ import {
 } from "~/server/api/trpc"
 
 const METER_UNIT = 0.00001
+export const featuresSchema = z
+  .union([
+    z.literal("camera"),
+    z.literal("charging"),
+    z.literal("gate"),
+    z.literal("garage"),
+    z.literal("24/7"),
+    z.literal("cctv"),
+    z.literal("lights"),
+    z.literal("roof"),
+    z.literal("instant"),
+  ])
+  .array()
 const createSchema = z.object({
   address: z.string().min(3).max(255),
   imageURL: z.optional(z.string()),
   price: z.number().multipleOf(0.00001),
   availableStart: z.string().datetime(),
   availableEnd: z.string().datetime(),
-  features: z.string().array(),
+  features: featuresSchema,
   latitude: z.number(),
   longitude: z.number(),
   description: z.string().min(3).max(255),
