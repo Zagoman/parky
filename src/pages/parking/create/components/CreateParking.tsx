@@ -1,4 +1,3 @@
-import type { ParkingSpot, Profile } from "@prisma/client"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { InputField } from "~/components/FormElements/InputField/InputField"
