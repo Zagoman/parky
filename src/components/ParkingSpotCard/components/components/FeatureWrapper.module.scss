@@ -1,0 +1,40 @@
+@import "../../../../styles/tokens.scss";
+.feature {
+  position: relative;
+  cursor: pointer;
+  &Tooltip {
+    display: flex;
+    position: absolute;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%) translateY(calc(-100% - $spacer-200));
+    width: fit-content;
+    display: none;
+    background-color: $neutral-100;
+    border-radius: $border-roundness-100;
+    padding: $spacer-100 $spacer-200;
+    font-size: $font-size-label;
+    text-align: center;
+    font-family: $font-display;
+    color: $neutral-600;
+    border: solid $border-width-100 $neutral-400;
+    line-height: 1.2;
+    font-weight: $font-weight-semibold;
+    filter: $drop-shadow;
+    &Visible {
+      display: initial !important;
+    }
+  }
+
+  &:hover &Image {
+    filter: brightness(0.8);
+  }
+
+  &:hover &Tooltip {
+    display: initial !important;
+  }
+  &Image {
+    width: 18px;
+    transition: 0.3s ease;
+  }
+}

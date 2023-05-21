@@ -65,8 +65,6 @@ const Map: NextPage = () => {
     if (data?.length) {
       const fetchedData = data as ParkingSpot[];
       setNearbyParkingSpots(fetchedData);
-      console.log(nearbyParkingSpots[0]);
-      console.log(data[0]);
     } else {
       setNearbyParkingSpots([]);
     }
@@ -86,9 +84,11 @@ const Map: NextPage = () => {
               ? setIsDropdownVisible(true)
               : setIsDropdownVisible(false)
           }
-          onBlur={() => setIsDropdownVisible(false)}
         >
-          <div className={styles.inputWrapper}>
+          <div
+            className={styles.inputWrapper}
+            onBlur={() => setIsDropdownVisible(false)}
+          >
             <InputField
               name="parkingQuery"
               inputType="text"
@@ -121,6 +121,7 @@ const Map: NextPage = () => {
                         },
                         range: 1000,
                       });
+                      // setIsDropdownVisible(false);
                     }}
                   />
                 ))
@@ -148,7 +149,7 @@ const Map: NextPage = () => {
             </div>
           </div>
           <div className={styles.spotListWrapper}>
-            {nearbyParkingSpots.length === 0 ? (
+            {nearbyParkingSpots.length === 0 && parkingQuery.length ? (
               <div className={styles.spotListWrapperEmptyState}>
                 No parking spots within 1km found. Please change location.
               </div>
@@ -166,7 +167,9 @@ const Map: NextPage = () => {
                 ))}
               </div>
             ) : (
-              ""
+              <div className={styles.spotListWrapperEmptyState}>
+                Please enter a street address.
+              </div>
             )}
           </div>
         </div>

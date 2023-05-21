@@ -94,9 +94,6 @@
 }
 
 @media only screen and (min-width: 768px) {
-}
-
-@media only screen and (min-width: 1024px) {
   .pageHeader {
     display: flex;
     flex-direction: row;
@@ -124,7 +121,7 @@
         align-items: center;
 
         li {
-          font-size: $font-size-body;
+          font-size: $font-size-label;
         }
       }
     }
@@ -134,12 +131,13 @@
 
     section {
       width: 30%;
+      min-width: 500px;
       padding-top: 90px;
     }
   }
 
   .contentWrapper {
-    margin-left: 30%;
+    margin-left: 500px;
   }
 
   .visible {
@@ -156,6 +154,18 @@
 
   .mobileButton {
     display: none;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .pageHeader {
+    nav {
+      ul {
+        li {
+          font-size: $font-size-body;
+        }
+      }
+    }
   }
 }
 
@@ -180,15 +190,6 @@
     &Logo {
       height: $spacer-600;
     }
-
-    section {
-      width: 25%;
-      padding-top: 72px;
-    }
-  }
-
-  .contentWrapper {
-    margin-left: 25%;
   }
 }
 

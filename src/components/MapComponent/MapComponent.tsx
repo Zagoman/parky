@@ -42,7 +42,12 @@ const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
     return null;
   }
 
-  const fillBlueOptions = { fillColor: "blue" };
+  const fillBlueOptions = {
+    fillColor: "#1b31a4",
+    dashArray: "10, 10",
+    dashOffset: "10",
+    fillOpacity: 0.2,
+  };
 
   return (
     <MapContainer

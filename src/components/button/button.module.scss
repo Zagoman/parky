@@ -14,6 +14,9 @@
   transition: 0.2s ease-in-out;
   box-sizing: border-box;
   border: solid $border-width-200 $blue-200;
+  display: flex;
+  gap: $spacer-200;
+  align-items: center;
 }
 
 .primary:hover {
@@ -39,6 +42,9 @@
   transition: 0.2s ease-in-out;
   border: solid $border-width-200 $blue-200;
   box-sizing: border-box;
+  display: flex;
+  gap: $spacer-200;
+  align-items: center;
 }
 
 .secondary:hover {

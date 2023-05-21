@@ -29,7 +29,7 @@ export const SearchResult = ({ place, onClick }: SearchResultProps) => {
 
   return (
     <li
-      onClick={() => {
+      onMouseDown={() => {
         onClick(place);
       }}
       className={styles.resultsItem}
