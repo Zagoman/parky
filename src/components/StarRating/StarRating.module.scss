@@ -1,0 +1,13 @@
+@import "../../styles/tokens.scss";
+
+.starWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+
+  p {
+    color: $neutral-500;
+  }
+}

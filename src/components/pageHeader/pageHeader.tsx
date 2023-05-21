@@ -9,7 +9,7 @@ import PakyLogoBlue from "../../../public/parky-logo-blue.svg";
 type headerProps = {
   children: JSX.Element;
   secondaryMenu: boolean;
-  secondaryMenuContents: JSX.Element | null;
+  secondaryMenuContents: null | (() => JSX.Element);
 };
 
 export const PageHeader = ({
@@ -50,7 +50,7 @@ export const PageHeader = ({
                   : styles.hiddenSecondary
               }
             >
-              <div>{secondaryMenuContents}</div>
+              <div>{secondaryMenuContents && secondaryMenuContents()}</div>
             </section>
           </>
         ) : (

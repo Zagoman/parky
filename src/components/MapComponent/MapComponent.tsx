@@ -3,7 +3,8 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useMap, Circle } from "react-leaflet";
-import type OSMdata from "./utils";
+import { type OSMdata } from "./utils";
+import { type ParkingSpot } from "./utils";
 
 const pinIcon = L.icon({
   iconSize: [36, 36],
@@ -12,20 +13,24 @@ const pinIcon = L.icon({
 
 type MapProps = {
   location?: OSMdata;
+  nearbyParkingSpots: ParkingSpot[] | [];
 };
 
 type ResetViewProps = {
   selectPosition: OSMdata | undefined;
 };
 
-const MapComponent = ({ location }: MapProps) => {
+const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
   function ResetView({ selectPosition }: ResetViewProps) {
     const map = useMap();
 
     useEffect(() => {
       if (selectPosition) {
         map.setView(
-          L.latLng(selectPosition?.lat, selectPosition?.lon),
+          L.latLng(
+            parseFloat(selectPosition?.lat),
+            parseFloat(selectPosition?.lon)
+          ),
           map.getZoom(),
           {
             animate: true,
@@ -37,7 +42,12 @@ const MapComponent = ({ location }: MapProps) => {
     return null;
   }
 
-  const fillBlueOptions = { fillColor: "blue" };
+  const fillBlueOptions = {
+    fillColor: "#1b31a4",
+    dashArray: "10, 10",
+    dashOffset: "10",
+    fillOpacity: 0.2,
+  };
 
   return (
     <MapContainer
@@ -53,20 +63,40 @@ const MapComponent = ({ location }: MapProps) => {
       />
       {location?.lat && location?.lon ? (
         <>
-          <Marker position={[location.lat, location.lon]} icon={pinIcon}>
+          {/* <Marker
+            position={[parseFloat(location.lat), parseFloat(location.lon)]}
+            icon={pinIcon}
+          >
             <Popup>
               <p>{location.display_name}</p>
               <p>
                 {location.lon} {location.lat}
               </p>
             </Popup>
-          </Marker>
+          </Marker> */}
 
           <Circle
-            center={[location.lat, location.lon]}
+            center={[parseFloat(location.lat), parseFloat(location.lon)]}
             pathOptions={fillBlueOptions}
             radius={500}
           />
+
+          {nearbyParkingSpots.length &&
+            nearbyParkingSpots.map((spot) => {
+              if (spot)
+                return (
+                  <Marker
+                    position={[spot?.latitude, spot?.longitude]}
+                    icon={pinIcon}
+                    key={spot.id}
+                  >
+                    <Popup>
+                      <p>{spot.address}</p>
+                      <p>{spot.price}</p>
+                    </Popup>
+                  </Marker>
+                );
+            })}
         </>
       ) : (
         ""

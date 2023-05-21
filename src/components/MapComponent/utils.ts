@@ -1,4 +1,4 @@
-type OSMdata = {
+export type OSMdata = {
   address: {
     town?: string;
     city?: string;
@@ -16,8 +16,8 @@ type OSMdata = {
     locality?: string;
     isolated_dwelling?: string;
   };
-  lat: number;
-  lon: number;
+  lat: string;
+  lon: string;
   display_name: string;
   class: string;
   type: string;
@@ -30,4 +30,19 @@ type OSMdata = {
   boundingbox: [number];
 };
 
-export default OSMdata;
+export type ParkingSpot = {
+  availableEnd: Date;
+  availableStart: Date;
+  price: number;
+  imageURL: string | null;
+  id: string;
+  address: string;
+  rating: number | null;
+  features: string[] | [];
+  dimensions: string;
+  latitude: number;
+  longitude: number;
+  _count: {
+    Booking: number;
+  };
+};

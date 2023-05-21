@@ -1,4 +1,4 @@
-import type OSMdata from "./utils";
+import { type OSMdata } from "./utils";
 import styles from "./SearchResult.module.scss";
 
 type SearchResultProps = {
@@ -29,7 +29,7 @@ export const SearchResult = ({ place, onClick }: SearchResultProps) => {
 
   return (
     <li
-      onClick={() => {
+      onMouseDown={() => {
         onClick(place);
       }}
       className={styles.resultsItem}
