@@ -86,7 +86,6 @@ export const SpotFeatures = ({ features }: SpotFeaturesProps): JSX.Element => {
     return result;
   }
 
-  console.log(features);
   return (
     <div className={styles.featureWrapper}>
       {features &&

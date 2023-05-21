@@ -3,17 +3,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import type { NextPage } from "next";
-import { PageHeader } from "../../components/pageHeader/pageHeader";
+import { useEffect, useState } from "react";
 import styles from "./map.module.scss";
 import dynamic from "next/dynamic";
+import { PageHeader } from "../../components/pageHeader/pageHeader";
 import { InputField } from "~/components/FormElements/InputField/InputField";
-import { useEffect, useState } from "react";
 import { type OSMdata } from "../../components/MapComponent/utils";
 import { SearchResult } from "../../components/MapComponent/SearchResult";
-import { useForm } from "react-hook-form";
-import { api } from "~/utils/api";
 import { type ParkingSpot } from "../../components/MapComponent/utils";
 import { ParkingSpotCard } from "~/components/ParkingSpotCard/ParkingSpotCard";
+import { useForm } from "react-hook-form";
+import { api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
 
 type QueryParameters = {
   q: string;
@@ -35,7 +36,6 @@ const Map: NextPage = () => {
   const { register, watch } = useForm<{ parkingQuery: string }>({
     defaultValues: { parkingQuery: "" },
   });
-
   const { parkingQuery } = watch();
   const [queryResults, setQueryResults] = useState<OSMdata[]>([]);
   const [selectPosition, setSelectPosition] = useState<OSMdata>();
@@ -44,6 +44,7 @@ const Map: NextPage = () => {
   const [nearbyParkingSpots, setNearbyParkingSpots] = useState<
     ParkingSpot[] | []
   >([]);
+  const user = useUser();
 
   type QueryVariables = {
     current: {
@@ -58,8 +59,19 @@ const Map: NextPage = () => {
     range: 15,
   });
 
+  const [userId, setUserId] = useState("");
+  const [userProfile, setUserProfile] = useState<any>({});
+
   const { data, isLoading } =
     api.parking.getParkingWithinRange.useQuery(variables);
+
+  const {
+    data: userData,
+    isLoading: isUserLoading,
+    refetch,
+  } = api.profile.getProfileById.useQuery({
+    id: "user_2Q6mfHguFu7ertRLE6h7qHGRq7E",
+  });
 
   useEffect(() => {
     if (data?.length) {
@@ -70,6 +82,23 @@ const Map: NextPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+
+  // useEffect(() => {
+  //   if (userData && user?.user?.id) {
+  //     const fetchedData = userData;
+  //     setUserProfile(fetchedData);
+  //   } else {
+  //     setUserProfile({});
+  //   }
+  // }, [userData]);
+
+  useEffect(() => {
+    console.log(user?.user?.id);
+    if (user.user && user.isSignedIn) {
+      setUserId(user?.user?.id);
+      void refetch();
+    }
+  }, [user.user]);
 
   const mapHandler = () => {
     return (

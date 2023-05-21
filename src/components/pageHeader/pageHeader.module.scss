@@ -89,21 +89,30 @@
       font-size: $font-size-header-4;
 
       li {
+        font-family: $font-display;
+        font-size: $font-size-header-4;
         text-align: center;
         cursor: pointer;
         position: relative;
         transition: 0.3s ease;
 
+        a {
+          line-height: normal;
+        }
+
         button {
           background: none;
           border: none;
+          outline: none;
           font-size: $font-size-header-4;
+          font-family: $font-display;
           cursor: pointer;
           margin: 0;
           padding: 0;
-          height: 16px;
           transition: 0.3s ease;
-
+          vertical-align: top;
+          padding-inline: 0 !important ;
+          text-rendering: optimizeLegibility;
           &:hover {
             color: $blue-200;
           }
@@ -197,6 +206,15 @@
       border-radius: $border-roundness-100;
       color: $neutral-100;
       font-weight: $font-weight-semibold;
+
+      &:after {
+        display: none;
+      }
+
+      &:hover {
+        background-color: $blue-100 !important;
+        color: $neutral-100 !important;
+      }
     }
 
     nav {

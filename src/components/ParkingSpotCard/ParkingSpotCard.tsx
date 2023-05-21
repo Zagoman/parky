@@ -13,7 +13,6 @@ type ParkingSpotCardProps = {
 };
 
 export const ParkingSpotCard = ({ spot }: ParkingSpotCardProps) => {
-  console.log(spot.features);
   return (
     <div className={styles.card}>
       <div className={styles.cardImage}>
@@ -59,7 +58,9 @@ export const ParkingSpotCard = ({ spot }: ParkingSpotCardProps) => {
         <Button
           text={`Book for ${spot.price}`}
           type="primary"
-          onClick={() => console.log("booked for", spot.price)}
+          onClick={() => {
+            spot.price;
+          }}
           icon={parkcoin}
         ></Button>
       </div>

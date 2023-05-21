@@ -61,7 +61,9 @@ export const StarRating = ({ rating }: StarRatingProps) => {
 
   return (
     <div className={styles.starWrapper}>
-      {isNumber && starArray.map((star) => star)} <p>{`(${rating})`}</p>
+      {isNumber &&
+        starArray.map((star, index) => <span key={index}>{star}</span>)}{" "}
+      <p>{`(${rating})`}</p>
     </div>
   );
 };
