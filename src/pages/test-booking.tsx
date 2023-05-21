@@ -12,7 +12,6 @@ const Test: NextPage = () => {
   })
   const { mutate: create } = api.booking.create.useMutation({
     onSuccess: () => toast.success("booking create"),
-    onError: (e) => toast.error(e.data?.code),
   })
   const bookParking = () => {
     create({
