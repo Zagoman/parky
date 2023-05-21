@@ -1,6 +1,6 @@
 {
   "name": "parky",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -24,7 +24,6 @@
     "react-leaflet": "^4.2.1",
     "react-hook-form": "^7.43.9",
     "react-hot-toast": "^2.4.1",
-    "react-leaflet": "^4.2.1",
     "sass": "^1.62.1",
     "superjson": "1.12.2",
     "zod": "^3.21.4"

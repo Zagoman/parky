@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-
-import Image from "next/image";
-
 import styles from "./SpotFeatures.module.scss";
 
 import chargingIcon from "../../../../public/icon/charging.svg";
