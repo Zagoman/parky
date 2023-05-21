@@ -108,18 +108,19 @@ enum bookingTypes {
 }
 
 model Booking {
-    id            String       @id @default(cuid())
-    bookingNumber String       @unique
-    profile       Profile      @relation(fields: [profileId], references: [id])
+    id            String        @id @default(cuid())
+    bookingNumber String        @unique
+    profile       Profile       @relation(fields: [profileId], references: [id])
     profileId     String
-    parking       ParkingSpot  @relation(fields: [parkingId], references: [id])
+    parking       ParkingSpot   @relation(fields: [parkingId], references: [id])
     parkingId     String
     start         DateTime
     end           DateTime
     price         Int
-    type          bookingTypes
-    createdAt     DateTime     @default(now())
-    updatedAt     DateTime     @updatedAt
+    type          bookingTypes?
+    status        String        @db.VarChar(50)
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
 
     @@index([parkingId, profileId])
 }
