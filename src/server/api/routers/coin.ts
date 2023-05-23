@@ -26,7 +26,6 @@ export const coinRouter = createTRPCRouter({
           amount: input.amount,
         },
       })
-
       if (!profile) {
         throw new TRPCError({ code: "NOT_FOUND", message: "User not found" })
       }
@@ -46,24 +45,30 @@ export const coinRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const balance = await ctx.prisma.profile.findUnique({
+      const profileBalance = await ctx.prisma.profile.findUnique({
         where: { id: input.fromAccountId },
         select: {
           balance: true,
         },
       })
+      if (!profileBalance) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" })
+      }
+      if (profileBalance.balance < input.amount) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Insufficient funds",
+        })
+      }
 
-      const profile =
-        balance?.balance && balance.balance >= input.amount
-          ? await ctx.prisma.profile.update({
-              where: { id: input.fromAccountId },
-              data: {
-                balance: {
-                  decrement: input.amount,
-                },
-              },
-            })
-          : null
+      const profile = await ctx.prisma.profile.update({
+        where: { id: input.fromAccountId },
+        data: {
+          balance: {
+            decrement: input.amount,
+          },
+        },
+      })
 
       const order = profile
         ? await ctx.prisma.coinOrder.create({
@@ -79,7 +84,7 @@ export const coinRouter = createTRPCRouter({
       }
       if (!order) {
         throw new TRPCError({
-          code: "NOT_FOUND",
+          code: "CONFLICT",
           message: "Transaction incomplete",
         })
       }
