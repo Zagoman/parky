@@ -10,9 +10,10 @@ import { SpotFeatures } from "./components/SpotFeatures";
 
 type ParkingSpotCardProps = {
   spot: ParkingSpot;
+  onClick: (spotId: string, spotPrice: number) => void;
 };
 
-export const ParkingSpotCard = ({ spot }: ParkingSpotCardProps) => {
+export const ParkingSpotCard = ({ spot, onClick }: ParkingSpotCardProps) => {
   return (
     <div className={styles.card}>
       <div className={styles.cardImage}>
@@ -59,7 +60,7 @@ export const ParkingSpotCard = ({ spot }: ParkingSpotCardProps) => {
           text={`Book for ${spot.price}`}
           type="primary"
           onClick={() => {
-            spot.price;
+            onClick(spot.id, spot.price);
           }}
           icon={parkcoin}
         ></Button>

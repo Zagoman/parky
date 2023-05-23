@@ -36,7 +36,11 @@
 }
 
 .secondaryMenuWrapper {
-  padding: $spacer-400;
+  padding: $spacer-200 $spacer-400;
+}
+
+.bookingType {
+  padding: $spacer-200 $spacer-400;
 }
 
 .resultsWrapper {

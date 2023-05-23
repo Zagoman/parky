@@ -1,0 +1,50 @@
+@import "../../styles/tokens.scss";
+
+.toggle {
+  display: flex;
+  flex-direction: row;
+
+  button {
+    display: flex;
+    background: none;
+    border: none;
+    font-size: $font-size-header-4;
+    cursor: pointer;
+    font-family: $font-display;
+    padding-inline: 0;
+    padding: $spacer-300 $spacer-400;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    border: solid $border-width-200 $blue-200;
+    font-weight: $font-weight-semibold;
+    color: $blue-200;
+    transition: 0.3s ease;
+    &:hover {
+      color: $blue-100;
+      border-color: $blue-100;
+    }
+  }
+
+  button:first-of-type {
+    border-radius: $border-roundness-100 0 0 $border-roundness-100;
+    border-right: none;
+  }
+
+  button:last-of-type {
+    border-radius: 0 $border-roundness-100 $border-roundness-100 0;
+    border-left: none;
+  }
+
+  .active {
+    background-color: $blue-200;
+    border: solid $border-width-200 $blue-200;
+    color: $neutral-100;
+
+    &:hover {
+      background-color: $blue-200;
+      border-color: $blue-200;
+      color: $neutral-100;
+    }
+  }
+}
