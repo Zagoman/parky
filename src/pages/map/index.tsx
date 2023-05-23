@@ -255,13 +255,14 @@ const Map: NextPage = () => {
             </div>
           </div>
           <div className={styles.spotListWrapper}>
-            {nearbyParkingSpots.length === 0 && parkingQuery.length ? (
+            {nearbyParkingSpots.length === 0 &&
+            parkingQuery.length &&
+            !isSearching ? (
               <div className={styles.spotListWrapperEmptyState}>
                 No parking spots within 1km found. Please change location.
               </div>
             ) : isLoading ? (
               <div className={styles.spotListWrapperLoader}>
-                <div className={styles.skeletonElement}></div>
                 <div className={styles.skeletonElement}></div>
                 <div className={styles.skeletonElement}></div>
               </div>
@@ -276,6 +277,11 @@ const Map: NextPage = () => {
                     }}
                   />
                 ))}
+              </div>
+            ) : isSearching ? (
+              <div className={styles.spotListWrapperLoader}>
+                <div className={styles.skeletonElement}></div>
+                <div className={styles.skeletonElement}></div>
               </div>
             ) : (
               <div className={styles.spotListWrapperEmptyState}>

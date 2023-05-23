@@ -86,7 +86,7 @@ export const BookingForm = ({
                 label=""
                 name="duration"
                 register={register}
-                placeholder="Duration"
+                placeholder="Hour amount"
                 min="0"
               />
             ) : (
@@ -127,7 +127,9 @@ export const BookingForm = ({
             text="Proceed"
             onClick={() => console.log("Proceed")}
             isDisabled={
-              totalPrice > userBalance || totalPrice < 0 ? true : false
+              totalPrice > userBalance || totalPrice < 0 || duration === 0
+                ? true
+                : false
             }
           />
         </div>
