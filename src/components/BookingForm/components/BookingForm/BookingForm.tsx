@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { useState } from "react";
 import { type ParkingSpot } from "~/components/MapComponent/utils";
 import { Button } from "~/components/button/button";
 import styles from "./BookingForm.module.scss";
@@ -16,6 +15,7 @@ type BookingFormProps = {
   isUserSignedIn?: boolean;
   bookingType: string;
   onCancel: () => void;
+  bookingDate: string;
 };
 
 export const BookingForm = ({
@@ -25,6 +25,7 @@ export const BookingForm = ({
   spot,
   isUserSignedIn,
   onCancel,
+  bookingDate,
 }: BookingFormProps) => {
   const parcoinIcon = ParCoin as string;
   const { register, watch } = useForm<{ duration: number }>({
@@ -75,6 +76,8 @@ export const BookingForm = ({
           <p>{spot[0]?.address}</p>
           <p className={styles.fieldHeader}>Price per hour:</p>
           <p>{spot[0]?.price}</p>
+          <p className={styles.fieldHeader}>Booking date:</p>
+          <p>{`${bookingDate.split("T")[0]} ${bookingDate.split("T")[1]}`}</p>
           <p className={styles.fieldHeader}>Duration:</p>
           <div className={styles.inputFieldWrapper}>
             {bookingType === "hourly" ? (

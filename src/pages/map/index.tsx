@@ -37,10 +37,6 @@ const MapComponent = dynamic(
 const NominatimUrl = "https://nominatim.openstreetmap.org/search?";
 
 const Map: NextPage = () => {
-  const { register, watch } = useForm<{ parkingQuery: string }>({
-    defaultValues: { parkingQuery: "" },
-  });
-  const { parkingQuery } = watch();
   const [queryResults, setQueryResults] = useState<OSMdata[]>([]);
   const [selectPosition, setSelectPosition] = useState<OSMdata>();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -52,24 +48,32 @@ const Map: NextPage = () => {
     useState<JSX.Element>();
   const [isPurchaseFormVisible, setIsPurchaseFormVisible] = useState(false);
   const [bookingType, setBookingType] = useState("hourly");
-
+  const [userId, setUserId] = useState("");
+  const [userProfile, setUserProfile] = useState<any>({});
   const user = useUser();
+  const today = new Date();
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
 
-  type QueryVariables = {
-    current: {
-      latitude: number;
-      longitude: number;
-    };
-    range: number;
-  };
+  const { register, watch } = useForm<{ parkingQuery: string }>({
+    defaultValues: { parkingQuery: "" },
+  });
+
+  const {
+    register: registerBookingDate,
+    watch: watchBookingDate,
+    getValues,
+  } = useForm<{
+    bookingDate: string;
+  }>({
+    defaultValues: { bookingDate: today.toISOString().slice(0, 16) },
+  });
+
+  const { parkingQuery } = watch();
 
   const [variables, setVariables] = useState<QueryVariables>({
     current: { latitude: 1, longitude: 1 },
     range: 15,
   });
-
-  const [userId, setUserId] = useState("");
-  const [userProfile, setUserProfile] = useState<any>({});
 
   const { data, isLoading } =
     api.parking.getParkingWithinRange.useQuery(variables);
@@ -82,6 +86,14 @@ const Map: NextPage = () => {
     id: "user_2Q6mfHguFu7ertRLE6h7qHGRq7E",
   });
 
+  type QueryVariables = {
+    current: {
+      latitude: number;
+      longitude: number;
+    };
+    range: number;
+  };
+
   useEffect(() => {
     if (data?.length) {
       const fetchedData = data as ParkingSpot[];
@@ -91,15 +103,6 @@ const Map: NextPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
-
-  // useEffect(() => {
-  //   if (userData && user?.user?.id) {
-  //     const fetchedData = userData;
-  //     setUserProfile(fetchedData);
-  //   } else {
-  //     setUserProfile({});
-  //   }
-  // }, [userData]);
 
   useEffect(() => {
     console.log(user?.user?.id);
@@ -127,9 +130,9 @@ const Map: NextPage = () => {
           isUserSignedIn={user.isSignedIn}
           onCancel={() => setIsPurchaseFormVisible(false)}
           bookingType={bookingType}
+          bookingDate={getValues("bookingDate")}
         />
       );
-      // please sign in or register
     } else if (user.isSignedIn && findSpot.length && userData) {
       setPurchaseFormContents(
         <BookingForm
@@ -139,6 +142,7 @@ const Map: NextPage = () => {
           spot={findSpot(spotId)}
           userBalance={userData?.balance}
           bookingType={bookingType}
+          bookingDate={getValues("bookingDate")}
         />
       );
       // show parking booking form
@@ -185,7 +189,7 @@ const Map: NextPage = () => {
             <InputField
               name="parkingQuery"
               inputType="text"
-              label="Search parking spots"
+              label="Address"
               placeholder="Street address"
               register={register}
             />
@@ -231,7 +235,16 @@ const Map: NextPage = () => {
           </div>
         </div>
         {/*date selector*/}
-        <div></div>
+        <div className={styles.dateSelector}>
+          <InputField
+            inputType="datetime-local"
+            label="Book from"
+            name="bookingDate"
+            placeholder={today.toISOString().slice(0, 16)}
+            register={registerBookingDate}
+            min={today.toISOString().slice(0, 16)}
+          />
+        </div>
         {/* search results wrapper */}
         <div className={styles.spotList}>
           <div className={styles.spotListControls}>
