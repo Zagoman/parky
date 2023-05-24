@@ -36,7 +36,25 @@
 }
 
 .secondaryMenuWrapper {
-  padding: $spacer-400;
+  padding: $spacer-200 $spacer-400;
+}
+
+.bookingType {
+  padding: 0 $spacer-400;
+  input {
+    height: auto;
+  }
+}
+
+.dateSelector {
+  padding: 0 $spacer-400;
+
+  input {
+    font-family: $font-body;
+    color: $neutral-600;
+    font-family: $font-body;
+    font-size: $font-size-body;
+  }
 }
 
 .resultsWrapper {
@@ -106,9 +124,9 @@
     }
   }
   &Wrapper {
-    margin-right: -$spacer-300;
+    margin-right: -$spacer-200;
     padding: $spacer-400 0;
-    padding-right: $spacer-400;
+    padding-right: $spacer-200;
     max-height: 74vh;
     overflow-y: scroll;
     overflow-x: visible;

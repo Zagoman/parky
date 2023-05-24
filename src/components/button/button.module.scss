@@ -17,6 +17,17 @@
   display: flex;
   gap: $spacer-200;
   align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    background-color: $neutral-400;
+    border: solid $border-width-200 $neutral-400;
+    cursor: not-allowed;
+    &:hover {
+      background-color: $neutral-400;
+      border: solid $border-width-200 $neutral-400;
+    }
+  }
 }
 
 .primary:hover {
@@ -45,6 +56,12 @@
   display: flex;
   gap: $spacer-200;
   align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    color: $neutral-400;
+    border: solid $border-width-200 $neutral-400;
+  }
 }
 
 .secondary:hover {

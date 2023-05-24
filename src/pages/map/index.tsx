@@ -3,17 +3,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import type { NextPage } from "next";
-import { PageHeader } from "../../components/pageHeader/pageHeader";
+import { useEffect, useState } from "react";
 import styles from "./map.module.scss";
 import dynamic from "next/dynamic";
+import { PageHeader } from "../../components/pageHeader/pageHeader";
 import { InputField } from "~/components/FormElements/InputField/InputField";
-import { useEffect, useState } from "react";
 import { type OSMdata } from "../../components/MapComponent/utils";
 import { SearchResult } from "../../components/MapComponent/SearchResult";
-import { useForm } from "react-hook-form";
-import { api } from "~/utils/api";
 import { type ParkingSpot } from "../../components/MapComponent/utils";
 import { ParkingSpotCard } from "~/components/ParkingSpotCard/ParkingSpotCard";
+import { useForm } from "react-hook-form";
+import { api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
+import { BookingForm } from "~/components/BookingForm/components/BookingForm/BookingForm";
+import { PurchaseModal } from "~/components/BookingForm/components/PurchaseModal/PurchaseModal";
+import { Button } from "~/components/button/button";
+import { Toggle } from "~/components/Toggle/Toggle";
 
 type QueryParameters = {
   q: string;
@@ -32,11 +37,6 @@ const MapComponent = dynamic(
 const NominatimUrl = "https://nominatim.openstreetmap.org/search?";
 
 const Map: NextPage = () => {
-  const { register, watch } = useForm<{ parkingQuery: string }>({
-    defaultValues: { parkingQuery: "" },
-  });
-
-  const { parkingQuery } = watch();
   const [queryResults, setQueryResults] = useState<OSMdata[]>([]);
   const [selectPosition, setSelectPosition] = useState<OSMdata>();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -44,14 +44,31 @@ const Map: NextPage = () => {
   const [nearbyParkingSpots, setNearbyParkingSpots] = useState<
     ParkingSpot[] | []
   >([]);
+  const [purchaseFormContents, setPurchaseFormContents] =
+    useState<JSX.Element>();
+  const [isPurchaseFormVisible, setIsPurchaseFormVisible] = useState(false);
+  const [bookingType, setBookingType] = useState("hourly");
+  const [userId, setUserId] = useState("");
+  const [userProfile, setUserProfile] = useState<any>({});
+  const user = useUser();
+  const today = new Date();
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
 
-  type QueryVariables = {
-    current: {
-      latitude: number;
-      longitude: number;
-    };
-    range: number;
-  };
+  const { register, watch } = useForm<{ parkingQuery: string }>({
+    defaultValues: { parkingQuery: "" },
+  });
+
+  const {
+    register: registerBookingDate,
+    watch: watchBookingDate,
+    getValues,
+  } = useForm<{
+    bookingDate: string;
+  }>({
+    defaultValues: { bookingDate: today.toISOString().slice(0, 16) },
+  });
+
+  const { parkingQuery } = watch();
 
   const [variables, setVariables] = useState<QueryVariables>({
     current: { latitude: 1, longitude: 1 },
@@ -60,6 +77,22 @@ const Map: NextPage = () => {
 
   const { data, isLoading } =
     api.parking.getParkingWithinRange.useQuery(variables);
+
+  const {
+    data: userData,
+    isLoading: isUserLoading,
+    refetch,
+  } = api.profile.getProfileById.useQuery({
+    id: "user_2Q6mfHguFu7ertRLE6h7qHGRq7E",
+  });
+
+  type QueryVariables = {
+    current: {
+      latitude: number;
+      longitude: number;
+    };
+    range: number;
+  };
 
   useEffect(() => {
     if (data?.length) {
@@ -71,11 +104,72 @@ const Map: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
+  useEffect(() => {
+    console.log(user?.user?.id);
+    if (user.user && user.isSignedIn) {
+      setUserId(user?.user?.id);
+      void refetch();
+    }
+  }, [user.user]);
+
+  const findSpot = (spotId: string) => {
+    const spot = nearbyParkingSpots.filter((spot) => spot.id === spotId);
+    return spot;
+  };
+
+  const spotSelectionHandler = (spotId: string) => {
+    setIsPurchaseFormVisible(true);
+
+    if (!user.isSignedIn) {
+      setPurchaseFormContents(
+        <BookingForm
+          spot={findSpot(spotId)}
+          isUserSignedIn={user.isSignedIn}
+          onCancel={() => setIsPurchaseFormVisible(false)}
+          bookingType={bookingType}
+          bookingDate={getValues("bookingDate")}
+        />
+      );
+    } else if (user.isSignedIn && findSpot.length && userData) {
+      setPurchaseFormContents(
+        <BookingForm
+          isUserSignedIn={user.isSignedIn}
+          onCancel={() => setIsPurchaseFormVisible(false)}
+          userId={user.user.id}
+          spot={findSpot(spotId)}
+          userBalance={userData?.balance}
+          bookingType={bookingType}
+          bookingDate={getValues("bookingDate")}
+        />
+      );
+      // show parking booking form
+    } else {
+      setPurchaseFormContents(
+        <>
+          <div>Something went wrong</div>
+          <Button
+            type="primary"
+            text="close"
+            onClick={() => setIsPurchaseFormVisible(false)}
+          />
+        </>
+      );
+    }
+  };
+
   const mapHandler = () => {
     return (
       <div className={styles.secondaryMenu}>
         {/* daily/monthly selector */}
-        <div></div>
+        <div className={styles.bookingType}>
+          <Toggle
+            names={["Daily/Hourly", "Monthly"]}
+            values={["hourly", "monthly"]}
+            activeValue={bookingType}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            onClick={(type) => setBookingType(type)}
+          />
+        </div>
         {/* address input */}
         <div
           className={styles.secondaryMenuWrapper}
@@ -92,7 +186,7 @@ const Map: NextPage = () => {
             <InputField
               name="parkingQuery"
               inputType="text"
-              label="Search parking spots"
+              label="Address"
               placeholder="Street address"
               register={register}
             />
@@ -103,7 +197,7 @@ const Map: NextPage = () => {
                   : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                     `${styles.resultsWrapper} ${
                       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                      styles.dropdownHidden && styles.dropdownHidden
+                      styles.dropdownHidden
                     }`
               }
             >
@@ -138,18 +232,29 @@ const Map: NextPage = () => {
           </div>
         </div>
         {/*date selector*/}
-        <div></div>
+        <div className={styles.dateSelector}>
+          <InputField
+            inputType="datetime-local"
+            label="Book from"
+            name="bookingDate"
+            placeholder={today.toISOString().slice(0, 16)}
+            register={registerBookingDate}
+            min={today.toISOString().slice(0, 16)}
+          />
+        </div>
         {/* search results wrapper */}
         <div className={styles.spotList}>
           <div className={styles.spotListControls}>
-            <div>Duration:</div>
+            <div>Booking type: {bookingType}</div>
             <div className={styles.spotListControlsButtons}>
               <p>Sort</p>
               <p>Filter</p>
             </div>
           </div>
           <div className={styles.spotListWrapper}>
-            {nearbyParkingSpots.length === 0 && parkingQuery.length ? (
+            {nearbyParkingSpots.length === 0 &&
+            parkingQuery.length &&
+            !isSearching ? (
               <div className={styles.spotListWrapperEmptyState}>
                 No parking spots within 1km found. Please change location.
               </div>
@@ -157,14 +262,23 @@ const Map: NextPage = () => {
               <div className={styles.spotListWrapperLoader}>
                 <div className={styles.skeletonElement}></div>
                 <div className={styles.skeletonElement}></div>
-                <div className={styles.skeletonElement}></div>
-                <div className={styles.skeletonElement}></div>
               </div>
             ) : nearbyParkingSpots.length > 0 && !isLoading ? (
               <div className={styles.spotListWrapperItems}>
                 {nearbyParkingSpots.map((spot) => (
-                  <ParkingSpotCard spot={spot} key={spot.id} />
+                  <ParkingSpotCard
+                    spot={spot}
+                    key={spot.id}
+                    onClick={(spotId) => {
+                      spotSelectionHandler(spotId);
+                    }}
+                  />
                 ))}
+              </div>
+            ) : isSearching ? (
+              <div className={styles.spotListWrapperLoader}>
+                <div className={styles.skeletonElement}></div>
+                <div className={styles.skeletonElement}></div>
               </div>
             ) : (
               <div className={styles.spotListWrapperEmptyState}>
@@ -214,6 +328,14 @@ const Map: NextPage = () => {
     <>
       <PageHeader secondaryMenu={true} secondaryMenuContents={mapHandler}>
         <div className={styles.mapWrapper}>
+          {purchaseFormContents && (
+            <PurchaseModal
+              onCancel={() => setIsPurchaseFormVisible(false)}
+              isVisible={isPurchaseFormVisible}
+            >
+              {purchaseFormContents}
+            </PurchaseModal>
+          )}
           <MapComponent
             location={selectPosition}
             nearbyParkingSpots={nearbyParkingSpots}
