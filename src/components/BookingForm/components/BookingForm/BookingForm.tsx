@@ -87,7 +87,7 @@ export const BookingForm = ({
   } else if (
     isUserSignedIn &&
     spot &&
-    spot[0] &&
+    spot[0] !== undefined &&
     spot[0].id &&
     userBalance &&
     userId
@@ -99,6 +99,7 @@ export const BookingForm = ({
       totalPrice = duration * spot[0].price;
     }
 
+    const spotId = spot[0].id;
     const startDate = new Date(bookingDate);
     const endDate = new Date(bookingDate);
     endDate.setHours(endDate.getHours() + duration);
@@ -179,7 +180,7 @@ export const BookingForm = ({
                   price: totalPrice,
                   start: startDate.toISOString(),
                   driverId: userId,
-                  parkingId: spot[0].id,
+                  parkingId: spotId,
                   end: endDate.toISOString(),
                 })
               }

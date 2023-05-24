@@ -118,15 +118,12 @@ const Map: NextPage = () => {
   };
 
   const spotSelectionHandler = (spotId: string) => {
-    // console.log("user balance", userData?.balance);
-    // console.log("user data", userData?.vehicleSize);
-    // console.log(spotId, spotPrice);
-    // console.log();
     setIsPurchaseFormVisible(true);
 
     if (!user.isSignedIn) {
       setPurchaseFormContents(
         <BookingForm
+          spot={findSpot(spotId)}
           isUserSignedIn={user.isSignedIn}
           onCancel={() => setIsPurchaseFormVisible(false)}
           bookingType={bookingType}
