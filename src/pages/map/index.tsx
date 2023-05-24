@@ -83,7 +83,7 @@ const Map: NextPage = () => {
     isLoading: isUserLoading,
     refetch,
   } = api.profile.getProfileById.useQuery({
-    id: "user_2Q6mfHguFu7ertRLE6h7qHGRq7E",
+    id: userId,
   });
 
   type QueryVariables = {
@@ -105,12 +105,11 @@ const Map: NextPage = () => {
   }, [data]);
 
   useEffect(() => {
-    console.log(user?.user?.id);
-    if (user.user && user.isSignedIn) {
+    if (user.user && user.isSignedIn && !isUserLoading) {
       setUserId(user?.user?.id);
       void refetch();
     }
-  }, [user.user]);
+  }, [user.user, isUserLoading]);
 
   const findSpot = (spotId: string) => {
     const spot = nearbyParkingSpots.filter((spot) => spot.id === spotId);
