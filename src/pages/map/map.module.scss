@@ -162,8 +162,8 @@
         $neutral-100 40px,
         $neutral-200 80px
       );
-      background-size: 600px;
-      animation: shine-lines 1.5s infinite linear;
+      background-size: 800px;
+      animation: shine-lines 2s infinite linear;
     }
 
     @keyframes shine-lines {
@@ -172,7 +172,7 @@
       }
       40%,
       100% {
-        background-position: 400px;
+        background-position: 550px;
       }
     }
   }
