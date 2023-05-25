@@ -17,7 +17,7 @@ import helpImage from "../../../public/icon/help.svg";
 
 import { useUser, SignIn } from "@clerk/nextjs";
 
-import { DashboardMenuElement } from "./components/dashboardMenuElement/dashboardMenuElement";
+import { DashboardMenuElement } from "./components/DashboardMenuElement/DashboardMenuElement";
 import Link from "next/link";
 
 type DashboardWrapperProps = {
