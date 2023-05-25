@@ -36,9 +36,7 @@
 }
 
 .smallBox {
-  padding-bottom: $spacer-600;
   position: relative;
-
   span {
     display: flex;
     flex-direction: row;
@@ -46,6 +44,7 @@
     flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
+    margin-bottom: $spacer-400;
     img {
       max-height: 24px;
       max-width: 24px;
@@ -99,11 +98,18 @@
     }
     a {
       position: absolute;
-      top: calc($spacer-400 + 4px);
+      bottom: calc($spacer-300 + 4px);
       right: $spacer-400;
     }
   }
 }
 
 @media only screen and (min-width: 1366px) {
+  .smallBox {
+    a {
+      position: absolute;
+      top: calc($spacer-400 + 4px);
+      right: $spacer-400;
+    }
+  }
 }

@@ -15,6 +15,78 @@
   background-color: $neutral-200;
 }
 
+.signOut {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + $spacer-200);
+  width: 100%;
+  right: -6px;
+  background-color: $neutral-100;
+  padding: $spacer-300 $spacer-300;
+  display: flex;
+  flex-direction: column;
+  border: solid $border-width-100 $neutral-300;
+  border-radius: $border-roundness-100;
+  min-width: 150px;
+  box-shadow: $box-shadow;
+  gap: $spacer-300;
+  &:before {
+    position: absolute;
+    display: flex;
+    content: "";
+    background-color: $neutral-100;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    right: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    border-left: solid $border-width-100 $neutral-300;
+    border-top: solid $border-width-100 $neutral-300;
+  }
+  button {
+    background: none;
+    border: none;
+    font-size: $font-size-body;
+    font-family: $font-body;
+    color: $blue-200;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    padding-inline: 0;
+    &:hover {
+      color: $blue-100;
+    }
+  }
+  a {
+    font-size: $font-size-body;
+    font-family: $font-body;
+    color: $blue-200;
+    font-weight: $font-weight-semibold;
+    &:hover {
+      color: $blue-100;
+    }
+  }
+  &Hidden {
+    display: none;
+  }
+}
+
+.accountBalance {
+  display: none;
+}
+
+.accountDetails {
+  display: none;
+}
+
+.accountIconWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: $spacer-200;
+  position: relative;
+}
+
 .pageHeader {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
@@ -100,13 +172,81 @@
 }
 
 .dashboardContents {
+  position: relative;
   padding: $spacer-400;
   background-color: $neutral-200;
   min-height: calc(100vh - 62px);
   margin-top: 62px;
+  z-index: -1;
 }
 
 @media only screen and (min-width: 768px) {
+  .accountIconWrapper {
+    align-items: center;
+    justify-content: center;
+    gap: $spacer-300;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .signOut {
+    &:before {
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+  }
+
+  .accountDetails {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-100;
+    p {
+      line-height: 1;
+      &:first-of-type {
+        font-size: $font-size-body-large;
+        font-weight: $font-weight-semibold;
+      }
+      &:last-of-type {
+        font-size: $font-size-label;
+        color: $neutral-500;
+      }
+    }
+  }
+
+  .accountInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $spacer-500;
+    margin-right: $spacer-400;
+  }
+  .accountBalance {
+    display: flex;
+    flex-direction: row;
+    background-color: $neutral-200;
+    border-radius: $border-roundness-100;
+    padding: $spacer-200 $spacer-300;
+    font-size: $font-size-body-large;
+    align-items: center;
+    justify-content: center;
+    gap: $spacer-300;
+
+    a {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: $spacer-100;
+      font-weight: $font-weight-semibold;
+
+      &:hover {
+        p {
+          color: $blue-200;
+        }
+      }
+    }
+  }
 }
 
 @media only screen and (min-width: 1024px) {

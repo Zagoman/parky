@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import styles from "./dashboardWrapper.module.scss";
+import styles from "./DashboardWrapper.module.scss";
 import { useState } from "react";
 import Image from "next/image";
 import logoImage from "../../../public/parky-logo-blue.svg";
@@ -15,7 +15,7 @@ import parkyImage from "../../../public/icon/parky-hex.svg";
 import cogImage from "../../../public/icon/settings.svg";
 import helpImage from "../../../public/icon/help.svg";
 
-import { useUser, SignIn } from "@clerk/nextjs";
+import { useUser, SignIn, SignOutButton } from "@clerk/nextjs";
 
 import { DashboardMenuElement } from "./components/DashboardMenuElement/DashboardMenuElement";
 import Link from "next/link";
@@ -23,13 +23,20 @@ import Link from "next/link";
 type DashboardWrapperProps = {
   children: JSX.Element;
   active: string;
+  userBalance?: number | null;
+  userName?: string | null;
+  userEmail?: string | null;
 };
 
 export const DashboardWrapper = ({
   children,
   active,
+  userBalance,
+  userEmail,
+  userName,
 }: DashboardWrapperProps) => {
   const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
+  const [isSignOutVisible, setIsSignOutVisible] = useState(false);
   const logo = logoImage as string;
   const menuIcon = menuImage as string;
   const accountIcon = accountImage as string;
@@ -72,12 +79,52 @@ export const DashboardWrapper = ({
           </Link>
         </div>
         {user.isSignedIn && (
-          <div>
-            <Image
-              src={accountIcon}
-              alt="account icon"
-              className={styles.menuIcon}
-            />
+          <div className={styles.accountInfo}>
+            {userBalance && (
+              <div className={styles.accountBalance}>
+                <p>Balance:</p>
+                <Link href="/account/topup">
+                  <p>{userBalance} </p>
+                  <Image
+                    src={parkcoinIcon}
+                    height={18}
+                    width={18}
+                    alt="parcoin icon"
+                  />
+                </Link>
+              </div>
+            )}
+            <div
+              className={styles.accountIconWrapper}
+              onClick={() =>
+                isSignOutVisible
+                  ? setIsSignOutVisible(false)
+                  : setIsSignOutVisible(true)
+              }
+              onBlur={() => setIsSignOutVisible(false)}
+            >
+              <Image
+                src={accountIcon}
+                alt="account icon"
+                className={styles.menuIcon}
+              />
+              <div className={styles.accountDetails}>
+                <p>{userName}</p>
+                <p>{userEmail}</p>
+              </div>
+              <div
+                className={
+                  isSignOutVisible
+                    ? styles.signOut
+                    : `${styles.signOut} ${styles.signOutHidden}`
+                }
+              >
+                <SignOutButton />
+                <Link href="/account/settings">Account settings</Link>
+                <Link href="/help">Help</Link>
+                <Link href="/contact">Contact</Link>
+              </div>
+            </div>
           </div>
         )}
         {user.isSignedIn && (
