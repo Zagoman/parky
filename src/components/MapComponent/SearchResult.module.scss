@@ -1,0 +1,9 @@
+@import "../../styles/tokens.scss";
+
+.resultsItem {
+  cursor: pointer;
+  &:hover {
+    background-color: $neutral-300;
+    color: $neutral-800;
+  }
+}

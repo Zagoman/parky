@@ -1,6 +1,50 @@
 @import "../../styles/tokens.scss";
 
+.modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(40, 51, 62, 0.3);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &Wrapper {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+
+    &Close {
+      position: absolute;
+      display: flex;
+      width: 36px;
+      height: 36px;
+      top: $spacer-200;
+      right: 2%;
+      justify-content: center;
+      align-items: center;
+      z-index: 11;
+      cursor: pointer;
+
+      &:hover {
+        filter: brightness(0.4);
+      }
+    }
+    > div {
+      z-index: 10;
+    }
+  }
+}
+.modalHidden {
+  display: none;
+  pointer-events: none;
+}
+
 .pageHeader {
+  position: relative;
+  z-index: 1200;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   flex-direction: row;
@@ -41,11 +85,57 @@
     ul {
       display: flex;
       flex-direction: column;
-      gap: $spacer-500;
+      gap: $spacer-300;
       font-size: $font-size-header-4;
 
       li {
+        font-family: $font-display;
+        font-size: $font-size-header-4;
         text-align: center;
+        cursor: pointer;
+        position: relative;
+        transition: 0.3s ease;
+
+        a {
+          line-height: normal;
+        }
+
+        button {
+          background: none;
+          border: none;
+          outline: none;
+          font-size: $font-size-header-4;
+          font-family: $font-display;
+          cursor: pointer;
+          margin: 0;
+          padding: 0;
+          transition: 0.3s ease;
+          vertical-align: top;
+          padding-inline: 0 !important ;
+          text-rendering: optimizeLegibility;
+          &:hover {
+            color: $blue-200;
+          }
+        }
+
+        &:after {
+          content: "";
+          height: 4px;
+          width: 80%;
+          position: absolute;
+          background: $blue-200;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%) scaleX(0);
+          border-radius: $spacer-300;
+          transition: 0.3s ease;
+        }
+        &:hover {
+          color: $blue-200;
+          &:after {
+            transform: translateX(-50%) scaleX(1);
+          }
+        }
       }
     }
   }
@@ -60,11 +150,13 @@
   &Logo {
     width: 100%;
     height: $spacer-500;
+    cursor: pointer;
   }
 
   .menuIcon {
     height: $spacer-400;
     width: $spacer-400;
+    cursor: pointer;
   }
 
   section {
@@ -91,10 +183,18 @@
   transform: translateX(-120%);
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 480px) {
+  .modal {
+    &Wrapper {
+      &Close {
+        top: $spacer-200;
+        right: $spacer-500;
+      }
+    }
+  }
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 768px) {
   .pageHeader {
     display: flex;
     flex-direction: row;
@@ -106,6 +206,15 @@
       border-radius: $border-roundness-100;
       color: $neutral-100;
       font-weight: $font-weight-semibold;
+
+      &:after {
+        display: none;
+      }
+
+      &:hover {
+        background-color: $blue-100 !important;
+        color: $neutral-100 !important;
+      }
     }
 
     nav {
@@ -120,9 +229,13 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        gap: $spacer-300;
 
         li {
-          font-size: $font-size-body;
+          font-size: $font-size-label;
+          button {
+            font-size: $font-size-label;
+          }
         }
       }
     }
@@ -132,11 +245,13 @@
 
     section {
       width: 30%;
+      min-width: 500px;
+      padding-top: 90px;
     }
   }
 
   .contentWrapper {
-    margin-left: 30%;
+    margin-left: 500px;
   }
 
   .visible {
@@ -156,9 +271,33 @@
   }
 }
 
+@media only screen and (min-width: 1024px) {
+  .pageHeader {
+    nav {
+      ul {
+        gap: $spacer-500;
+        li {
+          font-size: $font-size-body;
+          button {
+            font-size: $font-size-body;
+          }
+        }
+      }
+    }
+  }
+  .modal {
+    &Wrapper {
+      &Close {
+        top: $spacer-200;
+        right: $spacer-500;
+      }
+    }
+  }
+}
+
 @media only screen and (min-width: 1366px) {
   .pageHeader {
-    padding: $spacer-400 $spacer-600;
+    padding: $spacer-300 $spacer-600;
 
     nav {
       ul {
@@ -166,6 +305,9 @@
 
         li {
           font-size: $font-size-body-large;
+          button {
+            font-size: $font-size-body-large;
+          }
         }
       }
     }
@@ -177,19 +319,8 @@
     &Logo {
       height: $spacer-600;
     }
-
-    section {
-      width: 25%;
-    }
-  }
-
-  .contentWrapper {
-    margin-left: 25%;
   }
 }
 
 @media only screen and (min-width: 1600px) {
-  .pageHeader {
-    padding: $spacer-300 $spacer-600;
-  }
 }

@@ -23,7 +23,7 @@ model Profile {
     id            String          @id @unique
     firstName     String          @db.VarChar(255)
     lastName      String          @db.VarChar(255)
-    username      String          @db.VarChar(255)
+    username      String          @unique @db.VarChar(255)
     phoneNumber   String?         @db.VarChar(255)
     isDriver      Boolean?
     isOwner       Boolean?
@@ -31,7 +31,7 @@ model Profile {
     licensePlate  String?         @db.VarChar(255)
     vehicleModel  String?         @db.VarChar(255)
     vehicleSize   Sizes?
-    rating        Decimal?        @default(5.0)
+    rating        Float?          @default(5.0) @db.Float
     createdAt     DateTime        @default(now())
     updatedAt     DateTime        @default(now())
     ProfileReview ProfileReview[]
@@ -47,7 +47,7 @@ model ProfileReview {
     id        String   @id @default(cuid())
     profile   Profile  @relation(fields: [profileId], references: [id])
     profileId String
-    rating    Float
+    rating    Float    @db.Float
     content   String   @db.VarChar(255)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -86,13 +86,14 @@ model ParkingSpot {
     address        String          @db.VarChar(255)
     imageURL       String?
     price          Int
-    rating         Decimal?
+    rating         Float?          @default(5.0) @db.Float
     availableStart DateTime
     availableEnd   DateTime
     features       Json?
-    geolocation    Json?
     description    String
     dimensions     Sizes
+    latitude       Float           @db.Double
+    longitude      Float           @db.Double
     createdAt      DateTime        @default(now())
     updatedAt      DateTime        @updatedAt
     ParkingReview  ParkingReview[]
@@ -107,18 +108,19 @@ enum bookingTypes {
 }
 
 model Booking {
-    id            String       @id @default(cuid())
-    bookingNumber String       @unique
-    profile       Profile      @relation(fields: [profileId], references: [id])
+    id            String        @id @default(cuid())
+    bookingNumber String        @unique
+    profile       Profile       @relation(fields: [profileId], references: [id])
     profileId     String
-    parking       ParkingSpot  @relation(fields: [parkingId], references: [id])
+    parking       ParkingSpot   @relation(fields: [parkingId], references: [id])
     parkingId     String
     start         DateTime
     end           DateTime
     price         Int
-    type          bookingTypes
-    createdAt     DateTime     @default(now())
-    updatedAt     DateTime     @updatedAt
+    type          bookingTypes?
+    status        String        @db.VarChar(50)
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
 
     @@index([parkingId, profileId])
 }

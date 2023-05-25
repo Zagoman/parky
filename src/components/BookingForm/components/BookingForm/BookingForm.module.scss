@@ -1,0 +1,106 @@
+@import "../../../../styles/tokens.scss";
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-300;
+  h3 {
+    margin-bottom: $spacer-200;
+    align-self: center;
+  }
+}
+
+.balanceError {
+  text-align: center;
+  align-self: center;
+  color: $red-200;
+  position: absolute;
+  top: 0;
+  max-width: 90%;
+}
+
+.buttonsWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: $spacer-200;
+  justify-content: center;
+}
+
+.fieldWrapper {
+  padding: $spacer-300;
+  background-color: $neutral-200;
+  border-radius: $border-roundness-100;
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  gap: $spacer-200;
+  row-gap: $spacer-200;
+  align-items: center;
+  width: 100%;
+}
+
+.fieldHeader {
+  font-weight: $font-weight-semibold;
+}
+
+.parcoinwrapper {
+  display: flex;
+  flex-direction: row;
+  gap: $spacer-100;
+  align-items: center;
+}
+
+.inputFieldWrapper {
+  max-width: 200px;
+  width: fit-content;
+  > div {
+    margin: 0;
+    padding: 0;
+  }
+  input {
+    border: solid $border-width-100 $neutral-400;
+    height: 36px;
+  }
+}
+
+.errorWrapper {
+  height: 28px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.totalPrice {
+  font-weight: $font-weight-semibold;
+}
+
+.signin {
+  text-align: center;
+
+  button {
+    color: $blue-200;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: $font-size-body;
+    font-family: $font-body;
+    cursor: pointer;
+    padding-inline: 2px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .buttonsWrapper {
+    gap: $spacer-400;
+    button {
+      width: 50%;
+    }
+  }
+  .formWrapper {
+    min-width: 450px;
+  }
+}

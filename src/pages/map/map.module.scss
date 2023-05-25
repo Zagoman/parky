@@ -1,0 +1,194 @@
+@import "../../styles/tokens.scss";
+.mapWrapper {
+  width: 100%;
+  height: calc(100vh - 100px);
+  overflow: hidden;
+  position: relative;
+}
+
+.secondaryMenu {
+  width: 100%;
+}
+
+.spinner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  span {
+    height: 24px;
+    width: 24px;
+    border: solid 4px $blue-200;
+    border-top: solid 4px transparent;
+    border-radius: 50%;
+    animation: loading 1.5s infinite forwards linear;
+    display: flex;
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.secondaryMenuWrapper {
+  padding: $spacer-200 $spacer-400;
+}
+
+.bookingType {
+  padding: 0 $spacer-400;
+  input {
+    height: auto;
+  }
+}
+
+.dateSelector {
+  padding: 0 $spacer-400;
+
+  input {
+    font-family: $font-body;
+    color: $neutral-600;
+    font-family: $font-body;
+    font-size: $font-size-body;
+  }
+}
+
+.resultsWrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  max-height: 220px;
+  overflow-y: scroll;
+  border: solid $border-width-100 $neutral-300;
+  box-sizing: border-box;
+  border-radius: 0 0 $border-roundness-100 $border-roundness-100;
+  z-index: 10;
+  .resultsItem {
+    cursor: pointer;
+    &:hover {
+      background-color: $neutral-300;
+      color: $neutral-800;
+    }
+  }
+  li {
+    width: 100%;
+    padding: $spacer-200 $spacer-300;
+    background-color: $neutral-100;
+    color: $neutral-600;
+  }
+}
+
+.dropdownHidden {
+  max-height: 0;
+  opacity: 0;
+}
+
+.inputWrapper {
+  position: relative;
+
+  > div {
+    padding: 0;
+  }
+}
+
+.emptyState {
+  cursor: default;
+}
+
+.spotList {
+  width: 100%;
+  padding: $spacer-200 $spacer-400;
+  &Controls {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &Buttons {
+      p {
+        color: $blue-200;
+        font-weight: $font-weight-semibold;
+        cursor: pointer;
+      }
+    }
+
+    div {
+      display: flex;
+      flex-direction: row;
+      gap: $spacer-500;
+    }
+  }
+  &Wrapper {
+    margin-right: -$spacer-200;
+    padding: $spacer-400 0;
+    padding-right: $spacer-200;
+    max-height: 74vh;
+    overflow-y: scroll;
+    overflow-x: visible;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &EmptyState {
+      border-radius: $border-roundness-100;
+      background-color: $neutral-200;
+      padding: $spacer-300;
+      color: $neutral-600;
+      line-height: 1.4;
+    }
+    &Loader {
+      display: flex;
+      flex-direction: column;
+      gap: $spacer-300;
+    }
+    &Items {
+      display: flex;
+      flex-direction: column;
+      gap: $spacer-300;
+    }
+    .skeletonElement {
+      display: flex;
+      height: $spacer-800;
+      border-radius: $border-roundness-100;
+      background-color: $neutral-200;
+      background-image: linear-gradient(
+        90deg,
+        $neutral-200 0px,
+        $neutral-100 40px,
+        $neutral-200 80px
+      );
+      background-size: 800px;
+      animation: shine-lines 2s infinite linear;
+    }
+
+    @keyframes shine-lines {
+      0% {
+        background-position: -100px;
+      }
+      40%,
+      100% {
+        background-position: 550px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .mapWrapper {
+    height: calc(100vh - 89px);
+  }
+}
+
+@media only screen and (min-width: 1366px) {
+  .mapWrapper {
+    height: calc(100vh - 74px);
+  }
+}
+
+@media only screen and (min-width: 1600px) {
+}

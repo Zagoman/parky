@@ -1,0 +1,21 @@
+@import "../../styles/tokens.scss";
+
+.accordion {
+  width: 100%;
+
+  &Header {
+    background-color: $blue-200;
+    padding: $spacer-300;
+    border-radius: $border-roundness-100;
+    margin-bottom: $spacer-300;
+    h3 {
+      color: $neutral-100;
+    }
+  }
+
+  &QuestionWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-300;
+  }
+}

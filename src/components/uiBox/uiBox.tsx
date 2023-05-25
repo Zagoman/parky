@@ -1,7 +1,8 @@
+import { type ReactNode } from "react";
 import styles from "./uiBox.module.scss";
 
 type UiBoxProps = {
-  children: any;
+  children: ReactNode;
 };
 
 export const UiBox = ({ children }: UiBoxProps) => {

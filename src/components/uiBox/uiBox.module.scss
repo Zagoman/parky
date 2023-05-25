@@ -2,9 +2,9 @@
 
 .uiBox {
   background: $neutral-100;
-  padding: $spacer-300;
+  padding: $spacer-400;
   border-radius: $border-roundness-200;
-  box-shadow: 0px 4px 12px rgba(121, 121, 121, 0.25);
+  box-shadow: $box-shadow;
 }
 
 @media only screen and (min-width: 1024px) {

@@ -1,160 +1,146 @@
-import { useState } from "react"
 import styles from "./CreateProfile.module.scss"
 import { InputField } from "../FormElements/InputField/InputField"
-import { Checkbox } from "../FormElements/CheckBox/Checkbox"
-import { api } from "~/utils/api"
+import { type RouterInputs, type RouterOutputs, api } from "~/utils/api"
+import { type SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
-export type InputInfo<T> = {
-  value: T
-  error?: string
+
+type CreateProfileInput = RouterInputs["profile"]["create"]
+
+type CreateProfileProps = {
+  update?: boolean
+  profile?: RouterOutputs["profile"]["getProfileByUsername"]
 }
-const CreateProfile: React.FC = () => {
-  const [firstName, setFirstName] = useState<InputInfo<string>>({ value: "" })
-  const [lastName, setLastName] = useState<InputInfo<string>>({ value: "" })
-  const [username, setUsername] = useState<InputInfo<string>>({ value: "" })
-  const [phoneNumber, setPhoneNumber] = useState<InputInfo<string>>({
-    value: "",
-  })
-  const [isDriver, setIsDriver] = useState<InputInfo<boolean>>({ value: false })
-  const [isOwner, setIsOwner] = useState<InputInfo<boolean>>({ value: false })
-  const { mutate, isLoading: isPosting } = api.profile.create.useMutation({
-    onSuccess: () => {
-      setFirstName({ value: "" })
-      setLastName({ value: "" })
-      setIsOwner({ value: false })
-      setIsDriver({ value: false })
-      setPhoneNumber({ value: "" })
-      setUsername({ value: "" })
-    },
-    onError: (e) => {
-      const errorMessages = e.data?.zodError?.fieldErrors
-      console.log(e.data?.zodError?.formErrors)
-      if (errorMessages) {
-        console.log(errorMessages)
-        for (const key in errorMessages) {
-          switch (key) {
-            case "firstName":
-              setFirstName((old) => ({
-                ...old,
-                error: errorMessages["firstName"]?.at(0),
-              }))
-              break
-            case "lastName":
-              setLastName((old) => ({
-                ...old,
-                error: errorMessages["lastName"]?.at(0),
-              }))
-              break
-            case "isOwner":
-              setIsOwner((old) => ({
-                ...old,
-                error: errorMessages["isOwner"]?.at(0),
-              }))
-              break
-            case "isDriver":
-              setIsDriver((old) => ({
-                ...old,
-                error: errorMessages["isDriver"]?.at(0),
-              }))
-              break
-            case "phoneNumber":
-              setPhoneNumber((old) => ({
-                ...old,
-                error: errorMessages["phoneNumber"]?.at(0),
-              }))
-              break
-            case "username":
-              setUsername((old) => ({
-                ...old,
-                error: errorMessages["username"]?.at(0),
-              }))
-              break
-            default:
-          }
-        }
-        return
-      }
-      toast.error("Invalid submission, please try again")
-    },
-  })
-  const submitForm = () => {
-    setUsername({ value: username.value })
-    setPhoneNumber({ value: phoneNumber.value })
-    setIsDriver({ value: isDriver.value })
-    setIsOwner({ value: isOwner.value })
-    setFirstName({ value: firstName.value })
-    setLastName({ value: lastName.value })
 
-    mutate({
-      firstName: firstName.value,
-      lastName: lastName.value,
-      isOwner: isOwner.value,
-      isDriver: isDriver.value,
-      phoneNumber: phoneNumber.value,
-      username: username.value,
-    })
+const CreateProfile: React.FC<CreateProfileProps> = (props) => {
+  const { update = false, profile } = props
+  const { register, handleSubmit, watch } = useForm<CreateProfileInput>({
+    defaultValues: {
+      isDriver:
+        update && profile && profile?.isDriver !== null
+          ? profile.isDriver
+          : false,
+      isOwner:
+        update && profile && profile?.isOwner !== null
+          ? profile.isOwner
+          : false,
+      firstName: update && profile ? profile.firstName : undefined,
+      lastName: update && profile ? profile.lastName : undefined,
+      vehicleSize:
+        update && profile?.vehicleSize ? profile.vehicleSize : undefined,
+      username: update && profile ? profile.username : undefined,
+      phoneNumber:
+        update && profile?.phoneNumber ? profile.phoneNumber : undefined,
+      licensePlate:
+        update && profile?.licensePlate ? profile.licensePlate : undefined,
+      vehicleModel:
+        update && profile && profile.vehicleModel !== null
+          ? profile.vehicleModel
+          : undefined,
+    },
+  })
+  const { mutate, error } = update
+    ? api.profile.update.useMutation({
+        onSuccess: () => {
+          toast.success("Profile updated succesfully")
+        },
+      })
+    : api.profile.create.useMutation({
+        onSuccess: () => {
+          toast.success("Profile created succesfully")
+        },
+      })
+  const isDriver = watch("isDriver")
+  const onSubmit: SubmitHandler<CreateProfileInput> = (data) => {
+    mutate(data)
   }
-
   return (
     <>
       <div className={styles.form}>
-        <h1>Create your profile</h1>
-        <p>Complete your profile so you can start using the app</p>
-        <div className={styles.inputFields}>
+        <h1>{update ? "Update your profile" : "Create your profile"}</h1>
+        {!update && <p>Complete your profile so you can start using the app</p>}
+        {/*eslint-disable-next-line */}
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.inputFields}>
           <InputField
-            name="firstname"
+            name="firstName"
             label="First name"
             inputType="text"
-            value={firstName.value}
-            onChange={setFirstName}
             placeholder="First Name"
-            error={firstName.error}
+            register={register}
+            error={error?.data?.zodError?.fieldErrors["firstName"]?.at(0)}
           />
           <InputField
             name="lastName"
             label="Last name"
             inputType="text"
-            value={lastName.value}
-            onChange={setLastName}
             placeholder="Last Name"
-            error={lastName.error}
+            register={register}
+            error={error?.data?.zodError?.fieldErrors["lastName"]?.at(0)}
           />
           <InputField
             name="username"
             label="Username"
             inputType="text"
-            value={username.value}
-            onChange={setUsername}
             placeholder="Username"
-            error={username.error}
+            register={register}
+            error={error?.data?.zodError?.fieldErrors["username"]?.at(0)}
           />
           <InputField
             name="phoneNumber"
             label="Phone number"
             inputType="text"
             placeholder="Phone number"
-            value={phoneNumber.value}
-            onChange={setPhoneNumber}
-            error={phoneNumber.error}
+            register={register}
+            error={error?.data?.zodError?.fieldErrors["phoneNumber"]?.at(0)}
           />
-          <Checkbox
+          <InputField
             name="isDriver"
             label="Do you drive?"
-            checked={isDriver.value}
-            onChange={setIsDriver}
-            error={isDriver.error}
+            inputType="checkbox"
+            placeholder=""
+            register={register}
+            error={error?.data?.zodError?.fieldErrors["isDriver"]?.at(0)}
           />
-          <Checkbox
+          <InputField
             name="isOwner"
-            label="Do you own a parking space?"
-            checked={isOwner.value}
-            onChange={setIsOwner}
-            error={isOwner.error}
+            label="Do you own a parking spot?"
+            inputType="checkbox"
+            placeholder=""
+            register={register}
+            error={error?.data?.zodError?.fieldErrors["isOwner"]?.at(0)}
           />
-          <button onClick={submitForm} disabled={isPosting}>
-            Create your profile
-          </button>
-        </div>
+          {isDriver && (
+            <>
+              <InputField
+                name="licensePlate"
+                label="What is your vehicle's license plate?"
+                inputType="text"
+                register={register}
+                placeholder="License plate"
+                error={error?.data?.zodError?.fieldErrors["licensePlate"]?.at(
+                  0
+                )}
+              />
+              <InputField
+                name="vehicleModel"
+                label="What is your vehicle's model?"
+                inputType="text"
+                placeholder="Vehicle model"
+                register={register}
+                error={error?.data?.zodError?.fieldErrors["vehicleModel"]?.at(
+                  0
+                )}
+              />
+              <select {...register("vehicleSize")}>
+                <option value="XSMALL">X-Small</option>
+                <option value="SMALL">Small</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LARGE">Large</option>
+                <option value="XLARGE">X-Large</option>
+              </select>
+            </>
+          )}
+          <input type="submit" />
+        </form>
       </div>
     </>
   )
