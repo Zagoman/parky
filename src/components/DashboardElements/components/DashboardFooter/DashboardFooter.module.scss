@@ -1,0 +1,42 @@
+@import "../../../../styles/tokens.scss";
+.footer {
+  width: 100%;
+  grid-column: 1/-1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  a {
+    color: $blue-200;
+    font-weight: $font-weight-semibold;
+    &:hover {
+      text-decoration: underline;
+      color: $blue-100;
+    }
+    &:active {
+      color: $blue-300;
+    }
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-400;
+  }
+  .copy {
+    color: $neutral-400;
+    align-self: flex-end;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .footer {
+    ul {
+      display: flex;
+      flex-direction: row;
+      gap: $spacer-400;
+    }
+    .copy {
+      color: $neutral-400;
+    }
+  }
+}

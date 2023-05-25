@@ -4,6 +4,23 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: $spacer-400;
+
+  h4 {
+    margin-bottom: $spacer-400;
+    font-size: $font-size-body;
+  }
+
+  a {
+    color: $blue-200;
+    font-weight: $font-weight-semibold;
+    &:hover {
+      text-decoration: underline;
+      color: $blue-100;
+    }
+    &:active {
+      color: $blue-300;
+    }
+  }
 }
 
 .large {
@@ -14,6 +31,33 @@
   order: -1;
 }
 
+.mainHeader {
+  margin-bottom: $spacer-400;
+}
+
+.smallBox {
+  padding-bottom: $spacer-600;
+  position: relative;
+
+  span {
+    display: flex;
+    flex-direction: row;
+    gap: $spacer-300;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    img {
+      max-height: 24px;
+      max-width: 24px;
+    }
+  }
+  a {
+    position: absolute;
+    bottom: $spacer-300;
+    right: $spacer-400;
+  }
+}
+
 @media only screen and (min-width: 768px) {
 }
 
@@ -22,6 +66,11 @@
     display: grid;
     grid-template-columns: 3fr 7fr;
     gap: $spacer-400;
+
+    h4 {
+      margin-bottom: $spacer-400;
+      font-size: $font-size-header-4;
+    }
   }
   .order {
     order: initial;
@@ -29,6 +78,30 @@
   .large {
     grid-column: auto;
     grid-row: span 2;
+  }
+
+  .smallBox {
+    padding-bottom: $spacer-600;
+    h4 {
+      margin-bottom: $spacer-400;
+    }
+    span {
+      display: flex;
+      flex-direction: row;
+      gap: $spacer-300;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      img {
+        max-height: 42px;
+        max-width: 42px;
+      }
+    }
+    a {
+      position: absolute;
+      top: calc($spacer-400 + 4px);
+      right: $spacer-400;
+    }
   }
 }
 
