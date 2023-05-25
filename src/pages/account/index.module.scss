@@ -6,7 +6,6 @@
   gap: $spacer-400;
 
   h4 {
-    margin-bottom: $spacer-400;
     font-size: $font-size-body;
   }
 
@@ -25,6 +24,12 @@
 
 .large {
   grid-column: span 2;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-300;
+  }
 }
 
 .order {
@@ -44,7 +49,7 @@
     flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
-    margin-bottom: $spacer-400;
+    margin: $spacer-400 0;
     img {
       max-height: 24px;
       max-width: 24px;
@@ -57,17 +62,56 @@
   }
 }
 
+.largeboxHeader {
+  h4 {
+    margin-bottom: none;
+  }
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bookingListHeader {
+  display: grid;
+  grid-template-columns: 5fr 2fr 2fr;
+  padding: $spacer-100 0;
+
+  p {
+    color: $neutral-500;
+  }
+
+  p:first-of-type {
+    margin-left: $spacer-100;
+  }
+
+  p:nth-of-type(2) {
+    justify-self: center;
+    margin-right: $spacer-400;
+  }
+
+  p:nth-of-type(3) {
+    justify-self: flex-end;
+    margin-right: $spacer-100;
+  }
+}
+
 @media only screen and (min-width: 768px) {
 }
 
 @media only screen and (min-width: 1024px) {
+  .bookingListHeader {
+    padding: 0;
+    margin-top: $spacer-100;
+  }
+
   .gridWrapper {
     display: grid;
     grid-template-columns: 3fr 7fr;
     gap: $spacer-400;
 
     h4 {
-      margin-bottom: $spacer-400;
       font-size: $font-size-header-4;
     }
   }
@@ -81,10 +125,8 @@
 
   .smallBox {
     padding-bottom: $spacer-600;
-    h4 {
-      margin-bottom: $spacer-400;
-    }
     span {
+      margin: $spacer-400 0;
       display: flex;
       flex-direction: row;
       gap: $spacer-300;

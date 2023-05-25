@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { type NextPage } from "next";
 import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper";
-
+import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter";
 import styles from "./index.module.scss";
 import { UiBox } from "~/components/uiBox/uiBox";
 import { useUser } from "@clerk/nextjs";
@@ -10,28 +13,43 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+import {
+  BookingItem,
+  type BookingElement,
+} from "~/components/DashboardElements/components/BookingItem/BookingItem";
+
 import parcoinIconImport from "../../../public/icon/parkcoin-filled.svg";
 import calendarIconImport from "../../../public/icon/calendar.svg";
-import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter";
 
 const Home: NextPage = () => {
   const [userId, setUserId] = useState("");
   const user = useUser();
+
   const {
     data: userData,
     isLoading: isUserLoading,
-    refetch,
+    refetch: refetchUser,
   } = api.profile.getProfileById.useQuery({
     id: userId,
   });
+
+  const {
+    data: userBookingData,
+    isLoading: areBookingsLoading,
+    refetch: refetchBookings,
+  } = api.booking.getBookingsByUserId.useQuery({
+    userId: userId,
+  });
+
   // casting
   const parcoinIcon = parcoinIconImport as unknown as string;
   const calendarIcon = calendarIconImport as unknown as string;
 
   useEffect(() => {
-    if (user.isSignedIn) {
+    if (user.isSignedIn && user.isLoaded) {
       setUserId(user.user.id);
-      void refetch();
+      void refetchUser();
+      void refetchBookings();
     }
   }, [user.isLoaded]);
 
@@ -60,7 +78,28 @@ const Home: NextPage = () => {
             </span>
             <Link href="/account/topup">Top up</Link>
           </UiBox>
-          <UiBox className={styles.large}>Items</UiBox>
+          <UiBox className={styles.large}>
+            <div className={styles.largeboxHeader}>
+              <h4>Your bookings</h4>
+              <Link href="/account/my-bookings">See more</Link>
+            </div>
+            <ul>
+              <div className={styles.bookingListHeader}>
+                <p>Location & date</p>
+                <p>Price</p>
+                <p>Details</p>
+              </div>
+              {userBookingData && !areBookingsLoading
+                ? userBookingData
+                    .slice(0, 4)
+                    .map((booking: BookingElement) => (
+                      <BookingItem key={booking.id} booking={booking} />
+                    ))
+                : areBookingsLoading
+                ? "loading"
+                : "No bookings found"}
+            </ul>
+          </UiBox>
           <UiBox className={`${styles.order} ${styles.smallBox}`}>
             <h4>Bookings today</h4>
             <span>

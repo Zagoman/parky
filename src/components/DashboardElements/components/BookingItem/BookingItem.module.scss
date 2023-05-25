@@ -1,0 +1,89 @@
+@import "../../../../styles/tokens.scss";
+
+.item {
+  display: grid;
+  grid-template-columns: 5fr 2fr 2fr;
+  flex-direction: row;
+  background-color: $neutral-200;
+  border-radius: $border-roundness-100;
+  padding: $spacer-200 $spacer-300;
+  justify-content: space-between;
+  gap: $spacer-400;
+
+  section:first-of-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $spacer-300;
+  }
+
+  &Header {
+    display: flex;
+    flex-direction: row;
+    gap: $spacer-100;
+    font-size: $font-size-body;
+    font-weight: $font-weight-semibold;
+  }
+
+  &SubInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1;
+    font-size: $font-size-label;
+    flex-wrap: wrap;
+    p {
+      color: $neutral-500;
+      word-wrap: none;
+    }
+  }
+
+  &Price {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    > div {
+      display: flex;
+      flex-direction: row;
+      gap: $spacer-200;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+      font-size: $font-size-body;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &Details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    a {
+      cursor: pointer;
+      transition: 0.3s ease;
+      &:hover {
+        filter: brightness(0.6);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .item {
+    &Header {
+      font-size: $font-size-body-large;
+    }
+
+    &SubInfo {
+      flex-direction: row;
+      font-size: $font-size-body;
+    }
+    &Price {
+      > div {
+        font-size: $font-size-body-large;
+      }
+    }
+  }
+}
