@@ -25,13 +25,10 @@ const Home: NextPage = () => {
   const [userId, setUserId] = useState("");
   const user = useUser();
 
-  const {
-    data: userData,
-    isLoading: isUserLoading,
-    refetch: refetchUser,
-  } = api.profile.getProfileById.useQuery({
-    id: userId,
-  });
+  const { data: userData, refetch: refetchUser } =
+    api.profile.getProfileById.useQuery({
+      id: userId,
+    });
 
   const {
     data: userBookingData,
