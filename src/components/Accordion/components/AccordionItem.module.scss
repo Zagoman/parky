@@ -4,6 +4,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   * {
     transition: 0.5s ease;
   }
@@ -19,6 +20,7 @@
     h4 {
       color: $neutral-600;
       font-size: $font-size-body-large;
+      margin-right: $spacer-200;
     }
   }
   .activeHeader {

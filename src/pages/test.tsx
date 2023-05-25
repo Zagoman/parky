@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast"
 const Test: NextPage = () => {
   const user = useUser()
   const { mutate: addCoin, error } = api.coin.addCoin.useMutation({
+
     onSuccess: () => {
       toast.success("transaction complete")
     },
@@ -20,10 +21,7 @@ const Test: NextPage = () => {
   const { register, handleSubmit } = useForm<RouterInputs["coin"]["addCoin"]>()
 
   const onSubmit: SubmitHandler<RouterInputs["coin"]["addCoin"]> = (data) => {
-    console.log(data)
-    console.log("outside")
     if (user.user) {
-      console.log("insider")
       addCoin({ ...data, toAccountId: user.user.id })
     }
   }

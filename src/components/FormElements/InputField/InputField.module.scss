@@ -1,14 +1,17 @@
 @import "../../../styles/tokens.scss";
 
 .inputWrapper {
-  padding: 0.5rem 0 1rem 0;
+  padding: $spacer-200 0 $spacer-300 0;
   .label {
     display: flex;
     flex-direction: column;
-    row-gap: 0.5rem;
+    row-gap: $spacer-200;
+    font-weight: $font-weight-semibold;
+    color: $neutral-700;
   }
   input {
     font-size: $font-size-body;
+    font-family: $font-body;
     line-height: 1.2;
     height: $spacer-600;
     padding-block: $spacer-300;

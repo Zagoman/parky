@@ -1,0 +1,9 @@
+@import "../../../styles/tokens.scss";
+
+.featureWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: $spacer-300;
+  margin-top: $spacer-200;
+  height: 24px;
+}

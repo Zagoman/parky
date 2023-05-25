@@ -1,18 +1,53 @@
-import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
 import styles from "./index.module.scss";
 import { type NextPage } from "next";
 import Head from "next/head";
-// import { api } from "~/utils/api";
 import { PageHeader } from "~/components/pageHeader/pageHeader";
 import { UiBox } from "~/components/uiBox/uiBox";
 import { Accordion } from "~/components/Accordion/Accordion";
 import { Footer } from "~/components/Footer/Footer";
+import Link from "next/link";
+import { api } from "~/utils/api";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+
+import homeParkingImport from "../../public/home-parking.jpg";
+import homeDrivingImport from "../../public/home-driving.jpg";
+import homeHighwayImport from "../../public/home-highway.jpg";
+
+import parCoinWhiteImport from "../../public/icon/parcoin_white.svg";
+import sustainableIconImport from "../../public/icon/sustainable_driving.svg";
+import speedIconImport from "../../public/icon/speed.svg";
+import paymentsImport from "../../public/icon/payments.svg";
 
 const Home: NextPage = () => {
-  // sign in will be moved into header
-  // const { mutate } = api.profile.create.useMutation();
-  // const profiles = api.profile.getAll.useQuery();
+  const [userId, setUserId] = useState("");
   const user = useUser();
+  const {
+    data: userData,
+    isLoading: isUserLoading,
+    refetch: refetchUser,
+  } = api.profile.getProfileById.useQuery({
+    id: userId,
+  });
+
+  const homeParking = homeParkingImport as unknown as string;
+  const homeDriving = homeDrivingImport as unknown as string;
+  const homeHighway = homeHighwayImport as unknown as string;
+  const parCoinWhiteIcon = parCoinWhiteImport as unknown as string;
+  const sustainableIcon = sustainableIconImport as unknown as string;
+  const speedIcon = speedIconImport as unknown as string;
+  const paymentsIcon = paymentsImport as unknown as string;
+
+  useEffect(() => {
+    if (user.user && user.isSignedIn && !isUserLoading) {
+      setUserId(user?.user?.id);
+      console.log(userData?.isDriver);
+      void refetchUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.user, isUserLoading]);
+
   return (
     <>
       <Head>
@@ -23,23 +58,80 @@ const Home: NextPage = () => {
       <PageHeader secondaryMenu={false} secondaryMenuContents={null}>
         <div>
           <section className={styles.hero}>
-            <div>
-              <UiBox>
-                <h3>Book a parking spot</h3>
-              </UiBox>
-            </div>
-            <span>OR</span>
-            <div>
-              <UiBox>
-                <h3>Register as an owner</h3>
-              </UiBox>
-            </div>
+            {user.isSignedIn && (
+              <div>
+                <UiBox>
+                  {user.isSignedIn && userData?.isDriver ? (
+                    <Link href="/map">
+                      <h3>Book a parking spot</h3>
+                    </Link>
+                  ) : user.isSignedIn ? (
+                    <h3>Register as a driver</h3>
+                  ) : (
+                    ""
+                  )}
+                </UiBox>
+                <Image
+                  src={homeDriving}
+                  alt="person driving a car"
+                  width="1200"
+                  height="1200"
+                ></Image>
+              </div>
+            )}
+            {user.isSignedIn && <span> OR </span>}
+            {user.isSignedIn && (
+              <div>
+                <UiBox>
+                  {!userData?.isOwner && user.isSignedIn ? (
+                    <h3>Register as an owner</h3>
+                  ) : userData?.isOwner && user.isSignedIn ? (
+                    <h3>Check your earnings</h3>
+                  ) : (
+                    ""
+                  )}
+                </UiBox>
+                <Image
+                  src={homeParking}
+                  alt="parking space with cars"
+                  width="1200"
+                  height="1200"
+                />
+              </div>
+            )}
+            {!user.isSignedIn && (
+              <section className={styles.newUser}>
+                <UiBox>
+                  <div>
+                    <h2> New to Parky?</h2>
+                    <p>
+                      Join our network of drivers and owners and gain benefits.
+                    </p>
+                    <div>
+                      <span className={styles.clerkButton}>
+                        <SignUpButton />
+                      </span>
+                      <span className={styles.clerkButton}>
+                        <SignInButton />
+                      </span>
+                    </div>
+                  </div>
+                </UiBox>
+                <Image
+                  src={homeHighway}
+                  alt="top-down view of a highway"
+                  width="1920"
+                  height="1200"
+                />
+              </section>
+            )}
           </section>
           <section className={styles.explainer}>
             <h1 className={styles.headerBlue}>What is Parky?</h1>
             <div className={styles.explainerWrapper}>
               <article>
                 <span>1</span>
+
                 <div>
                   <h3>Register an account</h3>
                   <p>
@@ -48,8 +140,10 @@ const Home: NextPage = () => {
                   </p>
                 </div>
               </article>
+
               <article>
                 <span>2</span>
+
                 <div>
                   <h3>Top up your account</h3>
                   <p>
@@ -60,7 +154,7 @@ const Home: NextPage = () => {
               </article>
               <article>
                 <span>
-                  <div></div>3 <div></div>
+                  <span>3</span>
                 </span>
                 <div>
                   <h3>Find the desired location</h3>
@@ -70,61 +164,93 @@ const Home: NextPage = () => {
                   </p>
                 </div>
               </article>
-              <article>
-                <span>4</span>
-                <div>
-                  <h3>Book it</h3>
-                  <p>
-                    Booking process is quick and seamless, just adjust the
-                    duration and date to proceed.
-                  </p>
-                </div>
-              </article>
-              <article>
-                <span>5</span>
-                <div>
-                  <h3>Park in your spot</h3>
-                  <p>
-                    You are provided with a 15 minute window before and after if
-                    your commute took longer than expected.
-                  </p>
-                </div>
-              </article>
+              <div className={styles.explainerBottomRow}>
+                <article>
+                  <span>4</span>
+
+                  <div>
+                    <h3>Book it</h3>
+                    <p>
+                      Booking process is quick and seamless, just adjust the
+                      duration and date to proceed.
+                    </p>
+                  </div>
+                </article>
+                <article>
+                  <span>5</span>
+                  <div>
+                    <h3>Park in your spot</h3>
+                    <p>
+                      You are provided with a 15 minute window before and after
+                      if your commute took longer than expected.
+                    </p>
+                  </div>
+                </article>
+              </div>
             </div>
           </section>
+
           {/* features */}
           <section className={styles.features}>
             <UiBox>
-              <div></div>
-              <h3>Save fuel</h3>
+              <div>
+                <Image
+                  src={paymentsIcon}
+                  alt="cash icon"
+                  width="64"
+                  height="64"
+                />
+              </div>
+              <div>
+                <h3>Save money</h3>
+                <p>Rent a parking spot for a fraction of the price.</p>
+              </div>
             </UiBox>
             <UiBox>
-              <div></div>
-              <h3>Drive sustainably</h3>
+              <div>
+                <Image
+                  src={sustainableIcon}
+                  alt="cash icon"
+                  width="64"
+                  height="64"
+                />
+              </div>
+              <div>
+                <h3>Drive sustainably</h3>
+                <p>
+                  Know exactly where your parking spot is and reduce your fuel
+                  usage.
+                </p>
+              </div>
             </UiBox>
             <UiBox>
-              <div></div>
-              <h3>Quick booking</h3>
+              <div>
+                <Image src={speedIcon} alt="cash icon" width="64" height="64" />
+              </div>
+              <div>
+                <h3>Quick booking</h3>
+                <p>Find and book a parking spot in just seconds.</p>
+              </div>
             </UiBox>
             <UiBox>
-              <div></div>
-              <h3>Get benefits</h3>
+              <div>
+                <Image
+                  src={parCoinWhiteIcon}
+                  alt="cash icon"
+                  width="64"
+                  height="64"
+                />
+              </div>
+              <div>
+                <h3>Get benefits</h3>
+                <p>Join as a parking owner and gain additional benefits.</p>
+              </div>
             </UiBox>
           </section>
           <section className={styles.faq}>
             <div>SOME IMAGE</div>
             <Accordion />
           </section>
-          {/* old sign in component, will be moved into header*/}
-          <main className={styles.main}>
-            {!user.isSignedIn && <SignInButton></SignInButton>}
-            {!!user.isSignedIn && (
-              <>
-                <SignOutButton></SignOutButton>
-              </>
-            )}
-            <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
-          </main>
           <Footer />
         </div>
       </PageHeader>
