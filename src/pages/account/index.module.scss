@@ -97,6 +97,8 @@
       }
     }
     a {
+      z-index: 1000;
+      cursor: pointer;
       position: absolute;
       bottom: calc($spacer-300 + 4px);
       right: $spacer-400;
