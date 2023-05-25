@@ -1,4 +1,4 @@
-import { SignIn, useUser } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs"
 import styles from "./index.module.scss"
 import type { NextPage } from "next"
 import Head from "next/head"
@@ -9,15 +9,13 @@ import { toast } from "react-hot-toast"
 
 const Test: NextPage = () => {
   const user = useUser()
-  const {} = api.parkingReview.getAllById.useQuery({
-    parkingId: "clhunjals0000uw5q1jbwuly8",
-  })
-  const { mutate: addCoin } = api.coin.addCoin.useMutation({
+  const { mutate: addCoin, error } = api.coin.addCoin.useMutation({
+
     onSuccess: () => {
       toast.success("transaction complete")
     },
-    onError: () => {
-      toast.error("something went wrong")
+    onError: (e) => {
+      if (!e.data?.zodError) toast.error(e.message)
     },
   })
   const { register, handleSubmit } = useForm<RouterInputs["coin"]["addCoin"]>()
@@ -47,6 +45,7 @@ const Test: NextPage = () => {
             label="Purchase amount"
             inputType="number"
             placeholder=""
+            error={error?.data?.zodError?.fieldErrors["amount"]?.at(0)}
           />
           <input type="submit" />
         </form>

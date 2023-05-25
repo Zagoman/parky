@@ -35,11 +35,18 @@ const createSchema = z.object({
 })
 const updateSchema = createSchema.extend({ id: z.string() })
 export const parkingRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.parkingSpot.findMany()
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    const parkings = await ctx.prisma.parkingSpot.findMany()
+    if (!parkings) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Something went wrong, try again soon",
+      })
+    }
+    return parkings
   }),
-  getShort: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.parkingSpot.findMany({
+  getShort: publicProcedure.query(async ({ ctx }) => {
+    const parkings = await ctx.prisma.parkingSpot.findMany({
       select: {
         _count: {
           select: { Booking: true },
@@ -57,6 +64,13 @@ export const parkingRouter = createTRPCRouter({
         longitude: true,
       },
     })
+    if (!parkings) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Something went wrong, try again soon",
+      })
+    }
+    return parkings
   }),
   getParkingWithinRange: publicProcedure
     .input(
@@ -171,7 +185,8 @@ export const parkingRouter = createTRPCRouter({
           },
         },
       })
-      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
+      if (!profile)
+        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" })
       return profile.ParkingSpot[0]
     }),
 
@@ -186,7 +201,7 @@ export const parkingRouter = createTRPCRouter({
         where: { id: input.id },
       })
       if (!parking) {
-        throw new TRPCError({ code: "NOT_FOUND" })
+        throw new TRPCError({ code: "NOT_FOUND", message: "Parking not found" })
       }
       return parking
     }),
