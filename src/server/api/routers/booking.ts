@@ -145,7 +145,7 @@ export const bookingRouter = createTRPCRouter({
     .input(z.object({ userId: z.string() }))
     .query(async ({ ctx, input }) => {
       const bookings = await ctx.prisma.booking.findMany({
-        where: { id: input.userId },
+        where: { profileId: input.userId },
       })
       if (!bookings) {
         throw new TRPCError({
