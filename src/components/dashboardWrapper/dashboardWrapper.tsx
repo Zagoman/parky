@@ -15,7 +15,7 @@ import parkyImage from "../../../public/icon/parky-hex.svg";
 import cogImage from "../../../public/icon/settings.svg";
 import helpImage from "../../../public/icon/help.svg";
 
-import { SignOutButton, useUser, SignIn, SignUp } from "@clerk/nextjs";
+import { useUser, SignIn } from "@clerk/nextjs";
 
 import { DashboardMenuElement } from "./components/dashboardMenuElement/dashboardMenuElement";
 import Link from "next/link";
@@ -151,7 +151,7 @@ export const DashboardWrapper = ({
           children
         ) : (
           <div className={styles.signIn}>
-            <SignIn />
+            <SignIn redirectUrl="/account" />
           </div>
         )}
       </main>

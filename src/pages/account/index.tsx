@@ -3,6 +3,8 @@ import { DashboardWrapper } from "~/components/dashboardWrapper/dashboardWrapper
 
 import styles from "./index.module.scss";
 import { UiBox } from "~/components/uiBox/uiBox";
+import { useUser } from "@clerk/nextjs";
+import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   return (

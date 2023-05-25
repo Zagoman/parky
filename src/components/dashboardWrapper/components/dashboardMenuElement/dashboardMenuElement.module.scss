@@ -26,6 +26,35 @@
   padding: $spacer-300 $spacer-400;
   font-family: $font-display;
   font-weight: $font-weight-semibold;
+  position: relative;
+  transition: 0.3s ease;
+  &:before {
+    transition: 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    display: flex;
+    content: "";
+    height: 100%;
+    width: $spacer-200;
+  }
+
+  &:hover {
+    color: $blue-200;
+    background-color: $neutral-200;
+  }
+
+  &:hover:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: $neutral-400;
+    display: flex;
+    content: "";
+    height: 100%;
+    width: $spacer-200;
+  }
 
   img {
     height: $spacer-400;
