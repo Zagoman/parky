@@ -1,0 +1,36 @@
+@import "../../styles/tokens.scss";
+
+.gridWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacer-400;
+}
+
+.large {
+  grid-column: span 2;
+}
+
+.order {
+  order: -1;
+}
+
+@media only screen and (min-width: 768px) {
+}
+
+@media only screen and (min-width: 1024px) {
+  .gridWrapper {
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    gap: $spacer-400;
+  }
+  .order {
+    order: initial;
+  }
+  .large {
+    grid-column: auto;
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-width: 1366px) {
+}
