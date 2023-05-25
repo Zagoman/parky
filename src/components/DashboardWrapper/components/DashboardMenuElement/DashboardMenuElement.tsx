@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "./dashboardMenuElement.module.scss";
+import styles from "./DashboardMenuElement.module.scss";
 import Image from "next/image";
 
 type DashboardMenuElementProps = {

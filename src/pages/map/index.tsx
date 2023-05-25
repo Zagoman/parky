@@ -49,7 +49,6 @@ const Map: NextPage = () => {
   const [isPurchaseFormVisible, setIsPurchaseFormVisible] = useState(false);
   const [bookingType, setBookingType] = useState("hourly");
   const [userId, setUserId] = useState("");
-  const [userProfile, setUserProfile] = useState<any>({});
   const user = useUser();
   const today = new Date();
   today.setMinutes(today.getMinutes() - today.getTimezoneOffset());

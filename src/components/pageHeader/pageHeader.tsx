@@ -26,11 +26,12 @@ export const PageHeader = ({
     useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalContents, setModalContents] = useState<JSX.Element>();
+  const user = useUser();
+
   const menuIcon = menuImage as string;
   const pageInfoIcon = pageInfoImage as string;
   const closeIcon = closeImage as string;
   const parkyLogo = PakyLogoBlue as string;
-  const user = useUser();
 
   return (
     <>

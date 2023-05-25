@@ -1,18 +1,18 @@
-import { useUser } from "@clerk/nextjs"
-import styles from "./index.module.scss"
-import type { NextPage } from "next"
-import Head from "next/head"
-import { api } from "~/utils/api"
-import { toast } from "react-hot-toast"
+import { useUser } from "@clerk/nextjs";
+import styles from "./index.module.scss";
+import type { NextPage } from "next";
+import Head from "next/head";
+import { api } from "~/utils/api";
+import { toast } from "react-hot-toast";
 
 const Test: NextPage = () => {
-  const user = useUser()
+  const user = useUser();
   const { mutate: cancel } = api.booking.cancelBooking.useMutation({
     onSuccess: () => toast.success("Booking canceled succesfully"),
-  })
+  });
   const { mutate: create } = api.booking.create.useMutation({
     onSuccess: () => toast.success("booking create"),
-  })
+  });
   const bookParking = () => {
     create({
       price: 200,
@@ -20,13 +20,14 @@ const Test: NextPage = () => {
       driverId: "user_2P7PXIXl7M2nwYluYFo7y0Pka1m",
       parkingId: "clhulkwe80000uwl2zknh11s0",
       start: new Date(Date.now()).toISOString(),
-    })
-  }
+    });
+  };
+
   const cancelParking = () => {
     cancel({
       bookingNumber: "1684692120865",
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -41,7 +42,7 @@ const Test: NextPage = () => {
         <button onClick={() => cancelParking()}> Cancel parking </button>
       </main>
     </>
-  )
-}
+  );
+};
 
-export default Test
+export default Test;
