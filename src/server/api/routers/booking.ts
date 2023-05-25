@@ -141,4 +141,18 @@ export const bookingRouter = createTRPCRouter({
         },
       })
     }),
+  getBookingsByUserId: privateProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const bookings = await ctx.prisma.booking.findMany({
+        where: { profileId: input.userId },
+      })
+      if (!bookings) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Bookings not found",
+        })
+      }
+      return bookings
+    }),
 })
