@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import styles from "./DashboardWrapper.module.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import logoImage from "../../../public/parky-logo-blue.svg";
 import menuImage from "../../../public/icon/menu.svg";
@@ -16,7 +16,7 @@ import cogImage from "../../../public/icon/settings.svg";
 import helpImage from "../../../public/icon/help.svg";
 
 import { useUser, SignIn, SignOutButton } from "@clerk/nextjs";
-
+import { api } from "~/utils/api";
 import { DashboardMenuElement } from "./components/DashboardMenuElement/DashboardMenuElement";
 import Link from "next/link";
 
@@ -51,6 +51,19 @@ export const DashboardWrapper = ({
   const helpIcon = helpImage as string;
 
   const user = useUser();
+
+  const [userId, setUserId] = useState("");
+  const { data: userData, refetch: refetchUser } =
+    api.profile.getProfileById.useQuery({
+      id: userId,
+    });
+
+  useEffect(() => {
+    if (user.isSignedIn && user.isLoaded) {
+      setUserId(user.user.id);
+      void refetchUser();
+    }
+  }, [user.isLoaded]);
 
   return (
     <>
@@ -131,37 +144,42 @@ export const DashboardWrapper = ({
           <nav className={menuVisibility ? styles.visible : styles.hidden}>
             <ul>
               <DashboardMenuElement
-                href="/dashboard"
+                href="/account"
                 icon={dashboardIcon}
                 title="Dashboard"
                 active={active === "dashboard" ? true : false}
               />
+              {userData?.isOwner && (
+                <DashboardMenuElement
+                  href="account/my-parking-spots"
+                  icon={parkingIcon}
+                  title="My parking spots"
+                  active={active === "myparkingspots" ? true : false}
+                />
+              )}
+              {userData?.isDriver ||
+                (userData?.isOwner && (
+                  <DashboardMenuElement
+                    href="/account/bookings"
+                    icon={calendarIcon}
+                    title="Parking bookings"
+                    active={active === "bookings" ? true : false}
+                  />
+                ))}
               <DashboardMenuElement
-                href="/my-parking-spots"
-                icon={parkingIcon}
-                title="My parking spots"
-                active={active === "myparkingspots" ? true : false}
-              />
-              <DashboardMenuElement
-                href="/recent-bookings"
-                icon={calendarIcon}
-                title="Recent bookings"
-                active={active === "recentbookings" ? true : false}
-              />
-              <DashboardMenuElement
-                href="/earnings"
+                href="/account/balance"
                 icon={chartIcon}
-                title="Earnings overview"
-                active={active === "earningsoverview" ? true : false}
+                title="Balance overview"
+                active={active === "balance" ? true : false}
               />
               <DashboardMenuElement
-                href="/top-up-account"
+                href="/account/topup"
                 icon={parkcoinIcon}
                 title="Top up account"
                 active={active === "topupaccount" ? true : false}
               />
               <DashboardMenuElement
-                href="/get-benefits"
+                href="/account/get-benefits"
                 icon={parkyIcon}
                 title="Get benefits"
                 active={active === "benefits" ? true : false}
@@ -176,16 +194,10 @@ export const DashboardWrapper = ({
                 active={active === "help" ? true : false}
               />
               <DashboardMenuElement
-                href="/account"
+                href="/account/settings"
                 icon={cogIcon}
                 title="Account settings"
                 active={active === "accountsettings" ? true : false}
-              />
-              <DashboardMenuElement
-                href="/logout"
-                icon={accountIcon}
-                title="Log out"
-                active={false}
               />
             </ul>
           </nav>
