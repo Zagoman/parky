@@ -1,5 +1,35 @@
 @import "../../../styles/tokens.scss";
 
+.selectInput {
+  background-color: transparent;
+  border: none;
+  color: $blue-200;
+  font-family: $font-body;
+  cursor: pointer;
+  font-size: $font-size-body;
+  font-weight: $font-weight-semibold;
+  text-align: left;
+  padding: 0 $spacer-100;
+  &:hover {
+    color: $blue-100;
+  }
+}
+
+.sortingWrapper {
+  position: absolute;
+  right: 0;
+  background-color: $neutral-100;
+  top: $spacer-500;
+  padding: $spacer-200 0;
+  border-radius: $border-roundness-100;
+  border: solid $border-width-100 $neutral-300;
+  box-shadow: $box-shadow;
+}
+
+.sortingHidden {
+  display: none;
+}
+
 .headerWrapper {
   > div {
     margin-bottom: $spacer-400;
@@ -38,12 +68,11 @@
 }
 
 .filters {
-  span {
-    display: none;
-  }
+  position: relative;
   img {
     width: 36px;
     height: 36px;
+    cursor: pointer;
   }
   p {
     color: $blue-200;
@@ -121,5 +150,18 @@
         }
       }
     }
+  }
+  .sortingWrapper {
+    position: initial;
+    background-color: transparent;
+    top: $spacer-500;
+    padding: $spacer-200 0;
+    border-radius: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  .sortingHidden {
+    display: initial;
   }
 }
