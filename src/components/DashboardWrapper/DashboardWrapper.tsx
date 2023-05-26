@@ -157,15 +157,14 @@ export const DashboardWrapper = ({
                   active={active === "myparkingspots" ? true : false}
                 />
               )}
-              {userData?.isDriver ||
-                (userData?.isOwner && (
-                  <DashboardMenuElement
-                    href="/account/bookings"
-                    icon={calendarIcon}
-                    title="Parking bookings"
-                    active={active === "bookings" ? true : false}
-                  />
-                ))}
+              {user.isSignedIn && (
+                <DashboardMenuElement
+                  href="/account/bookings"
+                  icon={calendarIcon}
+                  title="Parking bookings"
+                  active={active === "bookings" ? true : false}
+                />
+              )}
               <DashboardMenuElement
                 href="/account/balance"
                 icon={chartIcon}
