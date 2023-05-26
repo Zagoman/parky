@@ -1,5 +1,4 @@
 import { UiBox } from "~/components/uiBox/uiBox";
-
 import styles from "./DashboardFooter.module.scss";
 
 type DashboardFooterProps = {

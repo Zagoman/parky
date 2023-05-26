@@ -1,0 +1,167 @@
+@import "../../../styles/tokens.scss";
+
+.selectInput {
+  background-color: transparent;
+  border: none;
+  color: $blue-200;
+  font-family: $font-body;
+  cursor: pointer;
+  font-size: $font-size-body;
+  font-weight: $font-weight-semibold;
+  text-align: left;
+  padding: 0 $spacer-100;
+  &:hover {
+    color: $blue-100;
+  }
+}
+
+.sortingWrapper {
+  position: absolute;
+  right: 0;
+  background-color: $neutral-100;
+  top: $spacer-500;
+  padding: $spacer-200 0;
+  border-radius: $border-roundness-100;
+  border: solid $border-width-100 $neutral-300;
+  box-shadow: $box-shadow;
+}
+
+.sortingHidden {
+  display: none;
+}
+
+.headerWrapper {
+  > div {
+    margin-bottom: $spacer-400;
+    display: flex;
+    flex-direction: row;
+    gap: $spacer-200;
+    align-items: center;
+    justify-content: space-between;
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: $spacer-400;
+    }
+  }
+}
+
+.viewToggleWrapper {
+  p {
+    color: $blue-200;
+    cursor: pointer;
+    font-size: $font-size-body;
+    font-weight: $font-weight-semibold;
+    &:hover {
+      color: $blue-100;
+    }
+  }
+}
+
+.bookingListWrapper {
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-300;
+  }
+}
+
+.filters {
+  position: relative;
+  img {
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+  }
+  p {
+    color: $blue-200;
+    cursor: pointer;
+    font-size: $font-size-body;
+    font-weight: $font-weight-semibold;
+    &:hover {
+      color: $blue-100;
+    }
+  }
+}
+
+.bookingListHeader {
+  display: grid;
+  grid-template-columns: 5fr 2fr 2fr;
+  padding: $spacer-100 0;
+  margin-bottom: $spacer-300;
+  p {
+    color: $neutral-500;
+  }
+
+  p:first-of-type {
+    margin-left: $spacer-100;
+  }
+
+  p:nth-of-type(2) {
+    justify-self: center;
+    margin-right: $spacer-400;
+  }
+
+  p:nth-of-type(3) {
+    justify-self: flex-end;
+    margin-right: $spacer-100;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .headerWrapper {
+    > div {
+      justify-content: space-between;
+    }
+  }
+
+  .viewToggleWrapper {
+    margin-top: $spacer-200;
+    p {
+      font-size: $font-size-body-large;
+    }
+  }
+
+  .bookingListWrapper {
+    ul {
+      max-height: 600px;
+      overflow-y: scroll;
+    }
+  }
+
+  .filters {
+    display: flex;
+    img {
+      display: none;
+    }
+    span {
+      display: flex;
+      flex-direction: row;
+      gap: $spacer-400;
+      margin-top: $spacer-200;
+      p {
+        color: $blue-200;
+        cursor: pointer;
+        font-size: $font-size-body-large;
+        font-weight: $font-weight-semibold;
+        &:hover {
+          color: $blue-100;
+        }
+      }
+    }
+  }
+  .sortingWrapper {
+    position: initial;
+    background-color: transparent;
+    top: $spacer-500;
+    padding: $spacer-200 0;
+    border-radius: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  .sortingHidden {
+    display: initial;
+  }
+}
