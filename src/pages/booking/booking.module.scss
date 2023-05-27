@@ -1,5 +1,45 @@
 @import "../../styles/tokens.scss";
 
+.primary {
+  width: 100%;
+  background-color: $blue-200;
+  border: none;
+  cursor: pointer;
+  color: $neutral-100;
+  font-family: $font-display;
+  font-size: $font-size-body-large;
+  font-weight: $font-weight-semibold;
+  padding: $spacer-300 $spacer-500;
+  border-radius: $border-roundness-100;
+  transition: 0.2s ease-in-out;
+  box-sizing: border-box;
+  border: solid $border-width-200 $blue-200;
+  display: flex;
+  gap: $spacer-200;
+  align-items: center;
+  justify-content: center;
+  margin-top: $spacer-300;
+  &:disabled {
+    background-color: $neutral-400;
+    border: solid $border-width-200 $neutral-400;
+    cursor: not-allowed;
+    &:hover {
+      background-color: $neutral-400;
+      border: solid $border-width-200 $neutral-400;
+    }
+  }
+}
+
+.primary:hover {
+  background-color: $blue-100;
+  border: solid $border-width-200 $blue-100;
+}
+
+.primary:active {
+  background-color: $blue-300;
+  border: solid $border-width-200 $blue-300;
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -40,6 +80,62 @@
         }
       }
     }
+  }
+
+  &Review {
+    form {
+      > section {
+        > div {
+          display: flex;
+          gap: $spacer-300;
+          flex-direction: column;
+          button {
+            align-self: flex-end;
+            justify-self: flex-end;
+          }
+        }
+      }
+    }
+  }
+  .textarea {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    font-weight: 600;
+    color: #10171d;
+    textarea {
+      height: 120px;
+      font-size: $font-size-body;
+      font-family: $font-body;
+      line-height: 1.2;
+      padding-block: $spacer-300;
+      padding-inline: $spacer-300;
+      border-style: unset;
+      border-radius: $border-roundness-100;
+      border: 1px solid $neutral-500;
+      resize: none;
+    }
+  }
+  .fieldError {
+    margin-top: -$spacer-300;
+    margin-bottom: $spacer-200;
+    color: $red-200;
+  }
+}
+
+.ratingWrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: $spacer-200;
+  align-content: center;
+  > div:last-of-type {
+    margin-top: $spacer-400;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .ratingWrapper {
+    gap: $spacer-400;
   }
 }
 
