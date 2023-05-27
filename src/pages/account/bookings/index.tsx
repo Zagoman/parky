@@ -1,31 +1,33 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import styles from "./index.module.scss";
-import { type NextPage } from "next";
-import { api } from "~/utils/api";
-import { useUser } from "@clerk/nextjs";
-import { useState, useEffect } from "react";
-import filterIconImport from "../../../../public/icon/filter.svg";
+import styles from "./index.module.scss"
+import { type NextPage } from "next"
+import { RouterOutputs, api } from "~/utils/api"
+import { useUser } from "@clerk/nextjs"
+import { useState, useEffect } from "react"
+import filterIconImport from "../../../../public/icon/filter.svg"
 
-import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper";
-import { UiBox } from "~/components/uiBox/uiBox";
+import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper"
+import { UiBox } from "~/components/uiBox/uiBox"
 import {
   BookingItem,
   type BookingElement,
-} from "~/components/DashboardElements/components/BookingItem/BookingItem";
-import Image from "next/image";
+} from "~/components/DashboardElements/components/BookingItem/BookingItem"
+import Image from "next/image"
 
 const Home: NextPage = () => {
-  const [userId, setUserId] = useState("");
-  const [activeView, setActiveView] = useState("");
-  const [sortingValue, setSortingValue] = useState("default");
-  const [bookingItems, setBookingItems] = useState<BookingElement[]>([]);
-  const [isSortingVisible, setIsSortingVisible] = useState(false);
-  const user = useUser();
+  const [userId, setUserId] = useState("")
+  const [activeView, setActiveView] = useState("")
+  const [sortingValue, setSortingValue] = useState("default")
+  const [bookingItems, setBookingItems] = useState<
+    RouterOutputs["booking"]["getBookingsByUserId"]
+  >([])
+  const [isSortingVisible, setIsSortingVisible] = useState(false)
+  const user = useUser()
 
   const { data: userData, refetch: refetchUser } =
     api.profile.getProfileById.useQuery({
       id: userId,
-    });
+    })
 
   const {
     data: userBookingData,
@@ -33,63 +35,63 @@ const Home: NextPage = () => {
     refetch: refetchBookings,
   } = api.booking.getBookingsByUserId.useQuery({
     userId: userId,
-  });
+  })
 
-  const filterIcon = filterIconImport as unknown as string;
+  const filterIcon = filterIconImport as unknown as string
 
   useEffect(() => {
     if (user.isSignedIn && user.isLoaded) {
-      setUserId(user.user.id);
-      void refetchUser();
-      void refetchBookings();
+      setUserId(user.user.id)
+      void refetchUser()
+      void refetchBookings()
     }
-  }, [user.isLoaded]);
+  }, [user.isLoaded])
 
   useEffect(() => {
     if (userBookingData?.length) {
-      setBookingItems(userBookingData);
+      setBookingItems(userBookingData)
     }
-  }, [userBookingData]);
+  }, [userBookingData])
 
   useEffect(() => {
     if (userBookingData?.length) {
       if (sortingValue === "default") {
-        setBookingItems(userBookingData);
+        setBookingItems(userBookingData)
       } else if (sortingValue === "newest") {
-        const sorted = [...userBookingData];
+        const sorted = [...userBookingData]
         setBookingItems(
           sorted.sort((a, b) => {
-            return new Date(b.start).getTime() - new Date(a.start).getTime();
+            return new Date(b.start).getTime() - new Date(a.start).getTime()
           })
-        );
+        )
       } else if (sortingValue === "oldest") {
-        const sorted = [...userBookingData];
+        const sorted = [...userBookingData]
         setBookingItems(
           sorted.sort((a, b) => {
-            return new Date(a.start).getTime() - new Date(b.start).getTime();
+            return new Date(a.start).getTime() - new Date(b.start).getTime()
           })
-        );
+        )
       } else if (sortingValue === "cost") {
-        const sorted = [...userBookingData];
+        const sorted = [...userBookingData]
         setBookingItems(
           sorted.sort((a, b) => {
-            return b.price - a.price;
+            return b.price - a.price
           })
-        );
+        )
       } else if (sortingValue === "duration") {
-        const sorted = [...userBookingData];
+        const sorted = [...userBookingData]
         setBookingItems(
           sorted.sort((a, b) => {
             return (
-              b.end.getHours() -
-              b.start.getHours() -
-              (a.end.getHours() - a.start.getHours())
-            );
+              new Date(b.end).getHours() -
+              new Date(b.start).getHours() -
+              (new Date(a.end).getHours() - new Date(a.start).getHours())
+            )
           })
-        );
+        )
       }
     }
-  }, [sortingValue]);
+  }, [sortingValue])
 
   return (
     <DashboardWrapper
@@ -124,7 +126,7 @@ const Home: NextPage = () => {
                 onClick={() => {
                   isSortingVisible
                     ? setIsSortingVisible(false)
-                    : setIsSortingVisible(true);
+                    : setIsSortingVisible(true)
                 }}
               />
               <span
@@ -138,7 +140,7 @@ const Home: NextPage = () => {
                   className={styles.selectInput}
                   value={sortingValue}
                   onChange={(e) => {
-                    setSortingValue(e.target.value);
+                    setSortingValue(e.target.value)
                   }}
                 >
                   <option value="default" className={styles.selectOption}>
@@ -169,8 +171,15 @@ const Home: NextPage = () => {
           </div>
           <ul>
             {bookingItems && !areBookingsLoading
-              ? bookingItems.map((booking: BookingElement) => (
-                  <BookingItem key={booking.id} booking={booking} />
+              ? bookingItems.map((booking) => (
+                  <BookingItem
+                    key={booking.id}
+                    booking={{
+                      ...booking,
+                      end: new Date(booking.end),
+                      start: new Date(booking.start),
+                    }}
+                  />
                 ))
               : areBookingsLoading
               ? "loading"
@@ -179,7 +188,7 @@ const Home: NextPage = () => {
         </UiBox>
       </>
     </DashboardWrapper>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

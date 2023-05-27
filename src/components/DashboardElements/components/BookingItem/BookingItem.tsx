@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { api } from "~/utils/api"
-import { useEffect, useState } from "react"
 import parkingIconImport from "../../../../../public/icon/parking.svg"
 import detailsIconImport from "../../../../../public/icon/details.svg"
 import parcoinIconImport from "../../../../../public/icon/parkcoin-filled.svg"
