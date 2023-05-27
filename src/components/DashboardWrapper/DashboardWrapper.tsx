@@ -23,17 +23,11 @@ import Link from "next/link";
 type DashboardWrapperProps = {
   children: JSX.Element;
   active: string;
-  userBalance?: number | null;
-  userName?: string | null;
-  userEmail?: string | null;
 };
 
 export const DashboardWrapper = ({
   children,
   active,
-  userBalance,
-  userEmail,
-  userName,
 }: DashboardWrapperProps) => {
   const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
   const [isSignOutVisible, setIsSignOutVisible] = useState(false);
@@ -93,11 +87,11 @@ export const DashboardWrapper = ({
         </div>
         {user.isSignedIn && (
           <div className={styles.accountInfo}>
-            {userBalance && (
+            {userData && (
               <div className={styles.accountBalance}>
                 <p>Balance:</p>
                 <Link href="/account/topup">
-                  <p>{userBalance} </p>
+                  <p>{userData?.balance} </p>
                   <Image
                     src={parkcoinIcon}
                     height={18}
@@ -122,8 +116,11 @@ export const DashboardWrapper = ({
                 className={styles.menuIcon}
               />
               <div className={styles.accountDetails}>
-                <p>{userName}</p>
-                <p>{userEmail}</p>
+                <p>{userData?.username}</p>
+                <p>
+                  {user.user.primaryEmailAddress &&
+                    user.user.primaryEmailAddress.emailAddress}
+                </p>
               </div>
               <div
                 className={
