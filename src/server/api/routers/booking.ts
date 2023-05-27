@@ -4,6 +4,28 @@ import { createTRPCRouter, privateProcedure } from "~/server/api/trpc"
 import { toDatetimeLocal } from "~/utils/datetime-local"
 
 export const bookingRouter = createTRPCRouter({
+  getBookingById: privateProcedure
+    .input(z.object({ bookingId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const bookings = await ctx.prisma.booking.findMany({
+        where: {
+          id: input.bookingId,
+        },
+      })
+      if (!bookings) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Bookings not found",
+        })
+      }
+      return bookings.map((booking) => {
+        return {
+          ...booking,
+          end: toDatetimeLocal(booking.end),
+          start: toDatetimeLocal(booking.start),
+        }
+      })
+    }),
   create: privateProcedure
     .input(
       z.object({
@@ -170,7 +192,7 @@ export const bookingRouter = createTRPCRouter({
     }),
   getBookingsBySpotId: privateProcedure
     .input(z.object({ parkingSpotId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       const bookings = await ctx.prisma.booking.findMany({
         where: {
           parkingId: input.parkingSpotId,
