@@ -17,7 +17,7 @@
     align-items: stretch;
   }
   @include for-size(tablet-up) {
-    padding-inline: pxToRem(160px);
-    padding-block: pxToRem(64px);
+    padding-inline: pxToRem(24px);
+    padding-block: pxToRem(24px);
   }
 }
