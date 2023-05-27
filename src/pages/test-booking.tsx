@@ -17,7 +17,7 @@ const Test: NextPage = () => {
     onSuccess: () => toast.success("booking create"),
   })
   const watchDates = watch(["start", "end"])
-  const bookParking = (data) => {
+  const bookParking = () => {
     create({
       price: 200,
       end: new Date(Date.now()).toISOString(),
@@ -50,7 +50,6 @@ const Test: NextPage = () => {
             label="Start date"
             placeholder=""
           />
-          <button onClick={() => bookParking()}> Book parking </button>
         </form>
         {<p>{JSON.stringify(watchDates)}</p>}
         <button onClick={() => cancelParking()}> Cancel parking </button>

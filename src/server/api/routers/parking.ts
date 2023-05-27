@@ -87,7 +87,6 @@ export const parkingRouter = createTRPCRouter({
           code: "NOT_FOUND",
           message: "No parkings found within range",
         })
-
       return parkings.map((parking) => ({
         ...parking,
         availableEnd: toDatetimeLocal(parking.availableEnd),

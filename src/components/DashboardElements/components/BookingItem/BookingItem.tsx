@@ -1,41 +1,41 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { api } from "~/utils/api";
-import { useEffect, useState } from "react";
-import parkingIconImport from "../../../../../public/icon/parking.svg";
-import detailsIconImport from "../../../../../public/icon/details.svg";
-import parcoinIconImport from "../../../../../public/icon/parkcoin-filled.svg";
+import { api } from "~/utils/api"
+import { useEffect, useState } from "react"
+import parkingIconImport from "../../../../../public/icon/parking.svg"
+import detailsIconImport from "../../../../../public/icon/details.svg"
+import parcoinIconImport from "../../../../../public/icon/parkcoin-filled.svg"
 
-import Link from "next/link";
-import Image from "next/image";
-import styles from "./BookingItem.module.scss";
+import Link from "next/link"
+import Image from "next/image"
+import styles from "./BookingItem.module.scss"
 
 export type BookingElement = {
-  id: string;
-  bookingNumber: string;
-  profileId: string;
-  parkingId: string;
-  start: Date;
-  end: Date;
-  price: number;
-  type: null | string;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+  id: string
+  bookingNumber: string
+  profileId: string
+  parkingId: string
+  start: Date
+  end: Date
+  price: number
+  type: null | string
+  status: string
+  createdAt: Date
+  updatedAt: Date
+}
 
 type BookingItemProps = {
-  booking: BookingElement;
-};
+  booking: BookingElement
+}
 
 export const BookingItem = ({ booking }: BookingItemProps) => {
   const { data } = api.parking.getParkingById.useQuery({
     id: booking.parkingId,
-  });
-  const parkingIcon = parkingIconImport as unknown as string;
-  const detailsIcon = detailsIconImport as unknown as string;
-  const parcoinIcon = parcoinIconImport as unknown as string;
+  })
+  const parkingIcon = parkingIconImport as unknown as string
+  const detailsIcon = detailsIconImport as unknown as string
+  const parcoinIcon = parcoinIconImport as unknown as string
 
   return booking && data ? (
     <li className={styles.item}>
@@ -76,5 +76,5 @@ export const BookingItem = ({ booking }: BookingItemProps) => {
     </li>
   ) : (
     <></>
-  );
-};
+  )
+}
