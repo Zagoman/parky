@@ -158,8 +158,8 @@ const CreateParking: React.FC<CreateParkingProps> = (props) => {
           <option value="XLARGE">X-Large</option>
         </select>
         <select multiple {...register("features")}>
-          <option value="Camera">Camera</option>
-          <option value="Charging">Charging</option>
+          <option value="camera">Camera</option>
+          <option value="charging">Charging</option>
         </select>
         <input type="submit" />
       </form>

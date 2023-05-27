@@ -1,28 +1,28 @@
-import React, { useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import { useMap, Circle } from "react-leaflet";
-import { type OSMdata } from "./utils";
-import { type ParkingSpot } from "./utils";
+import React, { useEffect } from "react"
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
+import "leaflet/dist/leaflet.css"
+import L from "leaflet"
+import { useMap, Circle } from "react-leaflet"
+import { type OSMdata } from "./utils"
+import { RouterOutputs } from "~/utils/api"
 
 const pinIcon = L.icon({
   iconSize: [36, 36],
   iconUrl: "./icon/map-pin-blue.svg",
-});
+})
 
 type MapProps = {
-  location?: OSMdata;
-  nearbyParkingSpots: ParkingSpot[] | [];
-};
+  location?: OSMdata
+  nearbyParkingSpots: RouterOutputs["parking"]["getParkingWithinRange"]
+}
 
 type ResetViewProps = {
-  selectPosition: OSMdata | undefined;
-};
+  selectPosition: OSMdata | undefined
+}
 
 const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
   function ResetView({ selectPosition }: ResetViewProps) {
-    const map = useMap();
+    const map = useMap()
 
     useEffect(() => {
       if (selectPosition) {
@@ -35,11 +35,11 @@ const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
           {
             animate: true,
           }
-        );
+        )
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectPosition]);
-    return null;
+    }, [selectPosition])
+    return null
   }
 
   const fillBlueOptions = {
@@ -47,7 +47,7 @@ const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
     dashArray: "10, 10",
     dashOffset: "10",
     fillOpacity: 0.2,
-  };
+  }
 
   return (
     <MapContainer
@@ -95,7 +95,7 @@ const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
                       <p>{spot.price}</p>
                     </Popup>
                   </Marker>
-                );
+                )
             })}
         </>
       ) : (
@@ -103,7 +103,7 @@ const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
       )}
       <ResetView selectPosition={location} />
     </MapContainer>
-  );
-};
+  )
+}
 
-export default MapComponent;
+export default MapComponent

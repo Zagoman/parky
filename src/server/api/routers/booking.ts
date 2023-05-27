@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server"
 import { z } from "zod"
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc"
+import { toDatetimeLocal } from "~/utils/datetime-local"
 
 export const bookingRouter = createTRPCRouter({
   create: privateProcedure
@@ -8,8 +9,8 @@ export const bookingRouter = createTRPCRouter({
       z.object({
         parkingId: z.string(),
         driverId: z.string(),
-        start: z.string().datetime(),
-        end: z.string().datetime(),
+        start: z.string().datetime({ offset: true }),
+        end: z.string().datetime({ offset: true }),
         price: z.number(),
       })
     )
@@ -153,6 +154,12 @@ export const bookingRouter = createTRPCRouter({
           message: "Bookings not found",
         })
       }
-      return bookings
+      return bookings.map((booking) => {
+        return {
+          ...booking,
+          end: toDatetimeLocal(booking.end),
+          start: toDatetimeLocal(booking.start),
+        }
+      })
     }),
 })

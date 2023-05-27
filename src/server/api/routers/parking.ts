@@ -6,6 +6,7 @@ import {
   privateProcedure,
   publicProcedure,
 } from "~/server/api/trpc"
+import { toDatetimeLocal } from "~/utils/datetime-local"
 
 const METER_UNIT = 0.00001
 export const featuresSchema = z
@@ -35,28 +36,13 @@ const createSchema = z.object({
 })
 const updateSchema = createSchema.extend({ id: z.string() })
 export const parkingRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.parkingSpot.findMany()
-  }),
-  getShort: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.parkingSpot.findMany({
-      select: {
-        _count: {
-          select: { Booking: true },
-        },
-        availableEnd: true,
-        availableStart: true,
-        price: true,
-        imageURL: true,
-        id: true,
-        address: true,
-        rating: true,
-        features: true,
-        dimensions: true,
-        latitude: true,
-        longitude: true,
-      },
-    })
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    const parkings = await ctx.prisma.parkingSpot.findMany()
+    return parkings.map((parking) => ({
+      ...parking,
+      availableEnd: toDatetimeLocal(parking.availableEnd),
+      availableStart: toDatetimeLocal(parking.availableStart),
+    }))
   }),
   getParkingWithinRange: publicProcedure
     .input(
@@ -65,8 +51,8 @@ export const parkingRouter = createTRPCRouter({
         range: z.number().min(15).max(100_000), //Range in meters
       })
     )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.parkingSpot.findMany({
+    .query(async ({ ctx, input }) => {
+      const parkings = await ctx.prisma.parkingSpot.findMany({
         where: {
           latitude: {
             lt: input.current.latitude + input.range * METER_UNIT,
@@ -95,6 +81,17 @@ export const parkingRouter = createTRPCRouter({
           description: true,
         },
       })
+
+      if (!parkings)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No parkings found within range",
+        })
+      return parkings.map((parking) => ({
+        ...parking,
+        availableEnd: toDatetimeLocal(parking.availableEnd),
+        availableStart: toDatetimeLocal(parking.availableStart),
+      }))
     }),
   getParkingById: publicProcedure
     .input(z.object({ id: z.string() }))
@@ -121,8 +118,8 @@ export const parkingRouter = createTRPCRouter({
       }
       return {
         ...parking,
-        availableStart: parking.availableStart.toISOString().slice(0, 16),
-        availableEnd: parking.availableEnd.toISOString().slice(0, 16),
+        availableStart: toDatetimeLocal(parking.availableStart),
+        availableEnd: toDatetimeLocal(parking.availableEnd),
         longitude: String(parking.longitude),
         latitude: String(parking.latitude),
       }

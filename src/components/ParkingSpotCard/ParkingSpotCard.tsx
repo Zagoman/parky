@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { type ParkingSpot } from "../MapComponent/utils";
-import styles from "./ParkingSpotCard.module.scss";
-import { Button } from "../button/button";
-import Image from "next/image";
-import { StarRating } from "../StarRating/StarRating";
-import calendarIcon from "../../../public/icon/calendar.svg";
-import parkcoin from "../../../public/icon/parkcoin.svg";
-import { SpotFeatures } from "./components/SpotFeatures";
+import styles from "./ParkingSpotCard.module.scss"
+import { Button } from "../button/button"
+import Image from "next/image"
+import { StarRating } from "../StarRating/StarRating"
+import calendarIcon from "../../../public/icon/calendar.svg"
+import parkcoin from "../../../public/icon/parkcoin.svg"
+import { SpotFeatures } from "./components/SpotFeatures"
+import type { RouterOutputs } from "~/utils/api"
 
 type ParkingSpotCardProps = {
-  spot: ParkingSpot;
-  onClick: (spotId: string, spotPrice: number) => void;
-};
+  spot: RouterOutputs["parking"]["getParkingWithinRange"][0]
+  onClick: (spotId: string, spotPrice: number) => void
+}
 
 export const ParkingSpotCard = ({ spot, onClick }: ParkingSpotCardProps) => {
   return (
@@ -50,21 +50,21 @@ export const ParkingSpotCard = ({ spot, onClick }: ParkingSpotCardProps) => {
               height={16}
               width={16}
             />
-            {`${spot._count.Booking} bookings`}
+            {`${spot["_count"].Booking} bookings`}
           </span>
         </div>
         <div className={styles.cardContentsFeats}>
-          <SpotFeatures features={spot.features} />
+          <SpotFeatures features={spot.features as string[]} />
         </div>
         <Button
           text={`Book for ${spot.price}`}
           type="primary"
           onClick={() => {
-            onClick(spot.id, spot.price);
+            onClick(spot.id, spot.price)
           }}
           icon={parkcoin}
         ></Button>
       </div>
     </div>
-  );
-};
+  )
+}
