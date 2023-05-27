@@ -2,30 +2,30 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { type NextPage } from "next"
-import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper"
-import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter"
-import styles from "./index.module.scss"
-import { UiBox } from "~/components/uiBox/uiBox"
-import { useUser } from "@clerk/nextjs"
-import { api } from "~/utils/api"
-import Image from "next/image"
-import { useEffect, useState } from "react"
-import Link from "next/link"
+import { type NextPage } from "next";
+import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper";
+import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter";
+import styles from "./index.module.scss";
+import { UiBox } from "~/components/uiBox/uiBox";
+import { useUser } from "@clerk/nextjs";
+import { api } from "~/utils/api";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-import { BookingItem } from "~/components/DashboardElements/components/BookingItem/BookingItem"
+import { BookingItem } from "~/components/DashboardElements/components/BookingItem/BookingItem";
 
-import parcoinIconImport from "../../../public/icon/parkcoin-filled.svg"
-import calendarIconImport from "../../../public/icon/calendar.svg"
+import parcoinIconImport from "../../../public/icon/parkcoin-filled.svg";
+import calendarIconImport from "../../../public/icon/calendar.svg";
 
 const Home: NextPage = () => {
-  const [userId, setUserId] = useState("")
-  const user = useUser()
+  const [userId, setUserId] = useState("");
+  const user = useUser();
 
   const { data: userData, refetch: refetchUser } =
     api.profile.getProfileById.useQuery({
       id: userId,
-    })
+    });
 
   const {
     data: userBookingData,
@@ -33,19 +33,19 @@ const Home: NextPage = () => {
     refetch: refetchBookings,
   } = api.booking.getBookingsByUserId.useQuery({
     userId: userId,
-  })
+  });
 
   // casting
-  const parcoinIcon = parcoinIconImport as unknown as string
-  const calendarIcon = calendarIconImport as unknown as string
+  const parcoinIcon = parcoinIconImport as unknown as string;
+  const calendarIcon = calendarIconImport as unknown as string;
 
   useEffect(() => {
     if (user.isSignedIn && user.isLoaded) {
-      setUserId(user.user.id)
-      void refetchUser()
-      void refetchBookings()
+      setUserId(user.user.id);
+      void refetchUser();
+      void refetchBookings();
     }
-  }, [user.isLoaded])
+  }, [user.isLoaded]);
 
   return (
     <DashboardWrapper
@@ -74,8 +74,8 @@ const Home: NextPage = () => {
           </UiBox>
           <UiBox className={styles.large}>
             <div className={styles.largeboxHeader}>
-              <h4>Your bookings</h4>
-              <Link href="/account/my-bookings">See more</Link>
+              <h4>Recent bookings</h4>
+              <Link href="/account/bookings">See more</Link>
             </div>
             <ul>
               <div className={styles.bookingListHeader}>
@@ -100,7 +100,7 @@ const Home: NextPage = () => {
             </ul>
           </UiBox>
           <UiBox className={`${styles.order} ${styles.smallBox}`}>
-            <h4>Bookings today</h4>
+            <h4>Total bookings</h4>
             <span>
               <h2>{userData?._count.Booking}</h2>
               <Image
@@ -125,7 +125,7 @@ const Home: NextPage = () => {
         </section>
       </>
     </DashboardWrapper>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
