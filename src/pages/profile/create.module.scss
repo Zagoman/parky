@@ -6,6 +6,9 @@
   align-items: center;
   justify-content: center;
 }
+.box {
+  background: white !important;
+}
 .ui {
   display: flex;
   flex-direction: column;
@@ -23,4 +26,23 @@
 .container {
   width: 100%;
   max-width: 1440px;
+}
+
+.button {
+  background: $blue-200;
+  color: $neutral-100;
+  font-family: $font-display;
+  border: none;
+  padding: $spacer-300 $spacer-400;
+  font-size: $font-size-body-large;
+  font-weight: $font-weight-semibold;
+  border-radius: $border-roundness-100;
+  cursor: pointer;
+  transition: 0.3s ease;
+  &:hover {
+    background: $blue-100;
+  }
+  &:active {
+    background: $blue-300;
+  }
 }

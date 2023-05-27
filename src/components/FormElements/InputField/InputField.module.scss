@@ -32,4 +32,27 @@
     font-size: $font-size-label;
     color: $red-200;
   }
+  .checkbox {
+    display: flex;
+    align-items: center;
+    gap: $spacer-300;
+    input {
+      order: -1;
+      height: unset;
+    }
+  }
+}
+.selectInput {
+  background-color: transparent;
+  border: none;
+  color: $blue-200;
+  font-family: $font-body;
+  cursor: pointer;
+  font-size: $font-size-body;
+  font-weight: $font-weight-semibold;
+  text-align: left;
+  padding: 0 $spacer-100;
+  &:hover {
+    color: $blue-100;
+  }
 }
