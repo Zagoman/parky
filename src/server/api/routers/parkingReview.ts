@@ -7,6 +7,18 @@ import {
 } from "~/server/api/trpc"
 
 export const parkingReviewRouter = createTRPCRouter({
+  getParkingReviewByParkingId: publicProcedure
+    .input(z.object({ parkingId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const aggregate = await ctx.prisma.parkingReview.aggregate({
+        where: { parkingId: input.parkingId },
+        _avg: { rating: true },
+      })
+      if (!aggregate) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Parking not found" })
+      }
+      return aggregate
+    }),
   getAllById: publicProcedure
     .input(
       z.object({
