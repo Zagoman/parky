@@ -1,0 +1,26 @@
+@import "~/styles/mixins";
+@import "~/styles/tokens.scss";
+.main {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+.ui {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow-y: auto;
+  @include for-size(tablet-up) {
+    display: grid;
+    grid-template-columns: 4fr 5fr;
+  }
+
+  h1 {
+    font-size: $font-size-header-3;
+  }
+}
+.container {
+  width: 100%;
+  max-width: 1440px;
+}
