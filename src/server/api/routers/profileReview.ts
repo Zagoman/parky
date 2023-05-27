@@ -7,6 +7,18 @@ import {
 } from "~/server/api/trpc"
 
 export const profileReviewRouter = createTRPCRouter({
+  getProfileReviewByProfileId: publicProcedure
+    .input(z.object({ profileId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const aggregate = await ctx.prisma.profileReview.aggregate({
+        where: { profileId: input.profileId },
+        _avg: { rating: true },
+      })
+      if (!aggregate) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Profile not found" })
+      }
+      return aggregate
+    }),
   getAllById: publicProcedure
     .input(
       z.object({
@@ -35,6 +47,34 @@ export const profileReviewRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const aggregate = await ctx.prisma.profileReview.aggregate({
+        where: {
+          profileId: input.profileId,
+        },
+        _avg: {
+          rating: true,
+        },
+        _count: {
+          rating: true,
+        },
+      })
+      const average = aggregate._avg.rating
+        ? (
+            (aggregate._avg.rating + aggregate._count.rating + input.rating) /
+            (aggregate._count.rating + 1)
+          ).toFixed(1)
+        : (5).toFixed(1)
+      const profile = await ctx.prisma.profile.update({
+        where: {
+          id: input.profileId,
+        },
+        data: {
+          rating: Number(average),
+        },
+      })
+      if (!profile) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" })
+      }
       const review = await ctx.prisma.profileReview.create({
         data: {
           issuedFromParkingId: input.parkingId,
@@ -43,7 +83,6 @@ export const profileReviewRouter = createTRPCRouter({
           rating: input.rating,
         },
       })
-
       if (!review) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -55,6 +94,7 @@ export const profileReviewRouter = createTRPCRouter({
   update: privateProcedure
     .input(
       z.object({
+        profileId: z.string(),
         reviewId: z.string(),
         rating: z.number(),
         content: z.string(),
@@ -76,6 +116,26 @@ export const profileReviewRouter = createTRPCRouter({
           message: "Review not found",
         })
       }
+      const aggregate = await ctx.prisma.profileReview.aggregate({
+        where: {
+          profileId: input.profileId,
+        },
+        _avg: {
+          rating: true,
+        },
+      })
+      const profile = await ctx.prisma.profile.update({
+        where: {
+          id: input.profileId,
+        },
+        data: {
+          rating: Number(aggregate._avg.rating?.toFixed(1)),
+        },
+      })
+      if (!profile) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" })
+      }
+
       return review
     }),
   delete: privateProcedure
