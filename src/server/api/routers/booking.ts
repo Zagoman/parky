@@ -15,6 +15,12 @@ export const bookingRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      if (input.driverId === ctx.userId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You cannot book your own parking spot",
+        })
+      }
       const profile = await ctx.prisma.profile.update({
         where: { id: ctx.userId },
         data: {
