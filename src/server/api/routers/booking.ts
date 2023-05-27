@@ -7,7 +7,7 @@ export const bookingRouter = createTRPCRouter({
   getBookingById: privateProcedure
     .input(z.object({ bookingId: z.string() }))
     .query(async ({ ctx, input }) => {
-      const bookings = await ctx.prisma.booking.findMany({
+      const bookings = await ctx.prisma.booking.findUnique({
         where: {
           id: input.bookingId,
         },
@@ -18,13 +18,11 @@ export const bookingRouter = createTRPCRouter({
           message: "Bookings not found",
         })
       }
-      return bookings.map((booking) => {
-        return {
-          ...booking,
-          end: toDatetimeLocal(booking.end),
-          start: toDatetimeLocal(booking.start),
-        }
-      })
+      return {
+        ...bookings,
+        end: toDatetimeLocal(bookings.end),
+        start: toDatetimeLocal(bookings.start),
+      }
     }),
   create: privateProcedure
     .input(
