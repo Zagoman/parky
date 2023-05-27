@@ -187,4 +187,27 @@ export const parkingRouter = createTRPCRouter({
       }
       return parking
     }),
+  getParkingsByUserId: privateProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const parkings = await ctx.prisma.parkingSpot.findMany({
+        where: { profileId: input.userId },
+        include: {
+          _count: {
+            select: {
+              Booking: true,
+              ParkingReview: true,
+            },
+          },
+        },
+      })
+      if (!parkings) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "No parkings found" })
+      }
+      return parkings
+    }),
 })

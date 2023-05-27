@@ -162,4 +162,26 @@ export const bookingRouter = createTRPCRouter({
         }
       })
     }),
+  getBookingsBySpotId: privateProcedure
+    .input(z.object({ parkingSpotId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const bookings = await ctx.prisma.booking.findMany({
+        where: {
+          parkingId: input.parkingSpotId,
+        },
+      })
+      if (!bookings) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Bookings not found",
+        })
+      }
+      return bookings.map((booking) => {
+        return {
+          ...booking,
+          end: toDatetimeLocal(booking.end),
+          start: toDatetimeLocal(booking.start),
+        }
+      })
+    }),
 })
