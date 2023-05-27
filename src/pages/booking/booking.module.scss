@@ -1,0 +1,66 @@
+@import "../../styles/tokens.scss";
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-300;
+}
+
+.booking {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-300;
+
+  &Details {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-300;
+
+    > section {
+      margin-bottom: $spacer-300;
+      display: flex;
+      flex-direction: column;
+      gap: $spacer-200;
+      h4 {
+        margin-bottom: $spacer-300;
+      }
+      > div {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: $spacer-300;
+
+        > p {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: $spacer-100;
+        }
+        > p:last-of-type {
+          font-weight: $font-weight-semibold;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1366px) {
+  .booking {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: 1fr;
+    gap: $spacer-400;
+    margin-bottom: $spacer-300;
+    &Details {
+      grid-row: span 2;
+      > section {
+        > div {
+          grid-template-columns: 1fr 3fr;
+        }
+      }
+    }
+
+    h2 {
+      grid-column: 1/-1;
+    }
+  }
+}
