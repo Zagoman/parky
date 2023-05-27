@@ -1,15 +1,20 @@
 @import "~/styles/mixins";
+@import "~/styles/tokens.scss";
 .form {
   h1,
   p {
     text-align: center;
   }
-  background-color: white;
+  h1 {
+    font-size: $font-size-header-2;
+  }
   padding-inline: 1rem;
   padding-block: pxToRem(32px);
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  max-height: pxToRem(800px);
+  overflow-y: auto;
 
   .inputFields {
     display: flex;
@@ -17,7 +22,49 @@
     align-items: stretch;
   }
   @include for-size(tablet-up) {
-    padding-inline: pxToRem(160px);
-    padding-block: pxToRem(64px);
+    padding-inline: pxToRem(24px);
+    padding-block: pxToRem(24px);
   }
+}
+.button {
+  background: $blue-200;
+  color: $neutral-100;
+  font-family: $font-display;
+  border: none;
+  padding: $spacer-300 $spacer-400;
+  font-size: $font-size-body-large;
+  font-weight: $font-weight-semibold;
+  border-radius: $border-roundness-100;
+  cursor: pointer;
+  transition: 0.3s ease;
+  &:hover {
+    background: $blue-100;
+  }
+  &:active {
+    background: $blue-300;
+  }
+}
+.selectInput {
+  background-color: transparent;
+  border: 1px solid $neutral-500;
+  border-radius: $spacer-200;
+  padding-block: $spacer-300;
+  color: $blue-200;
+  font-family: $font-body;
+  cursor: pointer;
+  font-size: $font-size-body;
+  font-weight: $font-weight-semibold;
+  text-align: left;
+  padding-inline: $spacer-100;
+  min-width: pxToRem(200px);
+  &:hover {
+    color: $blue-100;
+    border-color: $blue-200;
+  }
+}
+.selectLabel {
+  display: flex;
+  gap: $spacer-200;
+  align-items: center;
+  margin-bottom: $spacer-300;
 }
