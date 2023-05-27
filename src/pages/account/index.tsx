@@ -13,10 +13,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 
-import {
-  BookingItem,
-  type BookingElement,
-} from "~/components/DashboardElements/components/BookingItem/BookingItem"
+import { BookingItem } from "~/components/DashboardElements/components/BookingItem/BookingItem"
 
 import parcoinIconImport from "../../../public/icon/parkcoin-filled.svg"
 import calendarIconImport from "../../../public/icon/calendar.svg"
@@ -105,7 +102,7 @@ const Home: NextPage = () => {
           <UiBox className={`${styles.order} ${styles.smallBox}`}>
             <h4>Bookings today</h4>
             <span>
-              <h2>{userData?.balance}</h2>
+              <h2>{userData?._count.Booking}</h2>
               <Image
                 src={calendarIcon}
                 alt="calendar icon"
