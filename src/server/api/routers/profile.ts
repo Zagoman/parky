@@ -36,8 +36,23 @@ export const profileRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const profile = await ctx.prisma.profile.findFirst({
         where: { id: input.id },
+        include: {
+          Booking: true,
+          _count: {
+            select: {
+              Booking: true,
+              CoinOrder: true,
+              ParkingSpot: true,
+              ParkingReview: true,
+              ProfileReview: true,
+            },
+          },
+        },
       })
-      return profile ? filterUserForClient(profile) : null
+      if (!profile) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Profile not found" })
+      }
+      return profile
     }),
   getProfileByUsername: publicProcedure
     .input(z.object({ username: z.string() }))
