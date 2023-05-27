@@ -46,6 +46,34 @@ export const parkingReviewRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const aggregate = await ctx.prisma.parkingReview.aggregate({
+        where: {
+          parkingId: input.parkingId,
+        },
+        _avg: {
+          rating: true,
+        },
+        _count: {
+          rating: true,
+        },
+      })
+      const average = aggregate._avg.rating
+        ? (
+            (aggregate._avg.rating + aggregate._count.rating + input.rating) /
+            (aggregate._count.rating + 1)
+          ).toFixed(1)
+        : (5).toFixed(1)
+      const parking = await ctx.prisma.profile.update({
+        where: {
+          id: input.parkingId,
+        },
+        data: {
+          rating: Number(average),
+        },
+      })
+      if (!parking) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" })
+      }
       const review = await ctx.prisma.parkingReview.create({
         data: {
           profileId: ctx.userId,
@@ -66,6 +94,7 @@ export const parkingReviewRouter = createTRPCRouter({
   update: privateProcedure
     .input(
       z.object({
+        parkingId: z.string(),
         reviewerId: z.string(),
         reviewId: z.string(),
         rating: z.number(),
@@ -94,6 +123,26 @@ export const parkingReviewRouter = createTRPCRouter({
           message: "Parking not found",
         })
       }
+      const aggregate = await ctx.prisma.parkingReview.aggregate({
+        where: {
+          parkingId: input.parkingId,
+        },
+        _avg: {
+          rating: true,
+        },
+      })
+      const parking = await ctx.prisma.parkingSpot.update({
+        where: {
+          id: input.parkingId,
+        },
+        data: {
+          rating: Number(aggregate._avg.rating?.toFixed(1)),
+        },
+      })
+      if (!parking) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Parking not found" })
+      }
+
       return review
     }),
   delete: privateProcedure
