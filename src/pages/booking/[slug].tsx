@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -19,7 +20,6 @@ import Image from "next/image";
 
 import parcoinImport from "../../../public/icon/parkcoin-filled.svg";
 import { toast } from "react-hot-toast";
-import { Button } from "~/components/button/button";
 import { InputField } from "~/components/FormElements/InputField/InputField";
 
 import { useForm } from "react-hook-form";
@@ -29,6 +29,7 @@ const Booking: NextPage = () => {
   const [bookingData, setBookingData] = useState<BookingElement>();
   const [driverId, setDriverId] = useState("");
   const [spotId, setSpotId] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const user = useUser();
 
   const router = useRouter();
@@ -111,6 +112,15 @@ const Booking: NextPage = () => {
       void refetchSpot();
     }
   }, [bookingData]);
+
+  useEffect(() => {
+    if (isModalVisible) {
+      const timer = setTimeout(() => {
+        setIsModalVisible(false);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [isModalVisible]);
 
   return (
     <DashboardWrapper active={"bookings"}>
@@ -357,22 +367,52 @@ const Booking: NextPage = () => {
               </UiBox>
               <UiBox className={styles.bookingReport}>
                 {user.user?.id === driverData?.id && (
-                  <>
+                  <section className={styles.reportWrapper}>
                     <h4>Report parking</h4>
-                    <p>Was there a problem with the parking spot?</p>
-                    <section>
-                      <div></div>
-                    </section>
-                  </>
+                    <span>
+                      <p>If there was a problem with the parking spot</p>
+                      <p onClick={() => setIsModalVisible(true)}>
+                        <div
+                          className={
+                            isModalVisible
+                              ? `${styles.reportModal}`
+                              : `${styles.reportModal} ${styles.modalHidden}`
+                          }
+                        >
+                          <UiBox>
+                            <p className={styles.modalMessage}>
+                              Currently unavailable
+                            </p>
+                          </UiBox>
+                        </div>
+                        Submit a report here.
+                      </p>
+                    </span>
+                  </section>
                 )}
                 {user.user?.id === spotData?.profileId && (
-                  <>
-                    <h4>Report Driver</h4>
-                    <p>Was the driver causing problems?</p>
-                    <section>
-                      <div></div>
-                    </section>
-                  </>
+                  <section className={styles.reportWrapper}>
+                    <h4>Report Driver here.</h4>
+                    <span>
+                      <p>If there was a problem with the driver</p>
+                      <p onClick={() => setIsModalVisible(true)}>
+                        <div
+                          className={
+                            isModalVisible
+                              ? `${styles.reportModal}`
+                              : `${styles.reportModal} ${styles.modalHidden}`
+                          }
+                        >
+                          <UiBox>
+                            <p className={styles.modalMessage}>
+                              Currently unavailable
+                            </p>
+                          </UiBox>
+                        </div>
+                        Submit a report
+                      </p>
+                    </span>
+                  </section>
                 )}
               </UiBox>
             </section>

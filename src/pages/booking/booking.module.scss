@@ -133,6 +133,46 @@
   }
 }
 
+.reportWrapper {
+  position: relative;
+  span {
+    display: flex;
+    flex-direction: row;
+    gap: $spacer-100;
+    > p {
+      &:last-of-type {
+        position: relative;
+        color: $blue-200;
+        cursor: pointer;
+        font-weight: $font-weight-semibold;
+        &:hover {
+          color: $blue-100;
+        }
+      }
+    }
+  }
+}
+
+.reportModal {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  top: 0%;
+  width: fit-content;
+  word-wrap: none;
+  width: 24ch;
+  pointer-events: none;
+  transition: 0.3s ease-in;
+}
+
+.modalMessage {
+  color: $neutral-500;
+}
+
+.modalHidden {
+  opacity: 0;
+}
+
 @media screen and (min-width: 768px) {
   .ratingWrapper {
     gap: $spacer-400;
