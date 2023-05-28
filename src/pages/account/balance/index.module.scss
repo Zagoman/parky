@@ -1,0 +1,103 @@
+@import "../../../styles/tokens.scss";
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-300;
+
+  h2 {
+    grid-column: 1/-1;
+    order: -1;
+  }
+
+  a {
+    color: $blue-200;
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      color: $blue-100;
+    }
+  }
+}
+.small {
+  position: relative;
+
+  h2 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: $spacer-200;
+  }
+
+  h4 {
+    margin-bottom: $spacer-300;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-300;
+  }
+
+  > span {
+    a {
+      position: absolute;
+      top: $spacer-400;
+      right: $spacer-400;
+    }
+  }
+}
+
+.large {
+  order: -1;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-300;
+    max-height: 45vh;
+    overflow-y: scroll;
+    li {
+      background-color: $neutral-200;
+    }
+  }
+}
+
+.balanceList {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  margin: $spacer-200 0;
+
+  p {
+    color: $neutral-500;
+  }
+  p:last-of-type {
+    justify-self: flex-end;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+}
+
+@media only screen and (min-width: 1024px) {
+  .balanceList {
+    grid-template-columns: 3fr 1fr 1fr;
+    p:last-of-type {
+      justify-self: center;
+    }
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    grid-template-rows: 1fr;
+    gap: $spacer-400;
+  }
+  .large {
+    order: initial;
+    grid-row: span 3;
+  }
+}
+
+@media only screen and (min-width: 1366px) {
+}

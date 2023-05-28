@@ -1,19 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import styles from "./ParkingSpotCard.module.scss"
-import { Button } from "../button/button"
-import Image from "next/image"
-import { StarRating } from "../StarRating/StarRating"
-import calendarIcon from "../../../public/icon/calendar.svg"
-import parkcoin from "../../../public/icon/parkcoin.svg"
-import { SpotFeatures } from "./components/SpotFeatures"
-import type { RouterOutputs } from "~/utils/api"
+import styles from "./ParkingSpotCard.module.scss";
+import { Button } from "../button/button";
+import Image from "next/image";
+import { StarRating } from "../StarRating/StarRating";
+import calendarIcon from "../../../public/icon/calendar.svg";
+import parkcoin from "../../../public/icon/parkcoin.svg";
+import { SpotFeatures } from "./components/SpotFeatures";
+import type { RouterOutputs } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
 
 type ParkingSpotCardProps = {
-  spot: RouterOutputs["parking"]["getParkingWithinRange"][0]
-  onClick: (spotId: string, spotPrice: number) => void
-}
+  spot: RouterOutputs["parking"]["getParkingWithinRange"][0];
+  onClick: (spotId: string, spotPrice: number) => void;
+};
 
 export const ParkingSpotCard = ({ spot, onClick }: ParkingSpotCardProps) => {
+  const user = useUser();
+
   return (
     <div className={styles.card}>
       <div className={styles.cardImage}>
@@ -60,11 +63,12 @@ export const ParkingSpotCard = ({ spot, onClick }: ParkingSpotCardProps) => {
           text={`Book for ${spot.price}`}
           type="primary"
           onClick={() => {
-            onClick(spot.id, spot.price)
+            onClick(spot.id, spot.price);
           }}
           icon={parkcoin}
-        ></Button>
+          isDisabled={user.isLoaded ? false : true}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
