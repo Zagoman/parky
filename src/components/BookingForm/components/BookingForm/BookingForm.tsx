@@ -27,7 +27,7 @@ type BookingMutationProps = {
   price: number
   end: string
   start: string
-  driverId: string
+  ownerId: string
   parkingId: string
 }
 
@@ -51,20 +51,23 @@ export const BookingForm = ({
       toast.success("booking created")
       onCancel()
     },
+    onError: (e) => {
+      toast.error(e.message)
+    },
   })
 
   const bookParking = ({
     price,
     end,
     start,
-    driverId,
+    ownerId,
     parkingId,
   }: BookingMutationProps) => {
     create({
       price: price,
       end: end,
       start: start,
-      driverId: driverId,
+      parkingOwnerId: ownerId,
       parkingId: parkingId,
     })
   }
@@ -99,6 +102,7 @@ export const BookingForm = ({
     }
 
     const spotId = spot[0].id
+    const ownerId = spot[0].profileId
     const startDate = new Date(bookingDate)
     const endDate = new Date(bookingDate)
     endDate.setHours(endDate.getHours() + duration)
@@ -178,7 +182,7 @@ export const BookingForm = ({
                 bookParking({
                   price: totalPrice,
                   start: startDate.toISOString(),
-                  driverId: userId,
+                  ownerId: ownerId,
                   parkingId: spotId,
                   end: endDate.toISOString(),
                 })
