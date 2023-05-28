@@ -57,11 +57,13 @@ const Booking: NextPage = () => {
   const { mutate: createParkingReview, isLoading: isParkingReviewSubmitting } =
     api.parkingReview.create.useMutation({
       onSuccess: () => toast.success("Review submitted"),
+      onError: () => toast.error("Error submitting the review"),
     });
 
   const { mutate: createDriverReview, isLoading: isProfileReviewSubmitting } =
     api.profileReview.create.useMutation({
       onSuccess: () => toast.success("Review submitted"),
+      onError: () => toast.error("Error submitting the review"),
     });
 
   const { register, watch, getValues, setValue } = useForm<{
@@ -79,7 +81,7 @@ const Booking: NextPage = () => {
   });
 
   useEffect(() => {
-    if (router.query.slug) {
+    if (router.query.slug && !bookingId) {
       const id: string | string[] = router.query.slug;
       if (typeof id === "string") {
         setBookingId(id);
@@ -100,7 +102,8 @@ const Booking: NextPage = () => {
       !isLoading &&
       bookingData &&
       bookingData.profileId &&
-      bookingData.parkingId
+      bookingData.parkingId &&
+      !spotId
     ) {
       setDriverId(bookingData.profileId);
       setSpotId(bookingData.parkingId);
@@ -130,7 +133,9 @@ const Booking: NextPage = () => {
                   <div>
                     <p>Parking rating</p>
                     <p>
-                      <StarRating rating={spotData?.rating ? spotData.rating : "no data"} />
+                      <StarRating
+                        rating={spotData?.rating ? spotData.rating : "no data"}
+                      />
                     </p>
                   </div>
                   <div>
@@ -211,7 +216,6 @@ const Booking: NextPage = () => {
                           parkingId: spotData?.id,
                         });
                       }
-
                       setValue("parkingComment", "");
                       setValue("parkingRating", 3);
                     }}

@@ -125,7 +125,7 @@
 
 .ratingWrapper {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: $spacer-200;
   align-content: center;
   > div:last-of-type {
