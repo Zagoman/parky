@@ -28,14 +28,14 @@ export const bookingRouter = createTRPCRouter({
     .input(
       z.object({
         parkingId: z.string(),
-        driverId: z.string(),
+        parkingOwnerId: z.string(),
         start: z.string().datetime({ offset: true }),
         end: z.string().datetime({ offset: true }),
         price: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      if (input.driverId === ctx.userId) {
+      if (input.parkingOwnerId === ctx.userId) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "You cannot book your own parking spot",
@@ -67,7 +67,7 @@ export const bookingRouter = createTRPCRouter({
             end: new Date(input.end),
             start: new Date(input.start),
             price: input.price,
-            profileId: input.driverId,
+            profileId: ctx.userId,
             parkingId: input.parkingId,
             status: "fulfilled",
           },

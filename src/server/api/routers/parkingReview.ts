@@ -59,7 +59,7 @@ export const parkingReviewRouter = createTRPCRouter({
       })
       const average = aggregate._avg.rating
         ? (
-            (aggregate._avg.rating + aggregate._count.rating + input.rating) /
+            (aggregate._avg.rating * aggregate._count.rating + input.rating) /
             (aggregate._count.rating + 1)
           ).toFixed(1)
         : (5).toFixed(1)
