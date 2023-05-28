@@ -63,7 +63,7 @@ export const parkingReviewRouter = createTRPCRouter({
             (aggregate._count.rating + 1)
           ).toFixed(1)
         : (5).toFixed(1)
-      const parking = await ctx.prisma.profile.update({
+      const parking = await ctx.prisma.parkingSpot.update({
         where: {
           id: input.parkingId,
         },
