@@ -171,8 +171,8 @@ export const DashboardWrapper = ({
               <DashboardMenuElement
                 href="/account/top-up"
                 icon={parkcoinIcon}
-                title="Top up account"
-                active={active === "topupaccount" ? true : false}
+                title="Account top up"
+                active={active === "top-up" ? true : false}
               />
               <DashboardMenuElement
                 href="/account/get-benefits"
