@@ -45,27 +45,22 @@ const Booking: NextPage = () => {
     id: driverId,
   });
 
-  const {
-    data: spotData,
-    refetch: refetchSpot,
-    isLoading: isSpotLoading,
-  } = api.parking.getParkingById.useQuery({
-    id: spotId,
-  });
+  const { data: spotData, refetch: refetchSpot } =
+    api.parking.getParkingById.useQuery({
+      id: spotId,
+    });
 
   const parcoinIcon = parcoinImport as unknown as string;
 
-  const { mutate: createParkingReview, isLoading: isParkingReviewSubmitting } =
-    api.parkingReview.create.useMutation({
-      onSuccess: () => toast.success("Review submitted"),
-      onError: () => toast.error("Error submitting the review"),
-    });
+  const { mutate: createParkingReview } = api.parkingReview.create.useMutation({
+    onSuccess: () => toast.success("Review submitted"),
+    onError: () => toast.error("Error submitting the review"),
+  });
 
-  const { mutate: createDriverReview, isLoading: isProfileReviewSubmitting } =
-    api.profileReview.create.useMutation({
-      onSuccess: () => toast.success("Review submitted"),
-      onError: () => toast.error("Error submitting the review"),
-    });
+  const { mutate: createDriverReview } = api.profileReview.create.useMutation({
+    onSuccess: () => toast.success("Review submitted"),
+    onError: () => toast.error("Error submitting the review"),
+  });
 
   const { register, watch, getValues, setValue } = useForm<{
     driverRating: number;
@@ -89,6 +84,7 @@ const Booking: NextPage = () => {
         void refetch();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.slug]);
 
   useEffect(() => {
@@ -111,6 +107,7 @@ const Booking: NextPage = () => {
       void refetchDriver();
       void refetchSpot();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookingData]);
 
   useEffect(() => {
