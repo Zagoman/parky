@@ -57,6 +57,7 @@ export const DashboardWrapper = ({
       setUserId(user.user.id);
       void refetchUser();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.isLoaded]);
 
   return (
