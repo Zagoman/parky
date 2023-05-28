@@ -14,11 +14,13 @@ import Image from "next/image";
 import homeParkingImport from "../../public/home-parking.jpg";
 import homeDrivingImport from "../../public/home-driving.jpg";
 import homeHighwayImport from "../../public/home-highway.jpg";
+import homeFaqImport from "../../public/home-faq.jpg";
 
 import parCoinWhiteImport from "../../public/icon/parcoin_white.svg";
 import sustainableIconImport from "../../public/icon/sustainable_driving.svg";
 import speedIconImport from "../../public/icon/speed.svg";
 import paymentsImport from "../../public/icon/payments.svg";
+import { LoaderIcon } from "react-hot-toast";
 
 const Home: NextPage = () => {
   const [userId, setUserId] = useState("");
@@ -34,6 +36,7 @@ const Home: NextPage = () => {
   const homeParking = homeParkingImport as unknown as string;
   const homeDriving = homeDrivingImport as unknown as string;
   const homeHighway = homeHighwayImport as unknown as string;
+  const homeFaq = homeFaqImport as unknown as string;
   const parCoinWhiteIcon = parCoinWhiteImport as unknown as string;
   const sustainableIcon = sustainableIconImport as unknown as string;
   const speedIcon = speedIconImport as unknown as string;
@@ -60,17 +63,32 @@ const Home: NextPage = () => {
           <section className={styles.hero}>
             {user.isSignedIn && (
               <div>
-                <UiBox>
-                  {user.isSignedIn && userData?.isDriver ? (
-                    <Link href="/map">
-                      <h3>Book a parking spot</h3>
-                    </Link>
-                  ) : user.isSignedIn && userData ? (
-                    <h3>Register as a driver</h3>
-                  ) : (
-                    ""
-                  )}
-                </UiBox>
+                {userData ? (
+                  <UiBox>
+                    {user.isSignedIn && userData?.isDriver ? (
+                      <>
+                        <h3>Book a parking spot</h3>
+                        <Link href="/map" className={styles.button}>
+                          Find a parking spot
+                        </Link>
+                      </>
+                    ) : user.isSignedIn && userData ? (
+                      <>
+                        <h3>Register as a driver</h3>
+                        <Link
+                          href="/account/settings"
+                          className={styles.button}
+                        >
+                          Update settings
+                        </Link>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </UiBox>
+                ) : (
+                  ""
+                )}
                 <Image
                   src={homeDriving}
                   alt="person driving a car"
@@ -82,15 +100,35 @@ const Home: NextPage = () => {
             {user.isSignedIn && <span> OR </span>}
             {user.isSignedIn && (
               <div>
-                <UiBox>
-                  {!userData?.isOwner && user.isSignedIn ? (
-                    <h3>Register as an owner</h3>
-                  ) : userData?.isOwner && user.isSignedIn ? (
-                    <h3>Check your earnings</h3>
-                  ) : (
-                    ""
-                  )}
-                </UiBox>
+                {userData ? (
+                  <UiBox>
+                    {!userData?.isOwner && user.isSignedIn ? (
+                      <>
+                        <h3>Register as an owner</h3>
+                        <Link
+                          href="/account/settings"
+                          className={styles.button}
+                        >
+                          Update settings
+                        </Link>
+                      </>
+                    ) : userData?.isOwner && user.isSignedIn ? (
+                      <>
+                        <h3>Check your earnings</h3>
+                        <Link href="/account/balance" className={styles.button}>
+                          Check account balance
+                        </Link>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </UiBox>
+                ) : (
+                  <span className={styles.loaderWrapper}>
+                    <p>Loading user data</p>
+                    <LoaderIcon />
+                  </span>
+                )}
                 <Image
                   src={homeParking}
                   alt="parking space with cars"
@@ -127,7 +165,7 @@ const Home: NextPage = () => {
             )}
           </section>
           <section className={styles.explainer}>
-            <h1 className={styles.headerBlue}>What is Parky?</h1>
+            <h1>What is Parky?</h1>
             <div className={styles.explainerWrapper}>
               <article>
                 <span>1</span>
@@ -192,6 +230,7 @@ const Home: NextPage = () => {
 
           {/* features */}
           <section className={styles.features}>
+            <h1>Benefits</h1>
             <UiBox>
               <div>
                 <Image
@@ -248,7 +287,14 @@ const Home: NextPage = () => {
             </UiBox>
           </section>
           <section className={styles.faq}>
-            <div>SOME IMAGE</div>
+            <div>
+              <Image
+                src={homeFaq}
+                alt="car with a question mark over it"
+                width={1200}
+                height={1200}
+              />
+            </div>
             <Accordion />
           </section>
           <Footer />
