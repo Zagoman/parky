@@ -22,7 +22,7 @@ const CreateParkingPage: NextPage<{ username: string }> = ({ username }) => {
       </Head>
       <main>
         <DashboardWrapper
-          active="my-parking-spots"
+          active="myparkingspots"
           userBalance={profile?.data?.balance}
           userName={profile?.data?.username}
           userEmail={user?.primaryEmailAddress?.emailAddress}
