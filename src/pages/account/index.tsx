@@ -71,7 +71,7 @@ const Home: NextPage = () => {
                   width="48"
                 />
               </span>
-              <Link href="/account/topup">Top up</Link>
+              <Link href="/account/top-up">Top up</Link>
             </UiBox>
             <UiBox className={styles.large}>
               <div className={styles.largeboxHeader}>
@@ -98,6 +98,11 @@ const Home: NextPage = () => {
                   : areBookingsLoading
                   ? "loading"
                   : "No bookings found"}
+                {userBookingData?.length === 0 && (
+                  <li className={styles.noData}>
+                    <p>No data found.</p>
+                  </li>
+                )}
               </ul>
             </UiBox>
             <UiBox className={`${styles.order} ${styles.smallBox}`}>

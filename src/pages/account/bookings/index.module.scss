@@ -1,5 +1,18 @@
 @import "../../../styles/tokens.scss";
 
+.noData {
+  border-radius: $border-roundness-100;
+  font-size: $font-size-body-large;
+  justify-content: center;
+  display: flex;
+  padding: $spacer-200;
+  font-weight: $font-weight-semibold;
+  background-color: $neutral-200;
+  p {
+    color: $neutral-500;
+  }
+}
+
 .selectInput {
   background-color: transparent;
   border: none;

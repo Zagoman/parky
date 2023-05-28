@@ -116,7 +116,7 @@ export const PageHeader = ({
                 </li>
                 <li
                   onClick={() => {
-                    setModalContents(<SignUp />);
+                    setModalContents(<SignUp redirectUrl="/profile/create" />);
                     setIsModalVisible(true);
                   }}
                 >
@@ -124,9 +124,14 @@ export const PageHeader = ({
                 </li>
               </>
             ) : (
-              <li>
-                <SignOutButton />
-              </li>
+              <>
+                <li>
+                  <SignOutButton />
+                </li>
+                <li>
+                  <Link href="/account">Account</Link>
+                </li>
+              </>
             )}
             <li className={styles.pageHeaderCTA}>Rent your parking</li>
           </ul>
