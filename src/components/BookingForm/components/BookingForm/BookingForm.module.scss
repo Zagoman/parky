@@ -17,6 +17,12 @@
   position: absolute;
   top: 0;
   max-width: 90%;
+
+  a {
+    color: $blue-200;
+    font-weight: $font-weight-semibold;
+    padding-inline: $spacer-100;
+  }
 }
 
 .buttonsWrapper {

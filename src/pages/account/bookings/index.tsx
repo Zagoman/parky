@@ -197,6 +197,11 @@ const Home: NextPage = () => {
                 : areBookingsLoading
                 ? "loading"
                 : "No bookings found"}
+              {bookingItems.length === 0 && (
+                <li className={styles.noData}>
+                  <p>No data found.</p>
+                </li>
+              )}
             </ul>
           </UiBox>
         </>
