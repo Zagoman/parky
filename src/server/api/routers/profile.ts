@@ -38,6 +38,7 @@ export const profileRouter = createTRPCRouter({
         where: { id: input.id },
         include: {
           Booking: true,
+          CoinOrder: true,
           _count: {
             select: {
               Booking: true,
