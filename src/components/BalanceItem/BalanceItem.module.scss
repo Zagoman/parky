@@ -1,0 +1,70 @@
+@import "../../styles/tokens.scss";
+.wrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  background-color: $neutral-200;
+  border-radius: $border-roundness-100;
+  padding: $spacer-200 $spacer-200;
+  align-items: center;
+
+  &Header {
+    display: flex;
+    flex-direction: row;
+    gap: $spacer-200;
+    align-items: center;
+    font-size: $font-size-body;
+    font-weight: $font-weight-semibold;
+
+    span {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+
+      p:last-of-type {
+        font-size: $font-size-label;
+        color: $neutral-500;
+        display: none;
+      }
+    }
+  }
+
+  &Amount {
+    display: flex;
+    flex-direction: row;
+    gap: $spacer-100;
+    align-items: center;
+    font-weight: $font-weight-semibold;
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr;
+    background-color: $neutral-200;
+    border-radius: $border-roundness-100;
+    padding: $spacer-300 $spacer-300;
+    align-items: center;
+
+    &Header {
+      font-size: $font-size-body-large;
+
+      span {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+
+        p:last-of-type {
+          font-size: $font-size-label;
+          color: $neutral-500;
+          display: initial;
+        }
+      }
+    }
+
+    &Amount {
+      justify-self: center;
+    }
+  }
+}
