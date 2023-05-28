@@ -48,12 +48,7 @@ const Home: NextPage = () => {
   }, [user.isLoaded]);
 
   return (
-    <DashboardWrapper
-      active="dashboard"
-      userBalance={userData?.balance}
-      userName={userData?.username}
-      userEmail={user.user?.primaryEmailAddress?.emailAddress}
-    >
+    <DashboardWrapper active="dashboard">
       <>
         <h2
           className={styles.mainHeader}

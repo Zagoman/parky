@@ -1,18 +1,18 @@
-import { api } from "~/utils/api"
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next"
-import Head from "next/head"
-import CreateParking from "./components/CreateParking"
-import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper"
-import { useUser } from "@clerk/nextjs"
+import { api } from "~/utils/api";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+import CreateParking from "./components/CreateParking";
+import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper";
+import { useUser } from "@clerk/nextjs";
 
 const CreateParkingPage: NextPage<{ username: string }> = ({ username }) => {
-  const { user, isLoaded, isSignedIn } = useUser()
+  const { user, isLoaded, isSignedIn } = useUser();
   const profile =
     isLoaded && user?.id
       ? api.profile.getProfileById.useQuery({
           id: user.id,
         })
-      : undefined
+      : undefined;
   return (
     <>
       <Head>
@@ -21,17 +21,12 @@ const CreateParkingPage: NextPage<{ username: string }> = ({ username }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <DashboardWrapper
-          active="myparkingspots"
-          userBalance={profile?.data?.balance}
-          userName={profile?.data?.username}
-          userEmail={user?.primaryEmailAddress?.emailAddress}
-        >
+        <DashboardWrapper active="myparkingspots">
           <CreateParking />
         </DashboardWrapper>
       </main>
     </>
-  )
-}
+  );
+};
 
-export default CreateParkingPage
+export default CreateParkingPage;

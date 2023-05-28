@@ -1,6 +1,6 @@
 import styles from "./StarRating.module.scss";
 type StarRatingProps = {
-  rating: number | string;
+  rating: number | string | null;
 };
 
 const fullStar = (
@@ -63,7 +63,7 @@ export const StarRating = ({ rating }: StarRatingProps) => {
     <div className={styles.starWrapper}>
       {isNumber &&
         starArray.map((star, index) => <span key={index}>{star}</span>)}{" "}
-      <p>{`(${rating})`}</p>
+      <p>{`(${rating ? rating : "no data"})`}</p>
     </div>
   );
 };

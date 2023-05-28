@@ -1,69 +1,63 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import styles from "./DashboardWrapper.module.scss"
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import logoImage from "../../../public/parky-logo-blue.svg"
-import menuImage from "../../../public/icon/menu.svg"
-import accountImage from "../../../public/icon/account.svg"
-import closeImage from "../../../public/icon/close.svg"
-import dashboardImage from "../../../public/icon/dashboard.svg"
-import parkingImage from "../../../public/icon/parking.svg"
-import calendarImage from "../../../public/icon/calendar.svg"
-import chartImage from "../../../public/icon/chart.svg"
-import parkcoinImage from "../../../public/icon/Parky-key-blue.svg"
-import parkyImage from "../../../public/icon/parky-hex.svg"
-import cogImage from "../../../public/icon/settings.svg"
-import helpImage from "../../../public/icon/help.svg"
+import styles from "./DashboardWrapper.module.scss";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import logoImage from "../../../public/parky-logo-blue.svg";
+import menuImage from "../../../public/icon/menu.svg";
+import accountImage from "../../../public/icon/account.svg";
+import closeImage from "../../../public/icon/close.svg";
+import dashboardImage from "../../../public/icon/dashboard.svg";
+import parkingImage from "../../../public/icon/parking.svg";
+import calendarImage from "../../../public/icon/calendar.svg";
+import chartImage from "../../../public/icon/chart.svg";
+import parkcoinImage from "../../../public/icon/Parky-key-blue.svg";
+import parkyImage from "../../../public/icon/parky-hex.svg";
+import cogImage from "../../../public/icon/settings.svg";
+import helpImage from "../../../public/icon/help.svg";
 
-import { useUser, SignIn, SignOutButton } from "@clerk/nextjs"
-import { api } from "~/utils/api"
-import { DashboardMenuElement } from "./components/DashboardMenuElement/DashboardMenuElement"
-import Link from "next/link"
+import { useUser, SignIn, SignOutButton } from "@clerk/nextjs";
+import { api } from "~/utils/api";
+import { DashboardMenuElement } from "./components/DashboardMenuElement/DashboardMenuElement";
+import Link from "next/link";
 
 type DashboardWrapperProps = {
-  children: JSX.Element
-  active: string
-  userBalance?: number | null
-  userName?: string | null
-  userEmail?: string | null
-}
+  children: JSX.Element;
+  active: string;
+};
 
 export const DashboardWrapper = ({
   children,
   active,
-  userBalance,
-  userEmail,
-  userName,
 }: DashboardWrapperProps) => {
-  const [menuVisibility, setMenuVisiblity] = useState<boolean>(false)
-  const [isSignOutVisible, setIsSignOutVisible] = useState(false)
-  const logo = logoImage as string
-  const menuIcon = menuImage as string
-  const accountIcon = accountImage as string
-  const closeIcon = closeImage as string
-  const dashboardIcon = dashboardImage as string
-  const parkingIcon = parkingImage as string
-  const calendarIcon = calendarImage as string
-  const chartIcon = chartImage as string
-  const parkcoinIcon = parkcoinImage as string
-  const parkyIcon = parkyImage as string
-  const cogIcon = cogImage as string
-  const helpIcon = helpImage as string
+  const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
+  const [isSignOutVisible, setIsSignOutVisible] = useState(false);
+  const logo = logoImage as string;
+  const menuIcon = menuImage as string;
+  const accountIcon = accountImage as string;
+  const closeIcon = closeImage as string;
+  const dashboardIcon = dashboardImage as string;
+  const parkingIcon = parkingImage as string;
+  const calendarIcon = calendarImage as string;
+  const chartIcon = chartImage as string;
+  const parkcoinIcon = parkcoinImage as string;
+  const parkyIcon = parkyImage as string;
+  const cogIcon = cogImage as string;
+  const helpIcon = helpImage as string;
 
-  const user = useUser()
+  const user = useUser();
 
-  const [userId, setUserId] = useState("")
+  const [userId, setUserId] = useState("");
   const { data: userData, refetch: refetchUser } =
     api.profile.getProfileById.useQuery({
       id: userId,
-    })
+    });
 
   useEffect(() => {
     if (user.isSignedIn && user.isLoaded) {
-      setUserId(user.user.id)
-      void refetchUser()
+      setUserId(user.user.id);
+      void refetchUser();
     }
-  }, [user.isLoaded])
+  }, [user.isLoaded]);
 
   return (
     <>
@@ -72,7 +66,7 @@ export const DashboardWrapper = ({
           <div
             className={styles.mobileButton}
             onClick={() => {
-              menuVisibility ? setMenuVisiblity(false) : setMenuVisiblity(true)
+              menuVisibility ? setMenuVisiblity(false) : setMenuVisiblity(true);
             }}
           >
             <Image
@@ -93,11 +87,11 @@ export const DashboardWrapper = ({
         </div>
         {user.isSignedIn && (
           <div className={styles.accountInfo}>
-            {userBalance && (
+            {userData && (
               <div className={styles.accountBalance}>
                 <p>Balance:</p>
                 <Link href="/account/topup">
-                  <p>{userBalance} </p>
+                  <p>{userData?.balance} </p>
                   <Image
                     src={parkcoinIcon}
                     height={18}
@@ -122,8 +116,11 @@ export const DashboardWrapper = ({
                 className={styles.menuIcon}
               />
               <div className={styles.accountDetails}>
-                <p>{userName}</p>
-                <p>{userEmail}</p>
+                <p>{userData?.username}</p>
+                <p>
+                  {user.user.primaryEmailAddress &&
+                    user.user.primaryEmailAddress.emailAddress}
+                </p>
               </div>
               <div
                 className={
@@ -214,5 +211,5 @@ export const DashboardWrapper = ({
         )}
       </main>
     </>
-  )
-}
+  );
+};

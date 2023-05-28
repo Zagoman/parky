@@ -99,12 +99,7 @@ const Home: NextPage = () => {
   }, [sortingValue]);
 
   return (
-    <DashboardWrapper
-      active="bookings"
-      userBalance={userData?.balance}
-      userName={userData?.username}
-      userEmail={user.user?.primaryEmailAddress?.emailAddress}
-    >
+    <DashboardWrapper active="bookings">
       <>
         <div className={styles.headerWrapper}>
           <div>
