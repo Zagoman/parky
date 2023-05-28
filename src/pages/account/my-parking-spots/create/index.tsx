@@ -1,18 +1,99 @@
-import { api } from "~/utils/api";
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import Head from "next/head";
-import CreateParking from "./components/CreateParking";
-import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper";
-import { useUser } from "@clerk/nextjs";
+import type { NextPage } from "next"
+import Head from "next/head"
+import styles from "./index.module.scss"
+import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper"
+import { useUser } from "@clerk/nextjs"
+import { UiBox } from "~/components/uiBox/uiBox"
+import { type SubmitHandler, useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
+import { InputField } from "~/components/FormElements/InputField/InputField"
+import { type RouterInputs, api, RouterOutputs } from "~/utils/api"
+import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter"
+import { TextArea } from "~/components/FormElements/InputField/TextArea"
+import { featureList } from "~/utils/features"
+import { OSMdata } from "~/components/MapComponent/utils"
+import { useEffect, useState } from "react"
+import { SearchResult } from "~/components/MapComponent/SearchResult"
+import { NominatimUrl, QueryParameters } from "~/pages/map"
 
-const CreateParkingPage: NextPage<{ username: string }> = ({ username }) => {
-  const { user, isLoaded, isSignedIn } = useUser();
-  const profile =
-    isLoaded && user?.id
-      ? api.profile.getProfileById.useQuery({
-          id: user.id,
+type QueryVariables = {
+  current: {
+    latitude: number
+    longitude: number
+  }
+  range: number
+}
+
+const CreateParkingPage: NextPage = () => {
+  const { user, isLoaded } = useUser()
+  const { register, handleSubmit, watch, setValue } = useForm()
+  const {
+    register: registerQuery,
+    watch: watchQuery,
+    setValue: setValueQuery,
+  } = useForm({
+    defaultValues: { parkingQuery: "" },
+  })
+  const { mutate, error } = api.parking.create.useMutation({
+    onSuccess: () => {
+      toast.success("Parking slot created")
+    },
+    onError: (e) => {
+      toast.error(e.message)
+    },
+  })
+
+  const onSubmit: SubmitHandler<RouterInputs["parking"]["create"]> = (data) => {
+    mutate({
+      ...data,
+      availableEnd: data.availableEnd + ":00Z",
+      availableStart: data.availableStart + ":00Z",
+    })
+    return
+  }
+  const [queryResults, setQueryResults] = useState<OSMdata[]>([])
+  const [selectPosition, setSelectPosition] = useState<OSMdata>()
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
+  const [variables, setVariables] = useState<QueryVariables>({
+    current: { latitude: 1, longitude: 1 },
+    range: 15,
+  })
+  const parkingQuery = watchQuery("parkingQuery")
+  const coordenates = watch(["longitude", "latitude"])
+  useEffect(() => {
+    setQueryResults([])
+    setIsSearching(true)
+    const delayDebounceFn = setTimeout(() => {
+      const queryParameters: QueryParameters = {
+        q: parkingQuery,
+        format: "json",
+        addressdetails: "1",
+        polygon_geojson: "0",
+      }
+      const queryString = new URLSearchParams(queryParameters).toString()
+
+      fetch(`${NominatimUrl}${queryString}`)
+        .then((response) => response.text())
+        .then((result: string) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          const results: [OSMdata] = JSON.parse(result)
+          const filteredResults = results.filter(
+            (place) =>
+              place.class === "boundary" ||
+              place.class === "place" ||
+              place.class === "highway"
+          )
+          setIsSearching(false)
+          setQueryResults(filteredResults)
+          parkingQuery.length && setIsDropdownVisible(true)
         })
-      : undefined;
+        .catch((err) => console.log("error:", err))
+    }, 1000)
+    return () => clearTimeout(delayDebounceFn)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parkingQuery])
+
   return (
     <>
       <Head>
@@ -22,11 +103,175 @@ const CreateParkingPage: NextPage<{ username: string }> = ({ username }) => {
       </Head>
       <main>
         <DashboardWrapper active="myparkingspots">
-          <CreateParking />
+          <>
+            <form
+              //eslint-disable-next-line
+              onSubmit={handleSubmit(onSubmit)}
+              className={styles.dashboard}
+            >
+              <h2>Create parking spot</h2>
+              <UiBox>
+                <h3>General information</h3>
+                <div
+                  className={styles.inputWrapper}
+                  onBlur={() => setIsDropdownVisible(false)}
+                >
+                  <InputField
+                    name="parkingQuery"
+                    inputType="text"
+                    label="Address"
+                    placeholder="Street address"
+                    register={registerQuery}
+                  />
+                  <ul
+                    className={
+                      isDropdownVisible
+                        ? styles.resultsWrapper
+                        : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                          `${styles.resultsWrapper} ${
+                            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                            styles.dropdownHidden
+                          }`
+                    }
+                  >
+                    {/* eslint-disable-next-line */}
+                    {queryResults.length > 0 && parkingQuery.length > 0 ? (
+                      queryResults.map((place) => (
+                        <SearchResult
+                          key={place.osm_id}
+                          place={place}
+                          onClick={() => {
+                            setSelectPosition(place)
+                            setValueQuery("parkingQuery", place.display_name)
+                            setValue(
+                              "latitude",
+                              Number(parseFloat(place.lat).toFixed(5))
+                            )
+                            setValue(
+                              "longitude",
+                              Number(parseFloat(place.lon).toFixed(5))
+                            )
+                            setValue("address", place.display_name)
+                            setIsDropdownVisible(false)
+                          }}
+                        />
+                      ))
+                    ) : isSearching && parkingQuery.length > 0 ? (
+                      <li className={styles.spinner}>
+                        Searching... <span></span>
+                      </li>
+                    ) : parkingQuery.length == 0 ? (
+                      <li className={styles.emptyState}>
+                        Please type your query
+                      </li>
+                    ) : (
+                      <li className={styles.emptyState}>No places found</li>
+                    )}
+                  </ul>
+                </div>
+                <InputField
+                  name="address"
+                  register={register}
+                  label=""
+                  inputType="hidden"
+                  placeholder="Address"
+                />
+                <InputField
+                  name="latitude"
+                  register={register}
+                  label=""
+                  inputType="hidden"
+                  placeholder=""
+                />
+                <InputField
+                  name="longitude"
+                  register={register}
+                  label=""
+                  inputType="hidden"
+                  placeholder=""
+                />
+                <TextArea
+                  name="description"
+                  register={register}
+                  error={error?.data?.zodError?.fieldErrors["description"]?.at(
+                    0
+                  )}
+                  placeholder="Describe details of location"
+                  label="Description"
+                />
+              </UiBox>
+              <UiBox>
+                <h3>Parking availability</h3>
+                <InputField
+                  name="availableStart"
+                  register={register}
+                  label="Available parking start"
+                  inputType="datetime-local"
+                  placeholder=""
+                  error={error?.data?.zodError?.fieldErrors[
+                    "availableStart"
+                  ]?.at(0)}
+                />
+                <InputField
+                  name="availableEnd"
+                  register={register}
+                  label="Available parking end"
+                  inputType="datetime-local"
+                  placeholder=""
+                  error={error?.data?.zodError?.fieldErrors["availableEnd"]?.at(
+                    0
+                  )}
+                />
+              </UiBox>
+              <UiBox className={styles.details}>
+                <h4>Parking spot features</h4>
+                <div className={styles.featureList}>
+                  {featureList.map((feature) => (
+                    <InputField
+                      key={feature.value}
+                      name="features"
+                      placeholder=""
+                      label={feature.title}
+                      value={feature.value}
+                      register={register}
+                      inputType="checkbox"
+                    />
+                  ))}
+                </div>
+                <h4>Parking details</h4>
+                <label className={styles.selectLabel}>
+                  Select your vehicle size
+                  <select
+                    className={styles.selectInput}
+                    {...register("dimensions")}
+                  >
+                    <option value="XSMALL">Motorcicle</option>
+                    <option value="SMALL">Hatch back</option>
+                    <option value="MEDIUM">Sedan</option>
+                    <option value="LARGE">Van</option>
+                    <option value="XLARGE">Truck</option>
+                  </select>
+                </label>
+                <InputField
+                  name="price"
+                  register={register}
+                  label="What is the desired price?"
+                  inputType="number"
+                  placeholder=""
+                  error={error?.data?.zodError?.fieldErrors["price"]?.at(0)}
+                />
+              </UiBox>
+              <DashboardFooter>
+                <div>
+                  <input type="submit" />
+                </div>
+              </DashboardFooter>
+            </form>
+          </>
         </DashboardWrapper>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default CreateParkingPage;
+export default CreateParkingPage
