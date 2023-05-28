@@ -65,7 +65,7 @@ const Home: NextPage = () => {
                     <Link href="/map">
                       <h3>Book a parking spot</h3>
                     </Link>
-                  ) : user.isSignedIn ? (
+                  ) : user.isSignedIn && userData ? (
                     <h3>Register as a driver</h3>
                   ) : (
                     ""
@@ -109,7 +109,7 @@ const Home: NextPage = () => {
                     </p>
                     <div>
                       <span className={styles.clerkButton}>
-                        <SignUpButton />
+                        <SignUpButton redirectUrl="/profile/create" />
                       </span>
                       <span className={styles.clerkButton}>
                         <SignInButton />

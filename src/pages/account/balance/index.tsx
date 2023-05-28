@@ -9,7 +9,6 @@ import Head from "next/head";
 import Link from "next/link";
 import parcoinImport from "../../../../public/icon/parkcoin-filled.svg";
 import calendarImport from "../../../../public/icon/calendar.svg";
-import parkingImport from "../../../../public/icon/parking.svg";
 import Image from "next/image";
 import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter";
 import { type Booking } from "@prisma/client";
@@ -24,7 +23,6 @@ const Balance: NextPage = () => {
 
   const parcoinIcon = parcoinImport as unknown as string;
   const calendarIcon = calendarImport as unknown as string;
-  const parkingIcon = parkingImport as unknown as string;
 
   const {
     data: userData,
@@ -43,7 +41,7 @@ const Balance: NextPage = () => {
   }, [user.isLoaded, user?.user?.id]);
 
   useEffect(() => {
-    if (userData?.Booking && userData.CoinOrder) {
+    if (userData?.Booking && userData.CoinOrder && !userIsLoading) {
       const bookingsArray = userData.Booking;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const orderArray = userData.CoinOrder;
@@ -59,13 +57,15 @@ const Balance: NextPage = () => {
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
   const isBooking = (item: any): item is Booking => {
     return (item as Booking).price !== undefined;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isCoinOrder = (item: any): item is CoinOrder => {
     return (item as CoinOrder).amount !== undefined;
   };
@@ -108,6 +108,11 @@ const Balance: NextPage = () => {
                 ) : (
                   <div>Something went wrong</div>
                 )
+              )}
+              {balanceList.length === 0 && (
+                <li className={styles.noData}>
+                  <p>No data found.</p>
+                </li>
               )}
             </ul>
           </UiBox>

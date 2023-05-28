@@ -169,7 +169,7 @@ export const DashboardWrapper = ({
                 active={active === "balance" ? true : false}
               />
               <DashboardMenuElement
-                href="/account/topup"
+                href="/account/top-up"
                 icon={parkcoinIcon}
                 title="Top up account"
                 active={active === "topupaccount" ? true : false}

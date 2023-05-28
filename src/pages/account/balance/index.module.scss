@@ -76,6 +76,18 @@
   }
 }
 
+.noData {
+  border-radius: $border-roundness-100;
+  font-size: $font-size-body-large;
+  justify-content: center;
+  display: flex;
+  padding: $spacer-200;
+  font-weight: $font-weight-semibold;
+  p {
+    color: $neutral-500;
+  }
+}
+
 @media only screen and (min-width: 768px) {
 }
 

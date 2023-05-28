@@ -145,10 +145,10 @@ const Map: NextPage = () => {
     } else {
       setPurchaseFormContents(
         <>
-          <div>Something went wrong</div>
+          <div>Your balance might be insufficient, please check.</div>
           <Button
             type="primary"
-            text="close"
+            text="Close"
             onClick={() => setIsPurchaseFormVisible(false)}
           />
         </>
