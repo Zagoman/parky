@@ -114,7 +114,10 @@ const Booking: NextPage = () => {
       <main className={styles.main}>
         <div>
           {isLoading && <div>Loader</div>}
-          {bookingData && (
+          {!isLoading &&
+          bookingData &&
+          (user?.user?.id === bookingData?.profileId ||
+            user?.user?.id === spotData?.id) ? (
             <section className={styles.booking}>
               <h2>{`Booking #${bookingData.bookingNumber}`}</h2>
               <UiBox className={styles.bookingDetails}>
@@ -123,6 +126,12 @@ const Booking: NextPage = () => {
                   <div>
                     <p>Parking name</p>
                     <p>{spotData?.address}</p>
+                  </div>
+                  <div>
+                    <p>Parking rating</p>
+                    <p>
+                      <StarRating rating={spotData?.rating ? spotData.rating : "no data"} />
+                    </p>
                   </div>
                   <div>
                     <p>Date</p>
@@ -217,8 +226,8 @@ const Booking: NextPage = () => {
                           <InputField
                             inputType="number"
                             name="parkingRating"
-                            placeholder="Driver rating"
-                            label="Driver rating"
+                            placeholder="Parking rating"
+                            label="Parking rating"
                             register={register}
                             min="1"
                             max="5"
@@ -363,6 +372,10 @@ const Booking: NextPage = () => {
                 )}
               </UiBox>
             </section>
+          ) : (
+            <>
+              <h2>ACCESS DENIED</h2>
+            </>
           )}
         </div>
         <DashboardFooter>

@@ -111,6 +111,7 @@ export const parkingRouter = createTRPCRouter({
           longitude: true,
           description: true,
           profileId: true,
+          rating: true,
         },
       })
 
