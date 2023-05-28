@@ -8,14 +8,11 @@ import { TRPCError } from "@trpc/server"
 import CreateParking from "../create/components/CreateParking"
 import type { RouterOutputs } from "~/utils/api"
 
-type GetProfileByUsernameOutput =
-  RouterOutputs["profile"]["getProfileByUsername"]
-type GetParkingByIdOutput = RouterOutputs["parking"]["getParkingById"]
-
 type UpdateParkingPageProps = {
   username: string
-  parking: GetParkingByIdOutput
-  profile: GetProfileByUsernameOutput
+  parking: RouterOutputs["parking"]["getParkingById"]
+
+  profile: RouterOutputs["profile"]["getProfileByUsername"]
 }
 
 const UpdateParkingPage: NextPage<UpdateParkingPageProps> = (props) => {
