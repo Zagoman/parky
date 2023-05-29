@@ -145,33 +145,24 @@ export const parkingRouter = createTRPCRouter({
   update: privateProcedure
     .input(updateSchema)
     .mutation(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.update({
-        where: { id: ctx.userId },
-        include: {
-          ParkingSpot: { where: { id: input.id } },
-        },
+      const parking = await ctx.prisma.parkingSpot.update({
+        where: { id: input.id },
         data: {
-          ParkingSpot: {
-            update: {
-              where: { id: input.id },
-              data: {
-                address: input.address,
-                imageURL: input.imageURL,
-                price: input.price,
-                availableStart: new Date(input.availableStart),
-                availableEnd: new Date(input.availableEnd),
-                features: input.features,
-                description: input.description,
-                dimensions: input.dimensions,
-                latitude: input.latitude,
-                longitude: input.longitude,
-              },
-            },
-          },
+          address: input.address,
+          imageURL: input.imageURL,
+          price: input.price,
+          availableStart: new Date(input.availableStart),
+          availableEnd: new Date(input.availableEnd),
+          features: input.features,
+          description: input.description,
+          dimensions: input.dimensions,
+          latitude: input.latitude,
+          longitude: input.longitude,
         },
       })
-      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
-      return profile.ParkingSpot[0]
+      if (!parking)
+        throw new TRPCError({ code: "NOT_FOUND", message: "Parking not found" })
+      return parking
     }),
 
   delete: privateProcedure
