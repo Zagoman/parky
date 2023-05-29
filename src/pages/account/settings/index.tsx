@@ -1,25 +1,44 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { type NextPage } from "next"
-import { useUser } from "@clerk/nextjs"
 import Head from "next/head"
 import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper"
 import { useRouter } from "next/router"
 import { type RouterInputs, type RouterOutputs, api } from "~/utils/api"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { useEffect } from "react"
-import { PhoneNumber } from "@clerk/nextjs/dist/api"
+import { type SubmitHandler, useForm } from "react-hook-form"
 import { InputField } from "~/components/FormElements/InputField/InputField"
-type Something = RouterOutputs["profile"]["getProfileById"]
+import { useState } from "react"
+import { UiBox } from "~/components/uiBox/uiBox"
+import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter"
+import styles from "./index.module.scss"
+import { RedirectToUserProfile } from "@clerk/nextjs"
+import Link from "next/link"
+import parkcoinImage from "../../../../public/icon/parkcoin-filled.svg"
+import Image from "next/image"
+import { Button } from "~/components/button/button"
+import { toast } from "react-hot-toast"
+import Trpc from "~/pages/api/trpc/[trpc]"
+
 const Home: NextPage = () => {
+  const utils = api.useContext()
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [isRedirectToProfile, setIsRedirectToProfile] = useState<boolean>(false)
+  const parkcoinIcon = parkcoinImage as string
   const router = useRouter()
-  const { handleSubmit, register, watch, setValue } =
+  const { handleSubmit, register, setValue, watch } =
     useForm<RouterInputs["profile"]["update"]>()
   const { data: userId, isFetching: userFetching } =
-    api.user.getUserId.useQuery()
+    api.user.getUserId.useQuery(undefined, {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    })
+  const owner = watch("isOwner")
+  const driver = watch("isDriver")
   const profile = api.profile.getProfileById.useQuery(
     //eslint-disable-next-line
     { id: userId ? userId : "" },
     {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
       enabled: !!userId,
       onSuccess: (el: RouterOutputs["profile"]["getProfileById"]) => {
         setValue("lastName", el.lastName)
@@ -34,6 +53,13 @@ const Home: NextPage = () => {
       },
     }
   )
+  const { mutate, error } = api.profile.update.useMutation({
+    onSuccess: () => {
+      setIsEditing(false)
+      toast.success("Profile updated succesfully")
+      void profile.refetch()
+    },
+  })
   if (profile.isFetching || userFetching) {
     return (
       <>
@@ -54,6 +80,7 @@ const Home: NextPage = () => {
   }
 
   const onSubmit: SubmitHandler<RouterInputs["profile"]["update"]> = (data) => {
+    mutate(data)
     return
   }
 
@@ -68,57 +95,190 @@ const Home: NextPage = () => {
         <form
           //eslint-disable-next-line
           onSubmit={handleSubmit(onSubmit)}
+          className={styles.form}
         >
-          <InputField
-            register={register}
-            name="firstName"
-            label="First name"
-            error=""
-            inputType="text"
-            placeholder=""
-          />
-          <InputField
-            register={register}
-            name="lastName"
-            label="Last name"
-            error=""
-            inputType="text"
-            placeholder=""
-          />
-          <InputField
-            register={register}
-            name="username"
-            label="Username"
-            error=""
-            inputType="text"
-            placeholder=""
-          />
-          <InputField
-            register={register}
-            name="phoneNumber"
-            label="Phone number"
-            error=""
-            inputType="text"
-            placeholder=""
-          />
-          <InputField
-            register={register}
-            name="isOwner"
-            label="Do you own a parking spot?"
-            error=""
-            inputType="checkbox"
-            placeholder=""
-          />
-          <InputField
-            register={register}
-            name="isDriver"
-            label="Do you drive?"
-            error=""
-            inputType="checkbox"
-            placeholder=""
-          />
+          <h2>Account settings</h2>
+          <UiBox>
+            <h4>General information</h4>
+            {isEditing && <p>Use the form below to update your information</p>}
+
+            <InputField
+              register={register}
+              name="firstName"
+              label="First name"
+              error={error?.data?.zodError?.fieldErrors["firstName"]?.at(0)}
+              inputType="text"
+              placeholder=""
+              disabled={!isEditing}
+            />
+            <InputField
+              register={register}
+              name="lastName"
+              label="Last name"
+              inputType="text"
+              error={error?.data?.zodError?.fieldErrors["lastName"]?.at(0)}
+              placeholder=""
+              disabled={!isEditing}
+            />
+            <InputField
+              register={register}
+              name="username"
+              label="Username"
+              error={error?.data?.zodError?.fieldErrors["username"]?.at(0)}
+              inputType="text"
+              placeholder=""
+              disabled={!isEditing}
+            />
+            <InputField
+              register={register}
+              name="phoneNumber"
+              label="Phone number"
+              error={error?.data?.zodError?.fieldErrors["phoneNumber"]?.at(0)}
+              inputType="text"
+              placeholder=""
+              disabled={!isEditing}
+            />
+          </UiBox>
+          <UiBox>
+            <h4>Vehicle information</h4>
+            {isEditing && (
+              <p>
+                Add the information of your vehicle to make booking process
+                easier.
+              </p>
+            )}
+            <InputField
+              register={register}
+              name="isOwner"
+              label={
+                isEditing
+                  ? "Do you own a parking spot?"
+                  : `I ${owner ? "own" : "do not own"} a parking spot`
+              }
+              error={error?.data?.zodError?.fieldErrors["isOwner"]?.at(0)}
+              inputType="checkbox"
+              placeholder=""
+              disabled={!isEditing}
+            />
+            <InputField
+              register={register}
+              name="isDriver"
+              label={
+                isEditing
+                  ? "Do you own a vehicle?"
+                  : `I am ${driver ? "a" : "not a"} driver`
+              }
+              error={error?.data?.zodError?.fieldErrors["isDriver"]?.at(0)}
+              inputType="checkbox"
+              placeholder=""
+              disabled={!isEditing}
+            />
+            {driver && (
+              <>
+                <InputField
+                  register={register}
+                  name="licensePlate"
+                  label="Vehicle's License plate"
+                  error={error?.data?.zodError?.fieldErrors["licensePlate"]?.at(
+                    0
+                  )}
+                  inputType="text"
+                  placeholder=""
+                  disabled={!isEditing}
+                />
+                <InputField
+                  register={register}
+                  name="vehicleModel"
+                  label="Vehicle Model"
+                  error={error?.data?.zodError?.fieldErrors["vehicleModel"]?.at(
+                    0
+                  )}
+                  inputType="text"
+                  placeholder=""
+                  disabled={!isEditing}
+                />
+                <label className={styles.selectLabel}>
+                  Vehicle size
+                  <select
+                    className={styles.selectInput}
+                    disabled={!isEditing}
+                    {...register("vehicleSize")}
+                  >
+                    <option value="XSMALL">Motorcycle</option>
+                    <option value="SMALL">Hatch back</option>
+                    <option value="MEDIUM">Sedan</option>
+                    <option value="LARGE">Van</option>
+                    <option value="XLARGE">Truck</option>
+                  </select>
+                </label>
+              </>
+            )}
+          </UiBox>
+          <UiBox>
+            <h4>Update credentials</h4>
+            <p>
+              By clicking the button you will be redirected to Clerk&apos;s
+              profile management page.
+            </p>
+            <div className={styles.buttonMargin}>
+              <Button
+                type="secondary"
+                text="Update credentials"
+                onClick={() => setIsRedirectToProfile(true)}
+              ></Button>
+            </div>
+          </UiBox>
+          <UiBox className={styles.balance}>
+            <h4>Account balance</h4>
+            <p>Your current account balance.</p>
+            <div className={styles.balanceVisual}>
+              <span>{profile.data?.balance && profile.data?.balance}</span>
+              <Image
+                src={parkcoinIcon}
+                height={48}
+                width={48}
+                alt="parcoin icon"
+              />
+            </div>
+            <Link
+              className={`${styles.primary} ${styles.small}`}
+              href="/account/top-up"
+            >
+              Top up balance
+            </Link>
+            <Link className={styles.cornerLink} href="/account/balance">
+              Purchase History
+            </Link>
+          </UiBox>
+          <DashboardFooter>
+            {isEditing ? (
+              <>
+                <div className={styles.buttonFlex}>
+                  <Button
+                    type="secondary"
+                    text="Cancel"
+                    onClick={() => setIsEditing(false)}
+                  />
+                  <input
+                    className={styles.primary}
+                    type="submit"
+                    value="Save changes"
+                  />
+                </div>
+              </>
+            ) : (
+              <div className={styles.buttonFlex}>
+                <Button
+                  text="Edit profile"
+                  type="primary"
+                  onClick={() => setIsEditing(true)}
+                />
+              </div>
+            )}
+          </DashboardFooter>
         </form>
       </DashboardWrapper>
+      {isRedirectToProfile && <RedirectToUserProfile />}
     </>
   )
 }
