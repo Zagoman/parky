@@ -33,6 +33,7 @@ export const Footer = () => {
         <SignUpButton />
         <SignInButton />
         <Link href="/account">Account</Link>
+        <Link href="/help">Help</Link>
       </section>
       <section>&copy; 2023 The Nerd Herd</section>
     </div>
