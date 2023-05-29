@@ -198,7 +198,7 @@
   .pageHeader {
     display: flex;
     flex-direction: row;
-    padding: $spacer-400 $spacer-500;
+    padding: $spacer-400 $spacer-400;
 
     &CTA {
       padding: $spacer-300 $spacer-400;
@@ -229,7 +229,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: $spacer-300;
+        gap: $spacer-400;
 
         li {
           font-size: $font-size-label;
@@ -273,6 +273,7 @@
 
 @media only screen and (min-width: 1024px) {
   .pageHeader {
+    gap: 0;
     nav {
       ul {
         gap: $spacer-500;
@@ -297,7 +298,7 @@
 
 @media only screen and (min-width: 1366px) {
   .pageHeader {
-    padding: $spacer-300 $spacer-600;
+    padding: $spacer-300 $spacer-400;
 
     nav {
       ul {

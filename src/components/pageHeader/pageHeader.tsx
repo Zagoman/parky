@@ -99,9 +99,6 @@ export const PageHeader = ({
               <Link href="/map">Find parking</Link>
             </li>
             <li>
-              <Link href="/howto">How it works</Link>
-            </li>
-            <li>
               <Link href="/help">Help</Link>
             </li>
             {!user.isSignedIn ? (

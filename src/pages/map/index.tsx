@@ -246,8 +246,8 @@ const Map: NextPage = () => {
           <div className={styles.spotListControls}>
             <div>Booking type: {bookingType}</div>
             <div className={styles.spotListControlsButtons}>
-              <p>Sort</p>
-              <p>Filter</p>
+              <p></p>
+              <p></p>
             </div>
           </div>
           <div className={styles.spotListWrapper}>
