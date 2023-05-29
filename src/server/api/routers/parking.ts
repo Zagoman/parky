@@ -186,7 +186,7 @@ export const parkingRouter = createTRPCRouter({
         userId: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       const parkings = await ctx.prisma.parkingSpot.findMany({
         where: { profileId: input.userId },
         include: {
