@@ -13,7 +13,7 @@ import Link from "next/link";
 type headerProps = {
   children: JSX.Element;
   secondaryMenu: boolean;
-  secondaryMenuContents: null | (() => JSX.Element);
+  secondaryMenuContents?: null | (() => JSX.Element);
 };
 
 export const PageHeader = ({
