@@ -13,7 +13,10 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import { BookingItem } from "~/components/DashboardElements/components/BookingItem/BookingItem";
+import {
+  type BookingElement,
+  BookingItem,
+} from "~/components/DashboardElements/components/BookingItem/BookingItem";
 
 import parcoinIconImport from "../../../public/icon/parkcoin-filled.svg";
 import calendarIconImport from "../../../public/icon/calendar.svg";
@@ -85,16 +88,18 @@ const Home: NextPage = () => {
                   <p>Details</p>
                 </div>
                 {userBookingData && !areBookingsLoading
-                  ? userBookingData.slice(0, 4).map((booking) => (
-                      <BookingItem
-                        key={booking.id}
-                        booking={{
-                          ...booking,
-                          end: new Date(booking.end),
-                          start: new Date(booking.start),
-                        }}
-                      />
-                    ))
+                  ? userBookingData
+                      .slice(0, 4)
+                      .map((booking: BookingElement) => (
+                        <BookingItem
+                          key={booking.id}
+                          booking={{
+                            ...booking,
+                            end: new Date(booking.end),
+                            start: new Date(booking.start),
+                          }}
+                        />
+                      ))
                   : areBookingsLoading
                   ? "loading"
                   : "No bookings found"}

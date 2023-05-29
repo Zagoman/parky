@@ -1,4 +1,4 @@
-import { Profile } from "@prisma/client"
+import { type Profile } from "@prisma/client";
 
 export const filterUserForClient = (profile: Profile) => {
   return {
@@ -14,5 +14,5 @@ export const filterUserForClient = (profile: Profile) => {
     lastName: profile.lastName,
     firstName: profile.firstName,
     balance: profile.balance,
-  }
-}
+  };
+};

@@ -1,14 +1,14 @@
-import { ParkingSpot } from "@prisma/client"
-import { TRPCError } from "@trpc/server"
-import { z } from "zod"
+import { ParkingSpot } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import {
   createTRPCRouter,
   privateProcedure,
   publicProcedure,
-} from "~/server/api/trpc"
-import { toDatetimeLocal } from "~/utils/datetime-local"
+} from "~/server/api/trpc";
+import { toDatetimeLocal } from "~/utils/datetime-local";
 
-const METER_UNIT = 0.00001
+const METER_UNIT = 0.00001;
 export const featuresSchema = z
   .union([
     z.literal("camera"),
@@ -21,7 +21,7 @@ export const featuresSchema = z
     z.literal("roof"),
     z.literal("instant"),
   ])
-  .array()
+  .array();
 const createSchema = z.object({
   address: z.string().min(3).max(255),
   imageURL: z.optional(z.string()),
@@ -33,16 +33,16 @@ const createSchema = z.object({
   longitude: z.number(),
   description: z.string().min(3).max(255),
   dimensions: z.enum(["XSMALL", "SMALL", "MEDIUM", "LARGE", "XLARGE"]),
-})
-const updateSchema = createSchema.extend({ id: z.string() })
+});
+const updateSchema = createSchema.extend({ id: z.string() });
 export const parkingRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    const parkings = await ctx.prisma.parkingSpot.findMany()
+    const parkings = await ctx.prisma.parkingSpot.findMany();
     return parkings.map((parking) => ({
       ...parking,
       availableEnd: toDatetimeLocal(parking.availableEnd),
       availableStart: toDatetimeLocal(parking.availableStart),
-    }))
+    }));
   }),
   getParkingWithinRange: publicProcedure
     .input(
@@ -81,18 +81,18 @@ export const parkingRouter = createTRPCRouter({
           description: true,
           profileId: true,
         },
-      })
+      });
 
       if (!parkings)
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "No parkings found within range",
-        })
+        });
       return parkings.map((parking) => ({
         ...parking,
         availableEnd: toDatetimeLocal(parking.availableEnd),
         availableStart: toDatetimeLocal(parking.availableStart),
-      }))
+      }));
     }),
   getParkingById: publicProcedure
     .input(z.object({ id: z.string() }))
@@ -114,10 +114,13 @@ export const parkingRouter = createTRPCRouter({
           profileId: true,
           rating: true,
         },
-      })
+      });
 
       if (!parking) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "Parking not found" })
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Parking not found",
+        });
       }
       return {
         ...parking,
@@ -125,7 +128,7 @@ export const parkingRouter = createTRPCRouter({
         availableEnd: toDatetimeLocal(parking.availableEnd),
         longitude: String(parking.longitude),
         latitude: String(parking.latitude),
-      }
+      };
     }),
 
   create: privateProcedure
@@ -139,8 +142,8 @@ export const parkingRouter = createTRPCRouter({
           availableEnd: new Date(input.availableEnd),
           availableStart: new Date(input.availableStart),
         },
-      })
-      return parking
+      });
+      return parking;
     }),
 
   update: privateProcedure
@@ -170,9 +173,9 @@ export const parkingRouter = createTRPCRouter({
             },
           },
         },
-      })
-      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
-      return profile.ParkingSpot[0]
+      });
+      if (!profile) throw new TRPCError({ code: "NOT_FOUND" });
+      return profile.ParkingSpot[0];
     }),
 
   delete: privateProcedure
@@ -184,11 +187,11 @@ export const parkingRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const parking = await ctx.prisma.parkingSpot.delete({
         where: { id: input.id },
-      })
+      });
       if (!parking) {
-        throw new TRPCError({ code: "NOT_FOUND" })
+        throw new TRPCError({ code: "NOT_FOUND" });
       }
-      return parking
+      return parking;
     }),
   getParkingsByUserId: privateProcedure
     .input(
@@ -207,10 +210,13 @@ export const parkingRouter = createTRPCRouter({
             },
           },
         },
-      })
+      });
       if (!parkings) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "No parkings found" })
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No parkings found",
+        });
       }
-      return parkings
+      return parkings;
     }),
-})
+});

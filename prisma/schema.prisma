@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-    provider     = "mysql"
-    url          = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
     relationMode = "prisma"
 }
 
@@ -56,17 +56,7 @@ model ProfileReview {
 
     @@index(fields: [id, profileId])
 }
-
-model ParkingReview {
-    id        String      @id @default(cuid())
-    profile   Profile     @relation(fields: [profileId], references: [id])
-    profileId String
-    parking   ParkingSpot @relation(fields: [parkingId], references: [id])
-    parkingId String
-    rating    Float
-    content   String      @db.VarChar(255)
-    createdAt DateTime    @default(now())
-    updatedAt DateTime    @updatedAt
+model Parking_spot {
 
     @@index(fields: [id, profileId, parkingId])
 }

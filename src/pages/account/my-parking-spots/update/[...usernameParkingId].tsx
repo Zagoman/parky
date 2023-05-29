@@ -1,22 +1,22 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next"
-import Head from "next/head"
-import { createServerSideHelpers } from "@trpc/react-query/server"
-import { appRouter } from "~/server/api/root"
-import { prisma } from "~/server/db"
-import SuperJSON from "superjson"
-import { TRPCError } from "@trpc/server"
-import CreateParking from "../create/components/CreateParking"
-import type { RouterOutputs } from "~/utils/api"
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+import { createServerSideHelpers } from "@trpc/react-query/server";
+import { appRouter } from "~/server/api/root";
+import { prisma } from "~/server/db";
+import SuperJSON from "superjson";
+import { TRPCError } from "@trpc/server";
+import CreateParking from "../create/components/CreateParking";
+import type { RouterOutputs } from "~/utils/api";
 
 type UpdateParkingPageProps = {
-  username: string
-  parking: RouterOutputs["parking"]["getParkingById"]
+  username: string;
+  parking: RouterOutputs["parking"]["getParkingById"];
 
-  profile: RouterOutputs["profile"]["getProfileByUsername"]
-}
+  profile: RouterOutputs["profile"]["getProfileByUsername"];
+};
 
 const UpdateParkingPage: NextPage<UpdateParkingPageProps> = (props) => {
-  const { parking, profile } = props
+  const { parking, profile } = props;
   return (
     <>
       <Head>
@@ -28,23 +28,23 @@ const UpdateParkingPage: NextPage<UpdateParkingPageProps> = (props) => {
         <CreateParking parking={parking} profile={profile} update={true} />
       </main>
     </>
-  )
-}
+  );
+};
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const helpers = createServerSideHelpers({
     router: appRouter,
     ctx: { prisma, userId: null },
     transformer: SuperJSON, // optional - adds superjson serialization
-  })
-  const usernameParkingId = context.params?.usernameParkingId
+  });
+  const usernameParkingId = context.params?.usernameParkingId;
   if (usernameParkingId?.at(0)) {
-    const profile = await helpers.profile.getProfileByUsername.fetch({
+    const profile = await helpers?.profile?.getProfileByUsername.fetch({
       username: usernameParkingId?.at(0) as string,
-    })
-    const parking = await helpers.parking.getParkingById.fetch({
+    });
+    const parking = await helpers?.parking?.getParkingById.fetch({
       id: usernameParkingId?.at(1) as string,
-    })
+    });
     return {
       props: {
         trpcState: helpers.dehydrate(),
@@ -53,16 +53,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
         profile,
         parking,
       },
-    }
+    };
   }
 
   throw new TRPCError({
     code: "NOT_FOUND",
     message: "User or parking not found",
-  })
-}
+  });
+};
 
 export const getStaticPaths: GetStaticPaths = () => {
-  return { paths: [], fallback: "blocking" }
-}
-export default UpdateParkingPage
+  return { paths: [], fallback: "blocking" };
+};
+export default UpdateParkingPage;

@@ -1,12 +1,12 @@
-import { TRPCError } from "@trpc/server"
-import { filterUserForClient } from "utils/user"
-import { z } from "zod"
+import { TRPCError } from "@trpc/server";
+import { filterUserForClient } from "utils/user";
+import { z } from "zod";
 
 import {
   createTRPCRouter,
   privateProcedure,
   publicProcedure,
-} from "~/server/api/trpc"
+} from "~/server/api/trpc";
 const createSchema = z.object({
   firstName: z.string().min(3).max(255),
   lastName: z.string().min(3).max(255),
@@ -25,11 +25,11 @@ const createSchema = z.object({
       z.literal("XLARGE"),
     ])
   ),
-})
-const updateSchema = createSchema.extend({ username: z.string() })
+});
+const updateSchema = createSchema.extend({ username: z.string() });
 export const profileRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.profile.findMany()
+    return ctx.prisma.profile.findMany();
   }),
   getProfileById: publicProcedure
     .input(z.object({ id: z.string() }))
@@ -49,20 +49,23 @@ export const profileRouter = createTRPCRouter({
             },
           },
         },
-      })
+      });
       if (!profile) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "Profile not found" })
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Profile not found",
+        });
       }
-      return profile
+      return profile;
     }),
   getProfileByUsername: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {
       const profile = await ctx.prisma.profile.findFirst({
         where: { username: input.username },
-      })
+      });
 
-      return profile ? filterUserForClient(profile) : null
+      return profile ? filterUserForClient(profile) : null;
     }),
   create: privateProcedure
     .input(createSchema)
@@ -72,8 +75,8 @@ export const profileRouter = createTRPCRouter({
           ...input,
           id: ctx.userId,
         },
-      })
-      return filterUserForClient(profile)
+      });
+      return filterUserForClient(profile);
     }),
   update: privateProcedure
     .input(updateSchema)
@@ -89,8 +92,8 @@ export const profileRouter = createTRPCRouter({
           licensePlate: input.licensePlate || null,
           vehicleModel: input.vehicleModel || null,
         },
-      })
-      return filterUserForClient(profile)
+      });
+      return filterUserForClient(profile);
     }),
   updateDriver: privateProcedure
     .input(
@@ -125,9 +128,9 @@ export const profileRouter = createTRPCRouter({
           username: input.username,
           vehicleSize: input.vehicleSize,
         },
-      })
-      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
-      return filterUserForClient(profile)
+      });
+      if (!profile) throw new TRPCError({ code: "NOT_FOUND" });
+      return filterUserForClient(profile);
     }),
   updateOwner: privateProcedure
     .input(
@@ -150,17 +153,17 @@ export const profileRouter = createTRPCRouter({
           username: input.username,
           phoneNumber: input.phoneNumber,
         },
-      })
-      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
-      return filterUserForClient(profile)
+      });
+      if (!profile) throw new TRPCError({ code: "NOT_FOUND" });
+      return filterUserForClient(profile);
     }),
   delete: privateProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const profile = await ctx.prisma.profile.delete({
         where: { id: input.id },
-      })
-      if (!profile) throw new TRPCError({ code: "NOT_FOUND" })
-      return filterUserForClient(profile)
+      });
+      if (!profile) throw new TRPCError({ code: "NOT_FOUND" });
+      return filterUserForClient(profile);
     }),
-})
+});
