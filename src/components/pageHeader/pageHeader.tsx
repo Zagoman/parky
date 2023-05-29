@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import styles from "./pageHeader.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import menuImage from "../../../public/icon/menu.svg";
 import pageInfoImage from "../../../public/icon/page-info.svg";
@@ -34,6 +34,13 @@ export const PageHeader = ({
   const pageInfoIcon = pageInfoImage as string;
   const closeIcon = closeImage as string;
   const parkyLogo = PakyLogoBlue as string;
+
+  useEffect(() => {
+    if (user.isSignedIn) {
+      console.log(user.isSignedIn);
+      setIsModalVisible(false);
+    }
+  }, [user.isSignedIn, user]);
 
   return (
     <>
@@ -107,7 +114,7 @@ export const PageHeader = ({
               <>
                 <li
                   onClick={() => {
-                    setModalContents(<SignIn />);
+                    setModalContents(<SignIn afterSignInUrl="/" />);
                     setIsModalVisible(true);
                   }}
                 >
@@ -144,33 +151,35 @@ export const PageHeader = ({
         </nav>
       </header>
       <section className={secondaryMenu ? styles.contentWrapper : ""}>
-        <div
-          className={
-            isModalVisible
-              ? `${styles.modal} `
-              : `${styles.modal} ${styles.modalHidden}`
-          }
-        >
-          <div className={styles.modalWrapper}>
-            <span
-              className={styles.modalWrapperClose}
-              onClick={() => {
-                setIsModalVisible(false);
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="36"
-                height="36"
-                fill="#566777"
-                viewBox="0 0 16 16"
+        {!user.isSignedIn && (
+          <div
+            className={
+              isModalVisible && modalContents
+                ? `${styles.modal} `
+                : `${styles.modal} ${styles.modalHidden}`
+            }
+          >
+            <div className={styles.modalWrapper}>
+              <span
+                className={styles.modalWrapperClose}
+                onClick={() => {
+                  setIsModalVisible(false);
+                }}
               >
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-              </svg>
-            </span>
-            {modalContents}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="36"
+                  height="36"
+                  fill="#566777"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+              </span>
+              {modalContents}
+            </div>
           </div>
-        </div>
+        )}
         {children}
       </section>
     </>
