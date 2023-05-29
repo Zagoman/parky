@@ -3,6 +3,8 @@ import Link from "next/link";
 import parkyLogoImport from "../../../public/parky-logo-blue.svg";
 import Image from "next/image";
 
+import { SignInButton, SignUpButton } from "@clerk/nextjs";
+
 export const Footer = () => {
   const parkyLogo = parkyLogoImport as string;
 
@@ -13,25 +15,25 @@ export const Footer = () => {
         <div className={styles.footerContents}>
           <h4>Parky A/S</h4>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe
-            accusamus illo facilis laudantium ex? Laborum ipsa ipsum illum
-            accusantium magnam.
+            Parky is a application allowing users to rent and book private
+            parking spaces earning benefits.
           </p>
         </div>
       </section>
       <section>
         <div className={styles.footerContents}>
           <h4>About</h4>
+          <Link href="/home">Home</Link>
           <Link href="/map">Book a parking spot</Link>
-          <Link href="/howitworks">How it works</Link>
+          <Link href="/contact">Contact us</Link>
         </div>
       </section>
       <section>
         <h4>Help</h4>
-        <Link href="/contact">Contact us</Link>
-        <Link href="/register">Register account</Link>
-        <Link href="/signin">Sign in</Link>
-        <Link href="/account">My account</Link>
+        <SignUpButton />
+        <SignInButton />
+        <Link href="/account">Account</Link>
+        <Link href="/help">Help</Link>
       </section>
       <section>&copy; 2023 The Nerd Herd</section>
     </div>

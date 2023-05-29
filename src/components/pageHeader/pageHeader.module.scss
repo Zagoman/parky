@@ -167,8 +167,9 @@
     width: 100%;
     transition: 0.5s ease-in-out;
     background-color: $neutral-100;
-    border-right: $border-width-100 $neutral-300;
+    border-right: solid $border-width-100 $neutral-300;
     padding-top: $spacer-700;
+    z-index: -1;
   }
 }
 
@@ -198,8 +199,8 @@
   .pageHeader {
     display: flex;
     flex-direction: row;
-    padding: $spacer-400 $spacer-500;
-
+    padding: 0;
+    padding-left: $spacer-400;
     &CTA {
       padding: $spacer-300 $spacer-400;
       background-color: $blue-200;
@@ -220,16 +221,16 @@
     nav {
       position: initial;
       height: auto;
-      padding: 0;
+      padding: $spacer-400 $spacer-400;
       display: flex;
       align-items: flex-end;
       border: none;
-
+      background: $neutral-100;
       ul {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: $spacer-300;
+        gap: $spacer-400;
 
         li {
           font-size: $font-size-label;
@@ -246,7 +247,8 @@
     section {
       width: 30%;
       min-width: 500px;
-      padding-top: 90px;
+      padding-top: calc($spacer-700 + $spacer-600);
+      z-index: -1;
     }
   }
 
@@ -273,6 +275,7 @@
 
 @media only screen and (min-width: 1024px) {
   .pageHeader {
+    gap: 0;
     nav {
       ul {
         gap: $spacer-500;
@@ -283,6 +286,13 @@
           }
         }
       }
+    }
+    &LogoWrapper {
+      max-width: 250px;
+    }
+
+    &Logo {
+      height: $spacer-600;
     }
   }
   .modal {
@@ -297,12 +307,9 @@
 
 @media only screen and (min-width: 1366px) {
   .pageHeader {
-    padding: $spacer-300 $spacer-600;
-
     nav {
       ul {
         gap: $spacer-500;
-
         li {
           font-size: $font-size-body-large;
           button {

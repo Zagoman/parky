@@ -16,6 +16,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    svg {
+      max-width: 32px;
+    }
   }
 
   &Contents {
@@ -95,6 +99,9 @@
       &Image {
         aspect-ratio: 1/1;
         width: 100%;
+        svg {
+          max-width: 64px;
+        }
       }
     }
   }
