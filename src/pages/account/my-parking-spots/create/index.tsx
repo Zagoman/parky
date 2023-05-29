@@ -103,7 +103,7 @@ const CreateParkingPage: NextPage = () => {
             >
               <div className={styles.header}>
                 <h2>Create parking spot</h2>
-                <Link href="/account"> Back</Link>
+                <Link href="/account/my-parking-spots"> Back</Link>
               </div>
               <UiBox>
                 <h3>General information</h3>
