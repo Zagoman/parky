@@ -22,6 +22,29 @@
     border: 1px solid $neutral-500;
     resize: none;
   }
+
+  a {
+    color: $blue-200;
+    font-weight: $font-weight-semibold;
+    &:hover {
+      text-decoration: underline;
+      color: $blue-100;
+    }
+    &:active {
+      color: $blue-300;
+    }
+  }
+}
+
+.header {
+  grid-column: 1/-1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  a {
+    font-size: $font-size-body-large;
+  }
 }
 
 .dropdownHidden {

@@ -51,6 +51,26 @@
   flex-direction: column;
   gap: $spacer-300;
 
+  &Header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    grid-column: 1/-1;
+    align-items: center;
+
+    a {
+      color: $blue-200;
+      font-weight: $font-weight-semibold;
+      &:hover {
+        text-decoration: underline;
+        color: $blue-100;
+      }
+      &:active {
+        color: $blue-300;
+      }
+    }
+  }
+
   &Details {
     display: flex;
     flex-direction: column;
@@ -176,6 +196,23 @@
 @media screen and (min-width: 768px) {
   .ratingWrapper {
     gap: $spacer-400;
+  }
+
+  .booking {
+    &Header {
+      a {
+        color: $blue-200;
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-body-large;
+        &:hover {
+          text-decoration: underline;
+          color: $blue-100;
+        }
+        &:active {
+          color: $blue-300;
+        }
+      }
+    }
   }
 }
 

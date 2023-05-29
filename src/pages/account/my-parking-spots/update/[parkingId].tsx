@@ -1,29 +1,31 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next"
-import Head from "next/head"
-import styles from "../create/index.module.scss"
-import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper"
-import { UiBox } from "~/components/uiBox/uiBox"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { InputField } from "~/components/FormElements/InputField/InputField"
-import { type RouterInputs, api, RouterOutputs } from "~/utils/api"
-import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter"
-import { TextArea } from "~/components/FormElements/InputField/TextArea"
-import { featureList } from "~/utils/features"
-import type { OSMdata } from "~/components/MapComponent/utils"
-import { useEffect, useState } from "react"
-import { SearchResult } from "~/components/MapComponent/SearchResult"
-import { NominatimUrl, type QueryParameters } from "~/pages/map"
-import { createServerSideHelpers } from "@trpc/react-query/server"
-import { appRouter } from "~/server/api/root"
-import { prisma } from "~/server/db"
-import SuperJSON from "superjson"
-import { TRPCError } from "@trpc/server"
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+import styles from "../create/index.module.scss";
+import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper";
+import { UiBox } from "~/components/uiBox/uiBox";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { InputField } from "~/components/FormElements/InputField/InputField";
+import { type RouterInputs, api, type RouterOutputs } from "~/utils/api";
+import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter";
+import { TextArea } from "~/components/FormElements/InputField/TextArea";
+import { featureList } from "~/utils/features";
+import type { OSMdata } from "~/components/MapComponent/utils";
+import { useEffect, useState } from "react";
+import { SearchResult } from "~/components/MapComponent/SearchResult";
+import { NominatimUrl, type QueryParameters } from "~/pages/map";
+import { createServerSideHelpers } from "@trpc/react-query/server";
+import { appRouter } from "~/server/api/root";
+import { prisma } from "~/server/db";
+import SuperJSON from "superjson";
+import { TRPCError } from "@trpc/server";
+import { LoaderIcon } from "react-hot-toast";
+import Link from "next/link";
 
 const UpdateParkingPage: NextPage<{
-  parking: RouterOutputs["parking"]["getParkingById"]
+  parking: RouterOutputs["parking"]["getParkingById"];
 }> = ({ parking }) => {
-  const { register, handleSubmit, setValue } = useForm<
+  const { register, handleSubmit, setValue, watch } = useForm<
     RouterInputs["parking"]["create"]
   >({
     defaultValues: {
@@ -39,7 +41,7 @@ const UpdateParkingPage: NextPage<{
       availableEnd: parking.availableEnd,
       availableStart: parking.availableStart,
     },
-  })
+  });
   const {
     register: registerQuery,
     watch: watchQuery,
@@ -48,15 +50,15 @@ const UpdateParkingPage: NextPage<{
     defaultValues: {
       parkingQuery: parking.address,
     },
-  })
+  });
   const { mutate, error } = api.parking.update.useMutation({
     onSuccess: () => {
-      toast.success("Parking slot updated")
+      toast.success("Parking slot updated");
     },
     onError: (e) => {
-      toast.error(e.message)
+      toast.error(e.message);
     },
-  })
+  });
 
   const onSubmit: SubmitHandler<RouterInputs["parking"]["create"]> = (data) => {
     mutate({
@@ -64,46 +66,46 @@ const UpdateParkingPage: NextPage<{
       id: parking.id,
       availableEnd: data.availableEnd + ":00Z",
       availableStart: data.availableStart + ":00Z",
-    })
-    return
-  }
-  const [queryResults, setQueryResults] = useState<OSMdata[]>([])
-  const [selectPosition, setSelectPosition] = useState<OSMdata>()
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
-  const parkingQuery = watchQuery("parkingQuery")
+    });
+    return;
+  };
+  const [queryResults, setQueryResults] = useState<OSMdata[]>([]);
+  const [selectPosition, setSelectPosition] = useState<OSMdata>();
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const parkingQuery = watchQuery("parkingQuery");
   useEffect(() => {
-    setQueryResults([])
-    setIsSearching(true)
+    setQueryResults([]);
+    setIsSearching(true);
     const delayDebounceFn = setTimeout(() => {
       const queryParameters: QueryParameters = {
         q: parkingQuery,
         format: "json",
         addressdetails: "1",
         polygon_geojson: "0",
-      }
-      const queryString = new URLSearchParams(queryParameters).toString()
+      };
+      const queryString = new URLSearchParams(queryParameters).toString();
 
       fetch(`${NominatimUrl}${queryString}`)
         .then((response) => response.text())
         .then((result: string) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const results: [OSMdata] = JSON.parse(result)
+          const results: [OSMdata] = JSON.parse(result);
           const filteredResults = results.filter(
             (place) =>
               place.class === "boundary" ||
               place.class === "place" ||
               place.class === "highway"
-          )
-          setIsSearching(false)
-          setQueryResults(filteredResults)
-          parkingQuery.length && setIsDropdownVisible(true)
+          );
+          setIsSearching(false);
+          setQueryResults(filteredResults);
+          parkingQuery.length && setIsDropdownVisible(true);
         })
-        .catch((err) => console.log("error:", err))
-    }, 1000)
-    return () => clearTimeout(delayDebounceFn)
+        .catch((err) => console.log("error:", err));
+    }, 1000);
+    return () => clearTimeout(delayDebounceFn);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parkingQuery])
+  }, [parkingQuery]);
 
   return (
     <>
@@ -120,7 +122,10 @@ const UpdateParkingPage: NextPage<{
               onSubmit={handleSubmit(onSubmit)}
               className={styles.dashboard}
             >
-              <h2>Create parking spot</h2>
+              <div className={styles.header}>
+                <h2>Create parking spot</h2>
+                <Link href="/account/my-parking-spots"> Back</Link>
+              </div>
               <UiBox>
                 <h3>General information</h3>
                 <div
@@ -136,7 +141,7 @@ const UpdateParkingPage: NextPage<{
                   />
                   <ul
                     className={
-                      isDropdownVisible
+                      isDropdownVisible && parkingQuery !== watch("address")
                         ? styles.resultsWrapper
                         : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                           `${styles.resultsWrapper} ${
@@ -146,35 +151,44 @@ const UpdateParkingPage: NextPage<{
                     }
                   >
                     {/* eslint-disable-next-line */}
-                    {queryResults.length > 0 && parkingQuery.length > 0 ? (
+                    {queryResults.length > 0 &&
+                    parkingQuery.length > 0 &&
+                    parkingQuery !== watch("address") ? (
                       queryResults.map((place) => (
                         <SearchResult
                           key={place.osm_id}
                           place={place}
                           onClick={() => {
-                            setSelectPosition(place)
-                            setValueQuery("parkingQuery", place.display_name)
+                            setSelectPosition(place);
+                            setValueQuery("parkingQuery", place.display_name);
                             setValue(
                               "latitude",
                               Number(parseFloat(place.lat).toFixed(5))
-                            )
+                            );
                             setValue(
                               "longitude",
                               Number(parseFloat(place.lon).toFixed(5))
-                            )
-                            setValue("address", place.display_name)
-                            setIsDropdownVisible(false)
+                            );
+                            setValue("address", place.display_name);
+                            setIsDropdownVisible(false);
                           }}
                         />
                       ))
-                    ) : isSearching && parkingQuery.length > 0 ? (
+                    ) : isSearching &&
+                      parkingQuery.length > 0 &&
+                      parkingQuery !== watch("address") ? (
                       <li className={styles.spinner}>
-                        Searching... <span></span>
+                        Searching...{" "}
+                        <span>
+                          <LoaderIcon />
+                        </span>
                       </li>
                     ) : parkingQuery.length == 0 ? (
                       <li className={styles.emptyState}>
-                        Please type your query
+                        Please type your query.
                       </li>
+                    ) : parkingQuery === watchQuery("parkingQuery") ? (
+                      <></>
                     ) : (
                       <li className={styles.emptyState}>No places found</li>
                     )}
@@ -274,7 +288,11 @@ const UpdateParkingPage: NextPage<{
               </UiBox>
               <DashboardFooter>
                 <div>
-                  <input type="submit" value="Update listing" />
+                  <input
+                    type="submit"
+                    value="Update listing"
+                    className={styles.primary}
+                  />
                 </div>
               </DashboardFooter>
             </form>
@@ -282,36 +300,36 @@ const UpdateParkingPage: NextPage<{
         </DashboardWrapper>
       </main>
     </>
-  )
-}
+  );
+};
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const helpers = createServerSideHelpers({
     router: appRouter,
     ctx: { prisma: prisma, userId: null },
     transformer: SuperJSON, // optional - adds superjson serialization
-  })
-  const parkingId = context.params?.parkingId
+  });
+  const parkingId = context.params?.parkingId;
   if (typeof parkingId === "string") {
     const parking = await helpers.parking.getParkingById.fetch({
       id: parkingId,
-    })
-    console.log(parking)
+    });
+    console.log(parking);
     return {
       props: {
         trpcState: helpers.dehydrate(),
         parking,
       },
-    }
+    };
   }
 
   throw new TRPCError({
     code: "NOT_FOUND",
     message: "User or parking not found",
-  })
-}
+  });
+};
 
 export const getStaticPaths: GetStaticPaths = () => {
-  return { paths: [], fallback: "blocking" }
-}
-export default UpdateParkingPage
+  return { paths: [], fallback: "blocking" };
+};
+export default UpdateParkingPage;

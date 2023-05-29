@@ -20,7 +20,7 @@ import type { OSMdata } from "~/components/MapComponent/utils";
 import { useEffect, useState } from "react";
 import { SearchResult } from "~/components/MapComponent/SearchResult";
 import { NominatimUrl, type QueryParameters } from "~/pages/map";
-
+import Link from "next/link";
 const CreateParkingPage: NextPage = () => {
   const { register, handleSubmit, setValue, watch } =
     useForm<RouterInputs["parking"]["create"]>();
@@ -101,7 +101,10 @@ const CreateParkingPage: NextPage = () => {
               onSubmit={handleSubmit(onSubmit)}
               className={styles.dashboard}
             >
-              <h2>Create parking spot</h2>
+              <div className={styles.header}>
+                <h2>Create parking spot</h2>
+                <Link href="/account"> Back</Link>
+              </div>
               <UiBox>
                 <h3>General information</h3>
                 <div
