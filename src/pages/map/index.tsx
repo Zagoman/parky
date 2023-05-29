@@ -129,7 +129,12 @@ const Map: NextPage = () => {
           bookingDate={getValues("bookingDate")}
         />
       );
-    } else if (user.isSignedIn && findSpot.length && userData) {
+    } else if (
+      user.isSignedIn &&
+      user.isLoaded &&
+      findSpot.length &&
+      userData
+    ) {
       setPurchaseFormContents(
         <BookingForm
           isUserSignedIn={user.isSignedIn}
@@ -145,7 +150,7 @@ const Map: NextPage = () => {
     } else {
       setPurchaseFormContents(
         <>
-          <div>Your balance might be insufficient, please check.</div>
+          <div>Something went wrong, try again.</div>
           <Button
             type="primary"
             text="Close"
@@ -214,7 +219,6 @@ const Map: NextPage = () => {
                         },
                         range: 1000,
                       });
-                      // setIsDropdownVisible(false);
                     }}
                   />
                 ))
@@ -268,6 +272,7 @@ const Map: NextPage = () => {
                   <ParkingSpotCard
                     spot={spot}
                     key={spot.id}
+                    isUserDataLoaded={userData ? true : false}
                     onClick={(spotId) => {
                       spotSelectionHandler(spotId);
                     }}

@@ -237,7 +237,8 @@ const CreateParkingPage: NextPage = () => {
                   {featureList.map((feature) => (
                     <InputField
                       key={feature.value}
-                      name={feature.value}
+                      name={"features"}
+                      id={feature.value}
                       placeholder=""
                       label={feature.title}
                       value={feature.value}

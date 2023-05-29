@@ -202,12 +202,15 @@
     padding: 0;
     padding-left: $spacer-400;
     &CTA {
+      border: none;
       padding: $spacer-300 $spacer-400;
       background-color: $blue-200;
       border-radius: $border-roundness-100;
       color: $neutral-100;
       font-weight: $font-weight-semibold;
-
+      font-size: $font-size-body-large;
+      font-family: $font-display;
+      cursor: pointer;
       &:after {
         display: none;
       }

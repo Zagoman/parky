@@ -36,6 +36,9 @@ export const SpotFeatures = ({ features }: SpotFeaturesProps): JSX.Element => {
       case "camera":
         result = cctvIcon;
         break;
+      case "cctv":
+        result = cctvIcon;
+        break;
       case "gate":
         result = gateIcon;
         break;
@@ -68,6 +71,9 @@ export const SpotFeatures = ({ features }: SpotFeaturesProps): JSX.Element => {
         result = "Roofed";
         break;
       case "camera":
+        result = "CCTV";
+        break;
+      case "cctv":
         result = "CCTV";
         break;
       case "gate":

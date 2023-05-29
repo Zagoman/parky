@@ -12,9 +12,14 @@ import { useUser } from "@clerk/nextjs";
 type ParkingSpotCardProps = {
   spot: RouterOutputs["parking"]["getParkingWithinRange"][0];
   onClick: (spotId: string, spotPrice: number) => void;
+  isUserDataLoaded: boolean;
 };
 
-export const ParkingSpotCard = ({ spot, onClick }: ParkingSpotCardProps) => {
+export const ParkingSpotCard = ({
+  spot,
+  onClick,
+  isUserDataLoaded,
+}: ParkingSpotCardProps) => {
   const user = useUser();
 
   return (
@@ -66,7 +71,9 @@ export const ParkingSpotCard = ({ spot, onClick }: ParkingSpotCardProps) => {
             onClick(spot.id, spot.price);
           }}
           icon={parkcoin}
-          isDisabled={user.isLoaded ? false : true}
+          isDisabled={
+            user.isLoaded && user.isSignedIn && isUserDataLoaded ? false : true
+          }
         />
       </div>
     </div>

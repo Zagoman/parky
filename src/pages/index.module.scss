@@ -1,5 +1,10 @@
 @import "../styles/tokens.scss";
 
+.toast {
+  padding: $spacer-400;
+  background: red;
+}
+
 .button {
   width: 100%;
   background-color: $blue-200;

@@ -6,7 +6,13 @@ import menuImage from "../../../public/icon/menu.svg";
 import pageInfoImage from "../../../public/icon/page-info.svg";
 import closeImage from "../../../public/icon/close.svg";
 import PakyLogoBlue from "../../../public/parky-logo-blue.svg";
-import { SignOutButton, useUser, SignIn, SignUp } from "@clerk/nextjs";
+import {
+  SignOutButton,
+  SignUpButton,
+  useUser,
+  SignIn,
+  SignUp,
+} from "@clerk/nextjs";
 
 import Link from "next/link";
 
@@ -37,7 +43,6 @@ export const PageHeader = ({
 
   useEffect(() => {
     if (user.isSignedIn) {
-      console.log(user.isSignedIn);
       setIsModalVisible(false);
     }
   }, [user.isSignedIn, user]);
@@ -120,14 +125,6 @@ export const PageHeader = ({
                 >
                   Sign in
                 </li>
-                <li
-                  onClick={() => {
-                    setModalContents(<SignUp redirectUrl="/profile/create" />);
-                    setIsModalVisible(true);
-                  }}
-                >
-                  Sign up
-                </li>
               </>
             ) : (
               <>
@@ -139,13 +136,17 @@ export const PageHeader = ({
                 </li>
               </>
             )}
-            {user.isSignedIn && user.isLoaded && (
+            {user.isSignedIn && user.isLoaded ? (
               <Link
                 className={styles.pageHeaderCTA}
                 href="/account/my-parking-spots"
               >
                 Rent your parking
               </Link>
+            ) : (
+              <SignUpButton afterSignUpUrl="/profile/create" mode="modal">
+                <button className={styles.pageHeaderCTA}>Sign up</button>
+              </SignUpButton>
             )}
           </ul>
         </nav>
