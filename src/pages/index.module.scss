@@ -133,6 +133,9 @@
   > div:first-of-type {
     display: none;
   }
+  img {
+    border-radius: $border-roundness-200;
+  }
 }
 .hero {
   position: relative;
@@ -194,6 +197,7 @@
       max-width: 100%;
       max-height: 350px;
       aspect-ratio: 1/1;
+      border-radius: $border-roundness-200;
     }
   }
 
