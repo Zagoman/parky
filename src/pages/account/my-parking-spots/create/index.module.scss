@@ -24,6 +24,10 @@
   }
 }
 
+.dropdownHidden {
+  display: none;
+}
+
 .selectInput {
   background-color: transparent;
   border: 1px solid $neutral-500;
@@ -105,7 +109,7 @@
   > div {
     padding-bottom: 0;
   }
-  margin-bottom: $spacer-400;
+  margin-bottom: $spacer-500;
 }
 
 .resultsWrapper {

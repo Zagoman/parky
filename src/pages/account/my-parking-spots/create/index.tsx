@@ -117,7 +117,7 @@ const CreateParkingPage: NextPage = () => {
                   />
                   <ul
                     className={
-                      isDropdownVisible
+                      isDropdownVisible && parkingQuery !== watch("address")
                         ? styles.resultsWrapper
                         : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                           `${styles.resultsWrapper} ${
