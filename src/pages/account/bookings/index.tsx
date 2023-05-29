@@ -1,3 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import styles from "./index.module.scss";
 import { type NextPage } from "next";
@@ -184,7 +189,7 @@ const Home: NextPage = () => {
             </div>
             <ul>
               {bookingItems && !areBookingsLoading
-                ? bookingItems.map((booking) => (
+                ? bookingItems.map((booking: BookingElement) => (
                     <BookingItem
                       key={booking.id}
                       booking={{

@@ -10,7 +10,6 @@ import { PageHeader } from "../../components/pageHeader/pageHeader";
 import { InputField } from "~/components/FormElements/InputField/InputField";
 import { type OSMdata } from "../../components/MapComponent/utils";
 import { SearchResult } from "../../components/MapComponent/SearchResult";
-import { type ParkingSpot } from "../../components/MapComponent/utils";
 import { ParkingSpotCard } from "~/components/ParkingSpotCard/ParkingSpotCard";
 import { useForm } from "react-hook-form";
 import { type RouterOutputs, api } from "~/utils/api";

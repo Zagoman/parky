@@ -11,7 +11,12 @@ import Image from "next/image";
 import { InputField } from "~/components/FormElements/InputField/InputField";
 import { useForm } from "react-hook-form";
 import { type RouterOutputs, api } from "~/utils/api";
-import { toast } from "react-hot-toast";
+import {
+  type Renderable,
+  type Toast,
+  type ValueFunction,
+  toast,
+} from "react-hot-toast";
 import Link from "next/link";
 
 type BookingFormProps = {
@@ -52,7 +57,9 @@ export const BookingForm = ({
       toast.success("booking created");
       onCancel();
     },
-    onError: (e) => {
+    onError: (e: {
+      message: Renderable | ValueFunction<Renderable, Toast>;
+    }) => {
       toast.error(e.message);
     },
   });
