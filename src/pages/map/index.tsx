@@ -2,24 +2,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import type { NextPage } from "next"
-import { useEffect, useState } from "react"
-import styles from "./map.module.scss"
-import dynamic from "next/dynamic"
-import { PageHeader } from "../../components/pageHeader/pageHeader"
-import { InputField } from "~/components/FormElements/InputField/InputField"
-import { type OSMdata } from "../../components/MapComponent/utils"
-import { SearchResult } from "../../components/MapComponent/SearchResult"
-import { type ParkingSpot } from "../../components/MapComponent/utils"
-import { ParkingSpotCard } from "~/components/ParkingSpotCard/ParkingSpotCard"
-import { useForm } from "react-hook-form"
-import { type RouterOutputs, api } from "~/utils/api"
-import { useUser } from "@clerk/nextjs"
-import { BookingForm } from "~/components/BookingForm/components/BookingForm/BookingForm"
-import { PurchaseModal } from "~/components/BookingForm/components/PurchaseModal/PurchaseModal"
-import { Button } from "~/components/button/button"
-import { Toggle } from "~/components/Toggle/Toggle"
-import Head from "next/head"
+import type { NextPage } from "next";
+import { useEffect, useState } from "react";
+import styles from "./map.module.scss";
+import dynamic from "next/dynamic";
+import { PageHeader } from "../../components/pageHeader/pageHeader";
+import { InputField } from "~/components/FormElements/InputField/InputField";
+import { type OSMdata } from "../../components/MapComponent/utils";
+import { SearchResult } from "../../components/MapComponent/SearchResult";
+import { type ParkingSpot } from "../../components/MapComponent/utils";
+import { ParkingSpotCard } from "~/components/ParkingSpotCard/ParkingSpotCard";
+import { useForm } from "react-hook-form";
+import { type RouterOutputs, api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
+import { BookingForm } from "~/components/BookingForm/components/BookingForm/BookingForm";
+import { PurchaseModal } from "~/components/BookingForm/components/PurchaseModal/PurchaseModal";
+import { Button } from "~/components/button/button";
+import { Toggle } from "~/components/Toggle/Toggle";
+import Head from "next/head";
+
 
 export type QueryParameters = {
   q: string
@@ -246,8 +247,8 @@ const Map: NextPage = () => {
           <div className={styles.spotListControls}>
             <div>Booking type: {bookingType}</div>
             <div className={styles.spotListControlsButtons}>
-              <p>Sort</p>
-              <p>Filter</p>
+              <p></p>
+              <p></p>
             </div>
           </div>
           <div className={styles.spotListWrapper}>

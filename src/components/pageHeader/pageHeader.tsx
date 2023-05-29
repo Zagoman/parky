@@ -13,7 +13,7 @@ import Link from "next/link";
 type headerProps = {
   children: JSX.Element;
   secondaryMenu: boolean;
-  secondaryMenuContents: null | (() => JSX.Element);
+  secondaryMenuContents?: null | (() => JSX.Element);
 };
 
 export const PageHeader = ({
@@ -97,9 +97,6 @@ export const PageHeader = ({
             </li>
             <li>
               <Link href="/map">Find parking</Link>
-            </li>
-            <li>
-              <Link href="/howto">How it works</Link>
             </li>
             <li>
               <Link href="/help">Help</Link>

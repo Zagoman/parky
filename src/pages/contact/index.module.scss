@@ -1,0 +1,19 @@
+@import "../../styles/tokens.scss";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-300;
+
+  main {
+    max-width: 1600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    justify-self: center;
+    min-height: 60vh;
+    padding: $spacer-400;
+  }
+}

@@ -28,12 +28,19 @@
     gap: $spacer-300;
   }
 
-  a {
+  a,
+  button {
     color: $neutral-500;
     font-weight: $font-weight-semibold;
     position: relative;
     width: fit-content;
     padding: $spacer-100 0;
+    background: none;
+    padding-inline: none;
+    border: none;
+    cursor: pointer;
+    font-size: $font-size-body;
+    font-family: $font-body;
     &:hover {
       color: $blue-200;
     }

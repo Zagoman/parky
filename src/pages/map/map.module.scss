@@ -1,7 +1,7 @@
 @import "../../styles/tokens.scss";
 .mapWrapper {
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 65px);
   overflow: hidden;
   position: relative;
 }
@@ -180,13 +180,13 @@
 
 @media only screen and (min-width: 1024px) {
   .mapWrapper {
-    height: calc(100vh - 89px);
+    height: calc(100vh - 94px);
   }
 }
 
 @media only screen and (min-width: 1366px) {
   .mapWrapper {
-    height: calc(100vh - 74px);
+    height: calc(100vh - 97px);
   }
 }
 

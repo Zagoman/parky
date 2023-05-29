@@ -58,7 +58,7 @@ export const DashboardWrapper = ({
       void refetchUser()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.isLoaded])
+  }, [user.isLoaded]);
 
   return (
     <>
