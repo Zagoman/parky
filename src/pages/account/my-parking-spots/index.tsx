@@ -1,15 +1,25 @@
-import { useUser } from "@clerk/nextjs"
-import styles from "./index.module.scss"
-import type { NextPage } from "next"
-import Head from "next/head"
-import { useRouter } from "next/router"
-import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper"
-import { UiBox } from "~/components/uiBox/uiBox"
-import { api } from "~/utils/api"
-
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { useUser } from "@clerk/nextjs";
+import styles from "./index.module.scss";
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper";
+import { UiBox } from "~/components/uiBox/uiBox";
+import { api } from "~/utils/api";
+import { type RouterOutputs } from "~/utils/api";
+import { LoaderIcon } from "react-hot-toast";
+import Link from "next/link";
+type ParkingSpot = RouterOutputs["parking"]["getParkingsByUserId"][0];
+import parcoinIconImport from "../../../../public/icon/parkcoin-filled.svg";
+import Image from "next/image";
 const Login: NextPage = () => {
-  const router = useRouter()
-  const { user, isLoaded, isSignedIn } = useUser()
+  const router = useRouter();
+  const { user, isLoaded, isSignedIn } = useUser();
+
+  const parcoinIcon = parcoinIconImport as unknown as string;
+
   if (!isLoaded) {
     return (
       <>
@@ -24,15 +34,16 @@ const Login: NextPage = () => {
           </DashboardWrapper>
         </main>
       </>
-    )
+    );
   }
   if (isLoaded && !isSignedIn) {
-    void router.push("/")
-    return <></>
+    void router.push("/");
+    return <></>;
   }
-  const { data, error } = api.parking.getParkingsByUserId.useQuery({
+  const { data, error, isLoading } = api.parking.getParkingsByUserId.useQuery({
     userId: user.id,
-  })
+  });
+
   return (
     <>
       <Head>
@@ -42,20 +53,58 @@ const Login: NextPage = () => {
       </Head>
       <main>
         <DashboardWrapper active="myparkingspots">
-          <div>
-            <h2>My parking spots</h2>
+          <div className={styles.wrapper}>
+            <div className={styles.headerWrapper}>
+              <h2>My parking spots</h2>
+              <Link href="/account/my-parking-spots/create">
+                Add new parking
+              </Link>
+            </div>
             <UiBox className={styles.bookingListWrapper}>
               <div className={styles.bookingListHeader}>
                 <p>Address</p>
                 <p>price</p>
                 <p>Details</p>
               </div>
-              <ul></ul>
+              <ul>
+                {data &&
+                  data?.map((parking: ParkingSpot, index: number) => (
+                    <li key={index} className={styles.listElement}>
+                      <p>{parking.address}</p>
+                      <span>
+                        {parking.price}
+                        <Image
+                          src={parcoinIcon}
+                          width={18}
+                          height={18}
+                          alt="parcoin icon"
+                        />
+                      </span>
+                      <div>
+                        <Link
+                          href={`/account/my-parking-spots/update/${parking.id}`}
+                        >
+                          Edit
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+                {isLoading && (
+                  <li className={styles.noData}>
+                    <p>Loading data</p> <LoaderIcon />
+                  </li>
+                )}
+                {!isLoading && !data?.length && (
+                  <li className={styles.noData}>
+                    <p>No data found.</p>
+                  </li>
+                )}
+              </ul>
             </UiBox>
           </div>
         </DashboardWrapper>
       </main>
     </>
-  )
-}
-export default Login
+  );
+};
+export default Login;

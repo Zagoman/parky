@@ -23,6 +23,7 @@
   }
 
   &Contents {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: $spacer-100;
@@ -60,8 +61,12 @@
   }
 
   h4 {
+    max-width: 32ch;
     font-size: $font-size-label;
     margin-bottom: $spacer-100;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
   }
 }
 

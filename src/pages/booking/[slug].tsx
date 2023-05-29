@@ -129,7 +129,10 @@ const Booking: NextPage = () => {
           (user?.user?.id === bookingData?.profileId ||
             user?.user?.id === spotData?.id) ? (
             <section className={styles.booking}>
-              <h2>{`Booking #${bookingData.bookingNumber}`}</h2>
+              <div className={styles.bookingHeader}>
+                <h2>{`Booking #${bookingData.bookingNumber}`}</h2>
+                <Link href="/account/bookings">Back</Link>
+              </div>
               <UiBox className={styles.bookingDetails}>
                 <section>
                   <h4>Order information</h4>
