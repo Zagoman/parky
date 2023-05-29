@@ -166,6 +166,7 @@ const Home: NextPage = () => {
           </section>
           <section className={styles.explainer}>
             <h1>What is Parky?</h1>
+
             <div className={styles.explainerVideo}>
               <iframe
                 width="1200"
@@ -177,7 +178,6 @@ const Home: NextPage = () => {
                 allowFullScreen
               ></iframe>
             </div>
-
             <div className={styles.explainerWrapper}>
               <article>
                 <span>1</span>

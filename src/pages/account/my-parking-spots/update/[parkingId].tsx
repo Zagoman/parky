@@ -1,13 +1,12 @@
-import type { NextPage } from "next"
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import Head from "next/head"
-import styles from "./index.module.scss"
+import styles from "../create/index.module.scss"
 import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper"
-import { useUser } from "@clerk/nextjs"
 import { UiBox } from "~/components/uiBox/uiBox"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { InputField } from "~/components/FormElements/InputField/InputField"
-import { type RouterInputs, api } from "~/utils/api"
+import { type RouterInputs, api, RouterOutputs } from "~/utils/api"
 import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter"
 import { TextArea } from "~/components/FormElements/InputField/TextArea"
 import { featureList } from "~/utils/features"
@@ -15,20 +14,44 @@ import type { OSMdata } from "~/components/MapComponent/utils"
 import { useEffect, useState } from "react"
 import { SearchResult } from "~/components/MapComponent/SearchResult"
 import { NominatimUrl, type QueryParameters } from "~/pages/map"
+import { createServerSideHelpers } from "@trpc/react-query/server"
+import { appRouter } from "~/server/api/root"
+import { prisma } from "~/server/db"
+import SuperJSON from "superjson"
+import { TRPCError } from "@trpc/server"
 
-const CreateParkingPage: NextPage = () => {
-  const { register, handleSubmit, setValue } =
-    useForm<RouterInputs["parking"]["create"]>()
+const UpdateParkingPage: NextPage<{
+  parking: RouterOutputs["parking"]["getParkingById"]
+}> = ({ parking }) => {
+  const { register, handleSubmit, setValue } = useForm<
+    RouterInputs["parking"]["create"]
+  >({
+    defaultValues: {
+      price: parking.price,
+      address: parking.address,
+      features:
+        parking.features as RouterInputs["parking"]["create"]["features"],
+      imageURL: parking.imageURL !== null ? parking.imageURL : undefined,
+      latitude: Number(parking.latitude),
+      longitude: Number(parking.longitude),
+      dimensions: parking.dimensions,
+      description: parking.description,
+      availableEnd: parking.availableEnd,
+      availableStart: parking.availableStart,
+    },
+  })
   const {
     register: registerQuery,
     watch: watchQuery,
     setValue: setValueQuery,
   } = useForm({
-    defaultValues: { parkingQuery: "" },
+    defaultValues: {
+      parkingQuery: parking.address,
+    },
   })
-  const { mutate, error } = api.parking.create.useMutation({
+  const { mutate, error } = api.parking.update.useMutation({
     onSuccess: () => {
-      toast.success("Parking slot created")
+      toast.success("Parking slot updated")
     },
     onError: (e) => {
       toast.error(e.message)
@@ -38,6 +61,7 @@ const CreateParkingPage: NextPage = () => {
   const onSubmit: SubmitHandler<RouterInputs["parking"]["create"]> = (data) => {
     mutate({
       ...data,
+      id: parking.id,
       availableEnd: data.availableEnd + ":00Z",
       availableStart: data.availableStart + ":00Z",
     })
@@ -250,7 +274,7 @@ const CreateParkingPage: NextPage = () => {
               </UiBox>
               <DashboardFooter>
                 <div>
-                  <input type="submit" value="Create listing" />
+                  <input type="submit" value="Update listing" />
                 </div>
               </DashboardFooter>
             </form>
@@ -261,4 +285,33 @@ const CreateParkingPage: NextPage = () => {
   )
 }
 
-export default CreateParkingPage
+export const getStaticProps: GetStaticProps = async (context) => {
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: { prisma: prisma, userId: null },
+    transformer: SuperJSON, // optional - adds superjson serialization
+  })
+  const parkingId = context.params?.parkingId
+  if (typeof parkingId === "string") {
+    const parking = await helpers.parking.getParkingById.fetch({
+      id: parkingId,
+    })
+    console.log(parking)
+    return {
+      props: {
+        trpcState: helpers.dehydrate(),
+        parking,
+      },
+    }
+  }
+
+  throw new TRPCError({
+    code: "NOT_FOUND",
+    message: "User or parking not found",
+  })
+}
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return { paths: [], fallback: "blocking" }
+}
+export default UpdateParkingPage
