@@ -5,6 +5,7 @@ import { coinRouter } from "./routers/coin"
 import { bookingRouter } from "./routers/booking"
 import { parkingReviewRouter } from "./routers/parkingReview"
 import { profileReviewRouter } from "./routers/profileReview"
+import { userRouter } from "./routers/user"
 
 /**
  * This is the primary router for your server.
@@ -12,6 +13,7 @@ import { profileReviewRouter } from "./routers/profileReview"
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  user: userRouter,
   profile: profileRouter,
   parking: parkingRouter,
   coin: coinRouter,
