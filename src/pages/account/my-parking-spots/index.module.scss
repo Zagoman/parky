@@ -1,18 +1,31 @@
 @import "../../../styles/tokens.scss";
-.headerWrapper {
-  > div {
-    margin-bottom: $spacer-400;
-    display: flex;
-    flex-direction: row;
-    gap: $spacer-200;
-    align-items: center;
-    justify-content: space-between;
-    > div {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: $spacer-400;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-400;
+
+  a {
+    color: $blue-200;
+    font-weight: $font-weight-semibold;
+    &:hover {
+      text-decoration: underline;
+      color: $blue-100;
     }
+    &:active {
+      color: $blue-300;
+    }
+  }
+}
+
+.headerWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: $spacer-400;
+  justify-content: space-between;
+  a {
+    font-size: $font-size-body;
   }
 }
 .bookingListWrapper {
@@ -46,11 +59,72 @@
   }
 }
 
+.listElement {
+  display: grid;
+  grid-template-columns: 5fr 2fr 2fr;
+  background-color: $neutral-200;
+  padding: $spacer-200;
+  border-radius: $border-roundness-100;
+
+  p:first-of-type {
+    font-weight: $font-weight-semibold;
+    max-width: 64ch;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+  }
+
+  span {
+    display: flex;
+    justify-content: center;
+    font-size: $font-size-body-large;
+    gap: $spacer-100;
+    align-items: center;
+    font-weight: $font-weight-semibold;
+    line-height: 1;
+  }
+
+  div {
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    text-align: right;
+  }
+}
+
 @media only screen and (min-width: 1024px) {
   .bookingListWrapper {
     ul {
       max-height: 600px;
       overflow-y: scroll;
     }
+  }
+  .headerWrapper {
+    a {
+      font-size: $font-size-body-large;
+    }
+  }
+
+  .listElement {
+    p:first-of-type {
+      font-weight: $font-weight-semibold;
+      max-width: 64ch;
+      white-space: nowrap;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.noData {
+  border-radius: $border-roundness-100;
+  font-size: $font-size-body-large;
+  justify-content: center;
+  display: flex;
+  padding: $spacer-200;
+  font-weight: $font-weight-semibold;
+  background-color: $neutral-200;
+  p {
+    color: $neutral-500;
   }
 }

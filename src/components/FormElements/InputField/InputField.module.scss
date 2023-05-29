@@ -8,6 +8,10 @@
     row-gap: $spacer-200;
     font-weight: $font-weight-semibold;
     color: $neutral-700;
+
+    textarea {
+      width: 100%;
+    }
   }
   input {
     font-size: $font-size-body;
