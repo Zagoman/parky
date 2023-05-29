@@ -1,29 +1,29 @@
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { InputField } from "~/components/FormElements/InputField/InputField"
-import { type RouterInputs, api, RouterOutputs } from "~/utils/api"
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { InputField } from "~/components/FormElements/InputField/InputField";
+import { type RouterInputs, api, type RouterOutputs } from "~/utils/api";
 
-type CreateParkingInput = RouterInputs["parking"]["create"]
+type CreateParkingInput = RouterInputs["parking"]["create"];
 type CreateParkingProps = {
-  update?: boolean
-  parking?: RouterOutputs["parking"]["getParkingById"]
-  profile?: RouterOutputs["profile"]["getProfileByUsername"]
-}
+  update?: boolean;
+  parking?: RouterOutputs["parking"]["getParkingById"];
+  profile?: RouterOutputs["profile"]["getProfileByUsername"];
+};
 
 const CreateParking: React.FC<CreateParkingProps> = (props) => {
-  const { update = false, parking } = props
+  const { update = false, parking } = props;
   const { mutate, error } = api.parking.create.useMutation({
     onSuccess: () => {
-      toast.success("Parking slot created")
+      toast.success("Parking slot created");
     },
-  })
+  });
   const parkingUpdate = update
     ? api.parking.update.useMutation({
         onSuccess: () => {
-          toast.success("Parking slot updated successfully")
+          toast.success("Parking slot updated successfully");
         },
       })
-    : null
+    : null;
 
   const { register, handleSubmit } = useForm<CreateParkingInput>({
     defaultValues: {
@@ -38,15 +38,15 @@ const CreateParking: React.FC<CreateParkingProps> = (props) => {
       availableEnd: update && parking ? parking.availableEnd : undefined,
       availableStart: update && parking ? parking.availableStart : undefined,
     },
-  })
+  });
   const onSubmit: SubmitHandler<CreateParkingInput> = (data) => {
     if (!parkingUpdate) {
       mutate({
         ...data,
         availableEnd: data.availableEnd + ":00Z",
         availableStart: data.availableStart + ":00Z",
-      })
-      return
+      });
+      return;
     }
     if (parking?.id) {
       parkingUpdate.mutate({
@@ -54,9 +54,9 @@ const CreateParking: React.FC<CreateParkingProps> = (props) => {
         availableEnd: data.availableEnd + ":00Z",
         availableStart: data.availableStart + ":00Z",
         id: parking.id,
-      })
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -87,7 +87,7 @@ const CreateParking: React.FC<CreateParkingProps> = (props) => {
         <InputField
           name="availableStart"
           register={register}
-          label="Available parking start"
+          label="Parking availability start date"
           inputType="datetime-local"
           placeholder=""
           error={
@@ -100,7 +100,7 @@ const CreateParking: React.FC<CreateParkingProps> = (props) => {
         <InputField
           name="availableEnd"
           register={register}
-          label="Available parking end"
+          label="Parking availability end date"
           inputType="datetime-local"
           placeholder=""
           error={
@@ -164,6 +164,6 @@ const CreateParking: React.FC<CreateParkingProps> = (props) => {
         <input type="submit" />
       </form>
     </>
-  )
-}
-export default CreateParking
+  );
+};
+export default CreateParking;

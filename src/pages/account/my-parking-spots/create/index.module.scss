@@ -4,36 +4,39 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: $spacer-400;
-  @include for-size(tablet-up) {
-    grid-template-columns: 7fr 5fr;
-    h2 {
-      grid-row: 1/2;
-      grid-column: 1/-1;
-    }
-    .details {
-      grid-row: 2/4;
-      grid-column: 2/3;
-    }
+
+  > div {
+    max-width: 100%;
+  }
+
+  textarea {
+    width: 100% !important;
+    height: 120px;
+    font-size: $font-size-body;
+    font-family: $font-body;
+    line-height: 1.2;
+    padding-block: $spacer-300;
+    padding-inline: $spacer-300;
+    border-style: unset;
+    border-radius: $border-roundness-100;
+    border: 1px solid $neutral-500;
+    resize: none;
   }
 }
-.featureList {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: $spacer-400;
-}
+
 .selectInput {
   background-color: transparent;
   border: 1px solid $neutral-500;
-  border-radius: $spacer-200;
+  border-radius: $border-roundness-100;
   padding-block: $spacer-300;
-  color: $blue-200;
+  color: $neutral-600;
   font-family: $font-body;
   cursor: pointer;
   font-size: $font-size-body;
   font-weight: $font-weight-semibold;
   text-align: left;
   padding-inline: $spacer-100;
-  min-width: pxToRem(200px);
+  min-width: 100%;
   &:hover {
     color: $blue-100;
     border-color: $blue-200;
@@ -42,6 +45,131 @@
 .selectLabel {
   display: flex;
   gap: $spacer-200;
-  align-items: center;
   margin-bottom: $spacer-300;
+  flex-direction: column;
+  font-weight: $font-weight-semibold;
+  margin-top: $spacer-300;
+  select {
+    padding: $spacer-300;
+  }
+}
+
+.primary {
+  width: 100%;
+  background-color: $blue-200;
+  border: none;
+  cursor: pointer;
+  color: $neutral-100;
+  font-family: $font-display;
+  font-size: $font-size-body-large;
+  font-weight: $font-weight-semibold;
+  padding: $spacer-300 $spacer-500;
+  border-radius: $border-roundness-100;
+  transition: 0.2s ease-in-out;
+  box-sizing: border-box;
+  border: solid $border-width-200 $blue-200;
+  display: flex;
+  gap: $spacer-200;
+  align-items: center;
+  justify-content: center;
+  &:disabled {
+    background-color: $neutral-400;
+    border: solid $border-width-200 $neutral-400;
+    cursor: not-allowed;
+    &:hover {
+      background-color: $neutral-400;
+      border: solid $border-width-200 $neutral-400;
+    }
+  }
+  &:hover {
+    background-color: $blue-100;
+    border: solid $border-width-200 $blue-100;
+  }
+  &:active {
+    background-color: $blue-300;
+    border: solid $border-width-200 $blue-300;
+  }
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-400;
+  margin: $spacer-200 0 $spacer-400;
+  > div {
+    padding: 0;
+  }
+}
+.inputWrapper {
+  position: relative;
+  > div {
+    padding-bottom: 0;
+  }
+  margin-bottom: $spacer-400;
+}
+
+.resultsWrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: $neutral-100;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  border: solid $border-width-100 $neutral-300;
+  border-radius: $border-roundness-100 $border-roundness-100
+    $border-roundness-100 $border-roundness-100;
+  max-height: 250px;
+  overflow-y: scroll;
+  li {
+    padding: $spacer-200 $spacer-300;
+  }
+}
+.spinner {
+  display: flex;
+  flex-direction: row;
+  gap: $spacer-300;
+  align-items: center;
+}
+.hidden {
+  position: absolute;
+  top: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .availabilityWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: $spacer-600;
+    h3 {
+      grid-column: 1/-1;
+    }
+  }
+  .featureList {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-300;
+    margin: $spacer-200 0 $spacer-400;
+    > div {
+      padding: 0;
+    }
+  }
+}
+
+@media screen and (min-width: 1366px) {
+  .dashboard {
+    grid-template-columns: 7fr 5fr;
+    grid-template-rows: 1fr;
+    h2 {
+      grid-column: 1/-1;
+      order: -1;
+    }
+
+    > div:first-of-type {
+      order: -1;
+    }
+    > div:nth-of-type(3) {
+      order: -1;
+      grid-row: span 2;
+    }
+  }
 }

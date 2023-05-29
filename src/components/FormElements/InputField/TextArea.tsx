@@ -1,17 +1,17 @@
-import styles from "./InputField.module.scss"
-import type { FieldValues, UseFormRegister } from "react-hook-form"
+import styles from "./InputField.module.scss";
+import type { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface TextAreaProps {
-  label: string
-  name: string
-  placeholder: string
-  error?: string
-  register: UseFormRegister<FieldValues[0]>
+  label: string;
+  name: string;
+  placeholder: string;
+  error?: string;
+  register: UseFormRegister<FieldValues[0]>;
   //eslint-disable-next-line
-  [x: string]: any
+  [x: string]: any;
 }
 export const TextArea: React.FC<TextAreaProps> = (props) => {
-  const { register, label, name, error, placeholder, ...rest } = props
+  const { register, label, name, error, placeholder, ...rest } = props;
 
   return (
     <div className={styles.inputWrapper}>
@@ -27,5 +27,5 @@ export const TextArea: React.FC<TextAreaProps> = (props) => {
       </label>
       {error && <p className={styles.error}>{error}</p>}
     </div>
-  )
-}
+  );
+};
