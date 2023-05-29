@@ -274,6 +274,28 @@
 }
 
 @media only screen and (min-width: 1024px) {
+  .activeHeaderLink {
+    &:after {
+      content: "";
+      height: 4px;
+      width: 80%;
+      position: absolute;
+      background: $yellow-200 !important;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(1) !important;
+      border-radius: $spacer-300;
+      transition: 0.3s ease;
+    }
+    &:hover {
+      color: $blue-200;
+      &:after {
+        transform: translateX(-50%) scaleX(1);
+        background-color: $blue-200 !important;
+      }
+    }
+  }
+
   .pageHeader {
     gap: 0;
     nav {

@@ -5,7 +5,7 @@ import { WorkInProgress } from "~/components/WorkInProgress/WorkInProgress";
 import styles from "./index.module.scss";
 const Help: NextPage = () => {
   return (
-    <PageHeader secondaryMenu={false}>
+    <PageHeader secondaryMenu={false} active="help">
       <div className={styles.wrapper}>
         <main>
           <WorkInProgress></WorkInProgress>

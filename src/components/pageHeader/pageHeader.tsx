@@ -14,12 +14,14 @@ type headerProps = {
   children: JSX.Element;
   secondaryMenu: boolean;
   secondaryMenuContents?: null | (() => JSX.Element);
+  active?: string;
 };
 
 export const PageHeader = ({
   children,
   secondaryMenu,
   secondaryMenuContents,
+  active,
 }: headerProps) => {
   const [menuVisibility, setMenuVisiblity] = useState<boolean>(false);
   const [secondaryMenuVisibility, setSecondaryMenuVisiblity] =
@@ -95,10 +97,10 @@ export const PageHeader = ({
             <li className={styles.mobileButton}>
               <Link href="/">Home</Link>
             </li>
-            <li>
+            <li className={active === "map" ? styles.activeHeaderLink : ""}>
               <Link href="/map">Find parking</Link>
             </li>
-            <li>
+            <li className={active === "help" ? styles.activeHeaderLink : ""}>
               <Link href="/help">Help</Link>
             </li>
             {!user.isSignedIn ? (
@@ -130,7 +132,14 @@ export const PageHeader = ({
                 </li>
               </>
             )}
-            <li className={styles.pageHeaderCTA}>Rent your parking</li>
+            {user.isSignedIn && user.isLoaded && (
+              <Link
+                className={styles.pageHeaderCTA}
+                href="/account/my-parking-spots"
+              >
+                Rent your parking
+              </Link>
+            )}
           </ul>
         </nav>
       </header>
