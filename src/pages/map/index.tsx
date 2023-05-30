@@ -42,6 +42,7 @@ const Map: NextPage = () => {
   const [selectPosition, setSelectPosition] = useState<OSMdata>();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [activeSpot, setActiveSpot] = useState("");
   const [nearbyParkingSpots, setNearbyParkingSpots] = useState<
     RouterOutputs["parking"]["getParkingWithinRange"]
   >([]);
@@ -246,14 +247,14 @@ const Map: NextPage = () => {
           />
         </div>
         {/* search results wrapper */}
-        <div className={styles.spotList}>
-          <div className={styles.spotListControls}>
-            <div>Booking type: {bookingType}</div>
-            <div className={styles.spotListControlsButtons}>
-              <p></p>
-              <p></p>
-            </div>
+        <div className={styles.spotListControls}>
+          <div>Booking type: {bookingType}</div>
+          <div className={styles.spotListControlsButtons}>
+            <p></p>
+            <p></p>
           </div>
+        </div>
+        <div className={styles.spotList}>
           <div className={styles.spotListWrapper}>
             {nearbyParkingSpots.length === 0 &&
             parkingQuery.length &&
@@ -272,6 +273,7 @@ const Map: NextPage = () => {
                   <ParkingSpotCard
                     spot={spot}
                     key={spot.id}
+                    active={activeSpot === spot.id ? true : false}
                     isUserDataLoaded={userData ? true : false}
                     onClick={(spotId) => {
                       spotSelectionHandler(spotId);
@@ -352,6 +354,9 @@ const Map: NextPage = () => {
           <MapComponent
             location={selectPosition}
             nearbyParkingSpots={nearbyParkingSpots}
+            spotSelection={(id: string) => {
+              setActiveSpot(id);
+            }}
           />
         </div>
       </PageHeader>

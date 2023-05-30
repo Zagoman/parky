@@ -1,0 +1,17 @@
+@import "../../styles/tokens.scss";
+
+.spotWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-300;
+  h4 {
+    font-size: $font-size-body-large;
+    margin-bottom: $spacer-200;
+  }
+  p {
+    margin: 0;
+  }
+  button {
+    width: 100%;
+  }
+}

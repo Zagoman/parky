@@ -8,6 +8,10 @@
 
 .secondaryMenu {
   width: 100%;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .spinner {
@@ -100,36 +104,38 @@
   cursor: default;
 }
 
+.spotListControls {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: $spacer-200 $spacer-400;
+  &Buttons {
+    p {
+      color: $blue-200;
+      font-weight: $font-weight-semibold;
+      cursor: pointer;
+    }
+  }
+
+  div {
+    display: flex;
+    flex-direction: row;
+    gap: $spacer-500;
+  }
+}
+
 .spotList {
   width: 100%;
   padding: $spacer-200 $spacer-400;
-  &Controls {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
 
-    &Buttons {
-      p {
-        color: $blue-200;
-        font-weight: $font-weight-semibold;
-        cursor: pointer;
-      }
-    }
-
-    div {
-      display: flex;
-      flex-direction: row;
-      gap: $spacer-500;
-    }
-  }
   &Wrapper {
-    margin-right: -$spacer-200;
-    padding: $spacer-400 0;
-    padding-right: $spacer-200;
-    max-height: 74vh;
-    overflow-y: scroll;
-    overflow-x: visible;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    min-height: 0px;
+    max-height: 100%;
+    margin-bottom: unset;
     &::-webkit-scrollbar {
       display: none;
     }
@@ -150,6 +156,12 @@
       display: flex;
       flex-direction: column;
       gap: $spacer-300;
+      margin-right: -$spacer-200;
+      padding: $spacer-400 0;
+      padding-right: $spacer-200;
+      overflow: scroll;
+      margin-right: 0px;
+      margin-bottom: 0px;
     }
     .skeletonElement {
       display: flex;
@@ -178,9 +190,15 @@
   }
 }
 
+@media only screen and (min-width: 768px) {
+  .mapWrapper {
+    height: calc(100vh - 96px);
+  }
+}
+
 @media only screen and (min-width: 1024px) {
   .mapWrapper {
-    height: calc(100vh - 94px);
+    height: calc(100vh - 96px);
   }
 }
 
