@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import styles from "./ParkingSpotCard.module.scss";
 import { Button } from "../button/button";
@@ -13,17 +14,21 @@ type ParkingSpotCardProps = {
   spot: RouterOutputs["parking"]["getParkingWithinRange"][0];
   onClick: (spotId: string, spotPrice: number) => void;
   isUserDataLoaded: boolean;
+  active: boolean;
 };
 
 export const ParkingSpotCard = ({
   spot,
   onClick,
   isUserDataLoaded,
+  active,
 }: ParkingSpotCardProps) => {
   const user = useUser();
 
   return (
-    <div className={styles.card}>
+    <div
+      className={active ? `${styles.card} ${styles.activeCard}` : styles.card}
+    >
       <div className={styles.cardImage}>
         {spot.imageURL ? (
           <Image
@@ -65,7 +70,11 @@ export const ParkingSpotCard = ({
           <SpotFeatures features={spot.features as string[]} />
         </div>
         <Button
-          text={`Book for ${spot.price}`}
+          text={
+            user.isSignedIn
+              ? `Book for ${spot.price}`
+              : `Sign in to book for ${spot.price}`
+          }
           type="primary"
           onClick={() => {
             onClick(spot.id, spot.price);
