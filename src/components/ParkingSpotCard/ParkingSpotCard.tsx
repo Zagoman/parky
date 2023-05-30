@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import styles from "./ParkingSpotCard.module.scss";
 import { Button } from "../button/button";
@@ -8,23 +9,26 @@ import parkcoin from "../../../public/icon/parkcoin.svg";
 import { SpotFeatures } from "./components/SpotFeatures";
 import type { RouterOutputs } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
-import toast from "react-hot-toast";
 
 type ParkingSpotCardProps = {
   spot: RouterOutputs["parking"]["getParkingWithinRange"][0];
   onClick: (spotId: string, spotPrice: number) => void;
   isUserDataLoaded: boolean;
+  active: boolean;
 };
 
 export const ParkingSpotCard = ({
   spot,
   onClick,
   isUserDataLoaded,
+  active,
 }: ParkingSpotCardProps) => {
   const user = useUser();
 
   return (
-    <div className={styles.card}>
+    <div
+      className={active ? `${styles.card} ${styles.activeCard}` : styles.card}
+    >
       <div className={styles.cardImage}>
         {spot.imageURL ? (
           <Image

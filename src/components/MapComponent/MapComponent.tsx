@@ -1,28 +1,39 @@
-import React, { useEffect } from "react"
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
-import "leaflet/dist/leaflet.css"
-import L from "leaflet"
-import { useMap, Circle } from "react-leaflet"
-import { type OSMdata } from "./utils"
-import { RouterOutputs } from "~/utils/api"
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import React, { useEffect } from "react";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import { useMap, Circle } from "react-leaflet";
+import { type OSMdata } from "./utils";
+import { type RouterOutputs } from "~/utils/api";
+import styles from "./MapComponent.module.scss";
+import { Button } from "../button/button";
+import parcoin from "../../../public/icon/parkcoin.svg";
+import { useUser } from "@clerk/nextjs";
 
 const pinIcon = L.icon({
   iconSize: [36, 36],
   iconUrl: "./icon/map-pin-blue.svg",
-})
+});
 
 type MapProps = {
-  location?: OSMdata
-  nearbyParkingSpots: RouterOutputs["parking"]["getParkingWithinRange"]
-}
+  location?: OSMdata;
+  nearbyParkingSpots: RouterOutputs["parking"]["getParkingWithinRange"];
+  spotSelection: (spotId: string) => void;
+};
 
 type ResetViewProps = {
-  selectPosition: OSMdata | undefined
-}
+  selectPosition: OSMdata | undefined;
+};
 
-const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
+const MapComponent = ({
+  location,
+  nearbyParkingSpots,
+  spotSelection,
+}: MapProps) => {
   function ResetView({ selectPosition }: ResetViewProps) {
-    const map = useMap()
+    const map = useMap();
 
     useEffect(() => {
       if (selectPosition) {
@@ -35,19 +46,20 @@ const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
           {
             animate: true,
           }
-        )
+        );
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectPosition])
-    return null
+    }, [selectPosition]);
+    return null;
   }
 
+  const user = useUser();
   const fillBlueOptions = {
     fillColor: "#1b31a4",
     dashArray: "10, 10",
     dashOffset: "10",
     fillOpacity: 0.2,
-  }
+  };
 
   return (
     <MapContainer
@@ -78,7 +90,7 @@ const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
           <Circle
             center={[parseFloat(location.lat), parseFloat(location.lon)]}
             pathOptions={fillBlueOptions}
-            radius={500}
+            radius={1000}
           />
 
           {nearbyParkingSpots.length &&
@@ -89,13 +101,23 @@ const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
                     position={[spot?.latitude, spot?.longitude]}
                     icon={pinIcon}
                     key={spot.id}
+                    eventHandlers={{
+                      click: () => {
+                        spotSelection(spot.id);
+                      },
+                      popupclose: () => {
+                        spotSelection("");
+                      },
+                    }}
                   >
                     <Popup>
-                      <p>{spot.address}</p>
-                      <p>{spot.price}</p>
+                      <div className={styles.spotWrapper}>
+                        <h4>{spot.address}</h4>
+                        <p>{spot.description}</p>
+                      </div>
                     </Popup>
                   </Marker>
-                )
+                );
             })}
         </>
       ) : (
@@ -103,7 +125,7 @@ const MapComponent = ({ location, nearbyParkingSpots }: MapProps) => {
       )}
       <ResetView selectPosition={location} />
     </MapContainer>
-  )
-}
+  );
+};
 
-export default MapComponent
+export default MapComponent;
