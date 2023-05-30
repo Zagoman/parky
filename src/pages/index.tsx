@@ -179,6 +179,7 @@ const Home: NextPage = () => {
                 frameBorder="0"
                 allow="accelerometer; clipboard-write; encrypted-media; gyroscope;"
                 allowFullScreen
+                loading="lazy"
               ></iframe>
             </div>
             <div className={styles.explainerWrapper}>
