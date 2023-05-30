@@ -148,7 +148,7 @@ export const DashboardWrapper = ({
                 title="Dashboard"
                 active={active === "dashboard" ? true : false}
               />
-              {userData?.isOwner && (
+              {user.isSignedIn && (
                 <DashboardMenuElement
                   href="/account/my-parking-spots"
                   icon={parkingIcon}
@@ -180,7 +180,7 @@ export const DashboardWrapper = ({
                 href="/account/get-benefits"
                 icon={parkyIcon}
                 title="Get benefits"
-                active={active === "benefits" ? true : false}
+                active={active === "get-benefits" ? true : false}
               />
             </ul>
             <div className={styles.spacer}></div>
