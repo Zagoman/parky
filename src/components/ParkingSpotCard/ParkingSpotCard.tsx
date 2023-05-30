@@ -8,6 +8,7 @@ import parkcoin from "../../../public/icon/parkcoin.svg";
 import { SpotFeatures } from "./components/SpotFeatures";
 import type { RouterOutputs } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
+import toast from "react-hot-toast";
 
 type ParkingSpotCardProps = {
   spot: RouterOutputs["parking"]["getParkingWithinRange"][0];
@@ -65,7 +66,11 @@ export const ParkingSpotCard = ({
           <SpotFeatures features={spot.features as string[]} />
         </div>
         <Button
-          text={`Book for ${spot.price}`}
+          text={
+            user.isSignedIn
+              ? `Book for ${spot.price}`
+              : `Sign in to book for ${spot.price}`
+          }
           type="primary"
           onClick={() => {
             onClick(spot.id, spot.price);
