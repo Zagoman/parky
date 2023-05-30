@@ -13,6 +13,16 @@
     }
   }
 }
+
+.clerkWrapper {
+  margin-top: $spacer-500;
+  display: flex;
+  flex-direction: column;
+  div {
+    align-self: flex-end;
+  }
+}
+
 .selectInput {
   background-color: transparent;
   border: 1px solid $neutral-500;
@@ -109,13 +119,16 @@
   border: solid $border-width-200 $blue-300;
 }
 .buttonFlex {
+  margin-top: $spacer-400;
   display: flex;
   flex-direction: column;
   gap: $spacer-400;
+  justify-content: flex-end;
   @include for-size(tablet-up) {
     flex-direction: row;
   }
 }
 .buttonMargin {
-  margin-top: $spacer-400;
+  margin-top: $spacer-300;
+  justify-self: flex-end;
 }

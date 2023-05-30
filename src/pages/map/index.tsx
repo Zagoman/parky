@@ -246,14 +246,14 @@ const Map: NextPage = () => {
           />
         </div>
         {/* search results wrapper */}
-        <div className={styles.spotList}>
-          <div className={styles.spotListControls}>
-            <div>Booking type: {bookingType}</div>
-            <div className={styles.spotListControlsButtons}>
-              <p></p>
-              <p></p>
-            </div>
+        <div className={styles.spotListControls}>
+          <div>Booking type: {bookingType}</div>
+          <div className={styles.spotListControlsButtons}>
+            <p></p>
+            <p></p>
           </div>
+        </div>
+        <div className={styles.spotList}>
           <div className={styles.spotListWrapper}>
             {nearbyParkingSpots.length === 0 &&
             parkingQuery.length &&

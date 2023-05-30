@@ -145,10 +145,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    a {
+      height: fit-content;
+      width: fit-content;
+    }
   }
 
   &Logo {
-    width: 100%;
+    width: fit-content;
     height: $spacer-500;
     cursor: pointer;
   }
@@ -160,21 +165,23 @@
   }
 
   section {
-    height: 100vh;
-    position: fixed;
-    top: 0;
+    height: calc(100vh - 96px);
+    position: absolute;
+    top: 96px;
     left: 0;
     width: 100%;
     transition: 0.5s ease-in-out;
     background-color: $neutral-100;
     border-right: solid $border-width-100 $neutral-300;
-    padding-top: $spacer-700;
     z-index: -1;
+    padding-top: $spacer-400;
   }
 }
 
 .visible {
   transform: translateX(0);
+  height: 100%;
+  position: relative;
 }
 .hidden {
   transform: translateX(120%);
@@ -196,6 +203,28 @@
 }
 
 @media only screen and (min-width: 768px) {
+  .activeHeaderLink {
+    &:after {
+      content: "";
+      height: 4px;
+      width: 80%;
+      position: absolute;
+      background: $yellow-200 !important;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(1) !important;
+      border-radius: $spacer-300;
+      transition: 0.3s ease;
+    }
+    &:hover {
+      color: $blue-200;
+      &:after {
+        transform: translateX(-50%) scaleX(1);
+        background-color: $blue-200 !important;
+      }
+    }
+  }
+
   .pageHeader {
     display: flex;
     flex-direction: row;
@@ -250,7 +279,6 @@
     section {
       width: 30%;
       min-width: 500px;
-      padding-top: calc($spacer-700 + $spacer-600);
       z-index: -1;
     }
   }
@@ -277,28 +305,6 @@
 }
 
 @media only screen and (min-width: 1024px) {
-  .activeHeaderLink {
-    &:after {
-      content: "";
-      height: 4px;
-      width: 80%;
-      position: absolute;
-      background: $yellow-200 !important;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%) scaleX(1) !important;
-      border-radius: $spacer-300;
-      transition: 0.3s ease;
-    }
-    &:hover {
-      color: $blue-200;
-      &:after {
-        transform: translateX(-50%) scaleX(1);
-        background-color: $blue-200 !important;
-      }
-    }
-  }
-
   .pageHeader {
     gap: 0;
     nav {

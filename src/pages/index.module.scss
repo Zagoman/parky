@@ -414,6 +414,18 @@
     gap: $spacer-600;
     padding: $spacer-400 $spacer-800;
   }
+
+  .explainer {
+    padding: $spacer-400 $spacer-800;
+    &Wrapper {
+      article {
+        p {
+          font-size: $font-size-body-large;
+          max-width: 54ch;
+        }
+      }
+    }
+  }
 }
 
 @media (min-width: 640px) {
