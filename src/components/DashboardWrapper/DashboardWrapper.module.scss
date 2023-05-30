@@ -148,6 +148,7 @@
   &Logo {
     width: 100%;
     height: $spacer-500;
+    cursor: pointer;
   }
 
   .menuIcon {
@@ -256,7 +257,7 @@
     flex-direction: row;
     padding: $spacer-300 $spacer-400;
     justify-content: space-between;
-    height: 72px;
+    height: 96px;
     nav {
       position: fixed;
       left: 0;
@@ -272,14 +273,21 @@
         align-items: left;
       }
     }
+    &LogoWrapper {
+      max-width: 250px;
+    }
+
+    &Logo {
+      height: $spacer-600;
+    }
   }
 
   .dashboardContents {
     margin-left: 25%;
     padding: $spacer-400;
     height: 100%;
-    min-height: calc(100vh - 72px);
-    margin-top: 72px;
+    min-height: calc(100vh - 96px);
+    margin-top: 96px;
     box-sizing: border-box;
   }
 
@@ -302,8 +310,8 @@
 
 @media only screen and (min-width: 1366px) {
   .pageHeader {
-    padding: $spacer-300 $spacer-400;
-
+    padding: $spacer-400 $spacer-400;
+    height: 96px;
     nav {
       width: 20%;
     }
@@ -320,11 +328,5 @@
   .dashboardContents {
     margin-left: 20%;
     padding: $spacer-400;
-  }
-}
-
-@media only screen and (min-width: 1600px) {
-  .pageHeader {
-    padding: $spacer-300 $spacer-400;
   }
 }

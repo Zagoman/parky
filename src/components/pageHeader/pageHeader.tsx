@@ -6,13 +6,7 @@ import menuImage from "../../../public/icon/menu.svg";
 import pageInfoImage from "../../../public/icon/page-info.svg";
 import closeImage from "../../../public/icon/close.svg";
 import PakyLogoBlue from "../../../public/parky-logo-blue.svg";
-import {
-  SignOutButton,
-  SignUpButton,
-  useUser,
-  SignIn,
-  SignUp,
-} from "@clerk/nextjs";
+import { SignOutButton, SignUpButton, useUser, SignIn } from "@clerk/nextjs";
 
 import Link from "next/link";
 
@@ -84,10 +78,9 @@ export const PageHeader = ({
           <Link href="/">
             <Image
               src={parkyLogo}
-              width="200"
-              height="50"
               alt="parky logo"
               className={styles.pageHeaderLogo}
+              width="250"
             />
           </Link>
         </div>
