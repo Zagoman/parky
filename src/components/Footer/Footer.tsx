@@ -23,15 +23,13 @@ export const Footer = () => {
       <section>
         <div className={styles.footerContents}>
           <h4>About</h4>
-          <Link href="/home">Home</Link>
+          <Link href="/">Home</Link>
           <Link href="/map">Book a parking spot</Link>
           <Link href="/contact">Contact us</Link>
         </div>
       </section>
       <section>
         <h4>Help</h4>
-        <SignUpButton />
-        <SignInButton />
         <Link href="/account">Account</Link>
         <Link href="/help">Help</Link>
       </section>
