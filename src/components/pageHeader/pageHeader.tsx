@@ -134,7 +134,7 @@ export const PageHeader = ({
             {user.isSignedIn && user.isLoaded ? (
               <Link
                 className={styles.pageHeaderCTA}
-                href="/account/my-parking-spots"
+                href="/account/my-parking-spots/create"
               >
                 Rent your parking
               </Link>

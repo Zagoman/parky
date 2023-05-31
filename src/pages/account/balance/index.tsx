@@ -117,21 +117,6 @@ const Balance: NextPage = () => {
             </ul>
           </UiBox>
           <UiBox className={styles.small}>
-            <h4>Bookings</h4>
-            <h2>
-              {userData?.Booking.length}{" "}
-              <Image
-                src={calendarIcon}
-                alt="calendar icon"
-                height={32}
-                width={32}
-              />
-            </h2>
-            <span>
-              <Link href="/account/bookings">See details</Link>
-            </span>
-          </UiBox>
-          <UiBox className={styles.small}>
             <h4>Quick access</h4>
             <ul>
               <li>
@@ -144,7 +129,7 @@ const Balance: NextPage = () => {
                 <Link href="/account/top-up">Top up account</Link>
               </li>
               <li>
-                <Link href="/get-benefits">Get benefits</Link>
+                <Link href="/account/get-benefits">Get benefits</Link>
               </li>
             </ul>
           </UiBox>
