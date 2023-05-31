@@ -6,6 +6,11 @@
   position: relative;
 }
 
+.spotList {
+  bottom: 0;
+  overflow-y: scroll;
+}
+
 .secondaryMenu {
   width: 100%;
   position: relative;

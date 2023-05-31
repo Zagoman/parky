@@ -248,7 +248,6 @@ const Map: NextPage = () => {
         </div>
         {/* search results wrapper */}
         <div className={styles.spotListControls}>
-          <div>Booking type: {bookingType}</div>
           <div className={styles.spotListControlsButtons}>
             <p></p>
             <p></p>

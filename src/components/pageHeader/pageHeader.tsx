@@ -67,7 +67,9 @@ export const PageHeader = ({
                   : styles.hiddenSecondary
               }
             >
-              <div>{secondaryMenuContents && secondaryMenuContents()}</div>
+              <div className={styles.secondaryWrapper}>
+                {secondaryMenuContents && secondaryMenuContents()}
+              </div>
             </section>
           </>
         ) : (
@@ -132,7 +134,7 @@ export const PageHeader = ({
             {user.isSignedIn && user.isLoaded ? (
               <Link
                 className={styles.pageHeaderCTA}
-                href="/account/my-parking-spots"
+                href="/account/my-parking-spots/create"
               >
                 Rent your parking
               </Link>
