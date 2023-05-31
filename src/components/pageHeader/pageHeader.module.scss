@@ -1,5 +1,10 @@
 @import "../../styles/tokens.scss";
 
+.secondaryWrapper {
+  height: 100%;
+  position: relative;
+}
+
 .modal {
   width: 100%;
   height: 100%;
@@ -165,9 +170,9 @@
   }
 
   section {
-    height: calc(100vh - 96px);
+    height: calc(100vh - 65px);
     position: absolute;
-    top: 96px;
+    top: 65px;
     left: 0;
     width: 100%;
     transition: 0.5s ease-in-out;
@@ -324,6 +329,11 @@
 
     &Logo {
       height: $spacer-600;
+    }
+    section {
+      height: calc(100vh - 96px);
+
+      top: 96px;
     }
   }
   .modal {
