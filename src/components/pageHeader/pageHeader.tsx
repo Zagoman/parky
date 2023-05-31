@@ -67,7 +67,9 @@ export const PageHeader = ({
                   : styles.hiddenSecondary
               }
             >
-              <div>{secondaryMenuContents && secondaryMenuContents()}</div>
+              <div className={styles.secondaryWrapper}>
+                {secondaryMenuContents && secondaryMenuContents()}
+              </div>
             </section>
           </>
         ) : (
