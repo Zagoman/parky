@@ -14,7 +14,7 @@ import Head from "next/head"
 const TopUp: NextPage = () => {
   const ctx = api.useContext()
   const user = useUser()
-  const { mutate: addCoin } = api.coin.addCoin.useMutation({
+  const { mutate: addCoin, error } = api.coin.addCoin.useMutation({
     onSuccess: (e) => {
       toast.success("Transaction complete")
       void ctx.profile.getProfileById.invalidate()
@@ -59,7 +59,9 @@ const TopUp: NextPage = () => {
                   placeholder="Insert coin amount"
                   min={1}
                   error={
-                    watch("amount") < 1 ? "Please insert a valid amount." : ""
+                    watch("amount") < 1
+                      ? "Please insert a valid amount."
+                      : error?.data?.zodError?.fieldErrors["amount"]?.at(0)
                   }
                 />
                 <input
