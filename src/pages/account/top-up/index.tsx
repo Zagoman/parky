@@ -1,34 +1,36 @@
-import { type NextPage } from "next";
-import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper";
-import { type RouterInputs, api } from "~/utils/api";
-import toast from "react-hot-toast";
-import { type SubmitHandler, useForm } from "react-hook-form";
-import styles from "./index.module.scss";
-import { useUser } from "@clerk/nextjs";
-import { InputField } from "~/components/FormElements/InputField/InputField";
-import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter";
-import Link from "next/link";
-import { UiBox } from "~/components/uiBox/uiBox";
-import Head from "next/head";
+import { type NextPage } from "next"
+import { DashboardWrapper } from "~/components/DashboardWrapper/DashboardWrapper"
+import { type RouterInputs, api } from "~/utils/api"
+import toast from "react-hot-toast"
+import { type SubmitHandler, useForm } from "react-hook-form"
+import styles from "./index.module.scss"
+import { useUser } from "@clerk/nextjs"
+import { InputField } from "~/components/FormElements/InputField/InputField"
+import { DashboardFooter } from "~/components/DashboardElements/components/DashboardFooter/DashboardFooter"
+import Link from "next/link"
+import { UiBox } from "~/components/uiBox/uiBox"
+import Head from "next/head"
 
 const TopUp: NextPage = () => {
-  const user = useUser();
+  const ctx = api.useContext()
+  const user = useUser()
   const { mutate: addCoin } = api.coin.addCoin.useMutation({
-    onSuccess: () => {
-      toast.success("Transaction complete");
+    onSuccess: (e) => {
+      toast.success("Transaction complete")
+      void ctx.profile.getProfileById.invalidate()
     },
     onError: () => {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong")
     },
-  });
+  })
   const { register, handleSubmit, watch } =
-    useForm<RouterInputs["coin"]["addCoin"]>();
+    useForm<RouterInputs["coin"]["addCoin"]>()
 
   const onSubmit: SubmitHandler<RouterInputs["coin"]["addCoin"]> = (data) => {
     if (user.user) {
-      addCoin({ ...data, toAccountId: user.user.id });
+      addCoin({ ...data, toAccountId: user.user.id })
     }
-  };
+  }
 
   return (
     <>
@@ -106,7 +108,7 @@ const TopUp: NextPage = () => {
         </>
       </DashboardWrapper>
     </>
-  );
-};
+  )
+}
 
-export default TopUp;
+export default TopUp

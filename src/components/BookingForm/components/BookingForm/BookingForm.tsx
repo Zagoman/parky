@@ -3,34 +3,36 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 
-import { Button } from "~/components/button/button";
-import styles from "./BookingForm.module.scss";
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
-import ParCoin from "../../../../../public/icon/parkcoin-filled.svg";
-import Image from "next/image";
-import { InputField } from "~/components/FormElements/InputField/InputField";
-import { useForm } from "react-hook-form";
-import { type RouterOutputs, api } from "~/utils/api";
-import { toast } from "react-hot-toast";
-import Link from "next/link";
+import { Button } from "~/components/button/button"
+import styles from "./BookingForm.module.scss"
+import { SignInButton, SignUpButton } from "@clerk/nextjs"
+import ParCoin from "../../../../../public/icon/parkcoin-filled.svg"
+import Image from "next/image"
+import { InputField } from "~/components/FormElements/InputField/InputField"
+import { useForm } from "react-hook-form"
+import { type RouterOutputs, api } from "~/utils/api"
+import { toast } from "react-hot-toast"
+import Link from "next/link"
+import { useEffect } from "react"
+import { useRouter } from "next/router"
 
 type BookingFormProps = {
-  userId?: string;
-  userBalance?: number | null;
-  spot: RouterOutputs["parking"]["getParkingWithinRange"];
-  isUserSignedIn?: boolean;
-  bookingType: string;
-  onCancel: () => void;
-  bookingDate: string;
-};
+  userId?: string
+  userBalance?: number | null
+  spot: RouterOutputs["parking"]["getParkingWithinRange"]
+  isUserSignedIn?: boolean
+  bookingType: string
+  onCancel: () => void
+  bookingDate: string
+}
 
 type BookingMutationProps = {
-  price: number;
-  end: string;
-  start: string;
-  ownerId: string;
-  parkingId: string;
-};
+  price: number
+  end: string
+  start: string
+  ownerId: string
+  parkingId: string
+}
 
 export const BookingForm = ({
   bookingType,
@@ -41,21 +43,26 @@ export const BookingForm = ({
   onCancel,
   bookingDate,
 }: BookingFormProps) => {
-  const parcoinIcon = ParCoin as string;
+  const router = useRouter()
+  const parcoinIcon = ParCoin as string
   const { register, watch } = useForm<{ duration: number }>({
     defaultValues: { duration: 1 },
-  });
-  const { duration } = watch();
+  })
+  const { duration } = watch()
 
   const { mutate: create } = api.booking.create.useMutation({
-    onSuccess: () => {
-      toast.success("booking created");
-      onCancel();
+    onSuccess: (e) => {
+      toast.success("booking created")
+
+      onCancel()
+      setTimeout(() => {
+        void router.push(`/booking/${e.id}`)
+      }, 1000)
     },
     onError: (e) => {
-      toast.error(e.message);
+      toast.error(e.message)
     },
-  });
+  })
 
   const bookParking = ({
     price,
@@ -70,10 +77,10 @@ export const BookingForm = ({
       start: start,
       parkingOwnerId: ownerId,
       parkingId: parkingId,
-    });
-  };
+    })
+  }
 
-  let contents: JSX.Element;
+  let contents: JSX.Element
   if (!isUserSignedIn) {
     contents = (
       <div className={`${styles.formWrapper} `}>
@@ -86,7 +93,7 @@ export const BookingForm = ({
           <Button type="primary" text="Cancel" onClick={onCancel} />
         </div>
       </div>
-    );
+    )
   } else if (
     isUserSignedIn &&
     spot &&
@@ -94,18 +101,18 @@ export const BookingForm = ({
     spot[0].id &&
     userId
   ) {
-    let totalPrice: number;
+    let totalPrice: number
     if (bookingType === "monthly") {
-      totalPrice = Math.floor((730 * spot[0].price) / 3);
+      totalPrice = Math.floor((730 * spot[0].price) / 3)
     } else {
-      totalPrice = duration * spot[0].price;
+      totalPrice = duration * spot[0].price
     }
 
-    const spotId = spot[0].id;
-    const ownerId = spot[0].profileId;
-    const startDate = new Date(bookingDate);
-    const endDate = new Date(bookingDate);
-    endDate.setHours(endDate.getHours() + duration);
+    const spotId = spot[0].id
+    const ownerId = spot[0].profileId
+    const startDate = new Date(bookingDate)
+    const endDate = new Date(bookingDate)
+    endDate.setHours(endDate.getHours() + duration)
 
     contents = (
       <>
@@ -203,9 +210,9 @@ export const BookingForm = ({
           </div>
         </div>
       </>
-    );
+    )
   } else {
-    contents = <div>Something went wrong</div>;
+    contents = <div>Something went wrong</div>
   }
-  return contents;
-};
+  return contents
+}

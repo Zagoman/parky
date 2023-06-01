@@ -1,18 +1,20 @@
-import styles from "./CreateProfile.module.scss";
-import { InputField } from "../FormElements/InputField/InputField";
-import { type RouterInputs, type RouterOutputs, api } from "~/utils/api";
-import { type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
+import styles from "./CreateProfile.module.scss"
+import { InputField } from "../FormElements/InputField/InputField"
+import { type RouterInputs, type RouterOutputs, api } from "~/utils/api"
+import { type SubmitHandler, useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
+import { useRouter } from "next/router"
 
-type CreateProfileInput = RouterInputs["profile"]["create"];
+type CreateProfileInput = RouterInputs["profile"]["create"]
 
 type CreateProfileProps = {
-  update?: boolean;
-  profile?: RouterOutputs["profile"]["getProfileByUsername"];
-};
+  update?: boolean
+  profile?: RouterOutputs["profile"]["getProfileByUsername"]
+}
 
 const CreateProfile: React.FC<CreateProfileProps> = (props) => {
-  const { update = false, profile } = props;
+  const router = useRouter()
+  const { update = false, profile } = props
   const { register, handleSubmit, watch } = useForm<CreateProfileInput>({
     defaultValues: {
       isDriver:
@@ -37,22 +39,25 @@ const CreateProfile: React.FC<CreateProfileProps> = (props) => {
           ? profile.vehicleModel
           : undefined,
     },
-  });
+  })
   const { mutate, error } = update
     ? api.profile.update.useMutation({
         onSuccess: () => {
-          toast.success("Profile updated succesfully");
+          toast.success("Profile updated succesfully")
         },
       })
     : api.profile.create.useMutation({
         onSuccess: () => {
-          toast.success("Profile created succesfully");
+          toast.success("Profile created succesfully")
+          setTimeout(() => {
+            void router.push("/map")
+          }, 1000)
         },
-      });
-  const isDriver = watch("isDriver");
+      })
+  const isDriver = watch("isDriver")
   const onSubmit: SubmitHandler<CreateProfileInput> = (data) => {
-    mutate(data);
-  };
+    mutate(data)
+  }
   return (
     <>
       <div className={styles.form}>
@@ -153,6 +158,6 @@ const CreateProfile: React.FC<CreateProfileProps> = (props) => {
         </form>
       </div>
     </>
-  );
-};
-export default CreateProfile;
+  )
+}
+export default CreateProfile
